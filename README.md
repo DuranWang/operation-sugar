@@ -96,8 +96,8 @@ Operation Sugar
 │
 ├── LICENSE
 ├── README.md
-├── requirements.txt
-└── RELEASE_CHECKLIST.md
+└── requirements.txt
+
 ```
 
 ## Data Sources
