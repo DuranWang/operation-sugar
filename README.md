@@ -211,7 +211,8 @@ Current status
 Clone the repository
 
 ```bash
-git clone ...
+git clone https://github.com/DuranWang/operation-sugar.git
+cd operation-sugar
 ```
 
 Install dependencies
