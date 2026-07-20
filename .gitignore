@@ -1,0 +1,33 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables and secrets
+.env
+.env.*
+
+# Jupyter temporary files
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tempCodeRunnerFile.py
+~$*
+*.tmp
+
+# Downloaded raw datasets
+data/raw/
+
+# Logs
+*.log
