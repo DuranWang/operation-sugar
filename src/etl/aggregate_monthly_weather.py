@@ -24,25 +24,7 @@ from src.feature_engineering.temperature import (
     calculate_average_temperature,
 )
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-
-INPUT_PATH = (
-    PROJECT_ROOT
-    / "data"
-    / "raw"
-    / "nasa_power"
-    / "daily_weather"
-    / "SP"
-    / "2020.csv"
-)
-
-OUTPUT_PATH = (
-    PROJECT_ROOT
-    / "data"
-    / "processed"
-    / "sp_monthly_weather_2020.csv"
-)
 
 DRY_DAY_THRESHOLD = 1.0
 
@@ -422,12 +404,16 @@ def validate_monthly_weather(
         "monthly weather data is valid."
     )
 
-
-def main() -> None:
-    """Run the monthly weather aggregation pipeline."""
+def build_monthly_weather(
+    input_path: Path,
+    output_path: Path,
+) -> pd.DataFrame:
+    """
+    Build one monthly weather dataset from a daily weather dataset.
+    """
 
     raw_df = load_daily_weather(
-        INPUT_PATH
+        input_path
     )
 
     weather_df = prepare_daily_weather(
@@ -448,12 +434,148 @@ def main() -> None:
 
     summarize_dataframe(
         monthly_weather,
-        name="Processed Monthly Weather Data",
+        name=(
+            "Processed Monthly Weather Data "
+            f"({input_path.stem})"
+        ),
     )
 
     save_dataframe_csv(
         monthly_weather,
-        OUTPUT_PATH,
+        output_path,
+    )
+
+    return monthly_weather
+
+
+def merge_monthly_weather_datasets(
+    monthly_datasets: list[pd.DataFrame],
+) -> pd.DataFrame:
+    """Merge multiple monthly weather datasets into one dataset."""
+
+    if not monthly_datasets:
+        raise ValueError(
+            "At least one monthly weather dataset is required."
+        )
+
+    merged_weather = pd.concat(
+        monthly_datasets,
+        ignore_index=True,
+    )
+
+    merged_weather = merged_weather.sort_values(
+        [
+            "state",
+            "ibge_code",
+            "year",
+            "month",
+        ]
+    ).reset_index(drop=True)
+
+    validate_monthly_weather(
+        merged_weather
+    )
+
+    return merged_weather
+
+
+DEFAULT_DAILY_WEATHER_FOLDER = (
+    PROJECT_ROOT
+    / "data"
+    / "raw"
+    / "nasa_power"
+    / "daily_weather"
+)
+
+DEFAULT_MONTHLY_WEATHER_FOLDER = (
+    PROJECT_ROOT
+    / "data"
+    / "processed"
+    / "monthly_weather"
+)
+
+MERGED_MONTHLY_WEATHER_FILENAME = (
+    "20240901_20260430_monthly.csv"
+)
+
+def main() -> None:
+    """Build and merge São Paulo monthly weather datasets."""
+
+    state = "SP"
+
+    periods = [
+        "20240901_20241231",
+        "20250101_20251231",
+        "20260101_20260430",
+    ]
+
+    input_folder = (
+        DEFAULT_DAILY_WEATHER_FOLDER
+        / state
+    )
+
+    output_folder = (
+        DEFAULT_MONTHLY_WEATHER_FOLDER
+        / state
+    )
+
+    output_folder.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    monthly_datasets = []
+
+    for period in periods:
+        input_path = (
+            input_folder
+            / f"{period}.csv"
+        )
+
+        output_path = (
+            output_folder
+            / f"{period}_monthly.csv"
+        )
+
+        print(
+            f"\nProcessing {period}..."
+        )
+
+        monthly_weather = build_monthly_weather(
+            input_path=input_path,
+            output_path=output_path,
+        )
+
+        monthly_datasets.append(
+            monthly_weather
+        )
+
+    print(
+        "\nMerging monthly weather datasets..."
+    )
+
+    merged_weather = merge_monthly_weather_datasets(
+        monthly_datasets
+    )
+
+    merged_output_path = (
+        output_folder
+        / MERGED_MONTHLY_WEATHER_FILENAME
+    )
+
+    summarize_dataframe(
+        merged_weather,
+        name="Merged São Paulo Monthly Weather Data",
+    )
+
+    save_dataframe_csv(
+        merged_weather,
+        merged_output_path,
+    )
+
+    print(
+        "\nFinished building and merging all "
+        "monthly weather datasets."
     )
 
 

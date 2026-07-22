@@ -72,7 +72,9 @@ def download_power_data(
     """Download daily NASA POWER variables for one geographic point."""
 
     if not parameters:
-        raise ValueError("At least one NASA POWER parameter is required.")
+        raise ValueError(
+            "At least one NASA POWER parameter is required."
+        )
 
     params = {
         "parameters": ",".join(parameters),
@@ -106,7 +108,9 @@ def download_power_data(
 
     weather_df = pd.DataFrame(
         {
-            parameter: pd.Series(parameter_data[parameter])
+            parameter: pd.Series(
+                parameter_data[parameter]
+            )
             for parameter in parameters
         }
     )
@@ -123,7 +127,9 @@ def download_power_data(
     return weather_df
 
 
-def validate_metadata(metadata_df: pd.DataFrame) -> None:
+def validate_metadata(
+    metadata_df: pd.DataFrame,
+) -> None:
     """Validate municipality metadata required for weather downloads."""
 
     required_columns = {
@@ -134,7 +140,9 @@ def validate_metadata(metadata_df: pd.DataFrame) -> None:
         "longitude",
     }
 
-    missing_columns = required_columns - set(metadata_df.columns)
+    missing_columns = (
+        required_columns - set(metadata_df.columns)
+    )
 
     if missing_columns:
         raise ValueError(
@@ -142,16 +150,25 @@ def validate_metadata(metadata_df: pd.DataFrame) -> None:
             f"{sorted(missing_columns)}"
         )
 
-    if metadata_df[list(required_columns)].isna().any().any():
+    if (
+        metadata_df[
+            list(required_columns)
+        ]
+        .isna()
+        .any()
+        .any()
+    ):
         raise ValueError(
             "Metadata contains missing municipality information."
         )
 
     if metadata_df["ibge_code"].duplicated().any():
-        raise ValueError("Metadata contains duplicate IBGE codes.")
+        raise ValueError(
+            "Metadata contains duplicate IBGE codes."
+        )
 
 
-def download_weather_for_state_year(
+def download_weather_for_state_period(
     metadata_df: pd.DataFrame,
     parameters: list[str],
     start: str,
@@ -159,18 +176,19 @@ def download_weather_for_state_year(
     state: str,
     output_folder: Path = DEFAULT_OUTPUT_FOLDER,
 ) -> pd.DataFrame:
-    """Download and save daily weather for one state and year."""
+    """
+    Download and save daily weather for one state and one
+    same-calendar-year period.
+    """
 
     start_year = start[:4]
     end_year = end[:4]
 
     if start_year != end_year:
         raise ValueError(
-            "download_weather_for_state_year requires start and end "
-            "dates from the same calendar year."
+            "download_weather_for_state_period requires start "
+            "and end dates from the same calendar year."
         )
-    
-    year = start_year
 
     validate_metadata(metadata_df)
 
@@ -183,8 +201,14 @@ def download_weather_for_state_year(
             f"No municipality metadata found for state {state}."
         )
 
-    output_path = Path(output_folder) / state
-    output_path.mkdir(parents=True, exist_ok=True)
+    output_path = (
+        Path(output_folder) / state
+    )
+
+    output_path.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
 
     all_weather = []
     failed_downloads = []
@@ -208,8 +232,12 @@ def download_weather_for_state_year(
                 end=end,
             )
 
-            weather_df["municipality"] = row.municipality
-            weather_df["ibge_code"] = int(row.ibge_code)
+            weather_df["municipality"] = (
+                row.municipality
+            )
+            weather_df["ibge_code"] = int(
+                row.ibge_code
+            )
             weather_df["state"] = row.state
             weather_df["latitude"] = row.latitude
             weather_df["longitude"] = row.longitude
@@ -218,7 +246,10 @@ def download_weather_for_state_year(
 
         # Continue the state-level batch even if one municipality fails.
         except Exception as error:
-            print(f"Failed for {row.municipality}: {error}")
+            print(
+                f"Failed for {row.municipality}: "
+                f"{error}"
+            )
 
             failed_downloads.append(
                 {
@@ -227,10 +258,11 @@ def download_weather_for_state_year(
                     "error": str(error),
                 }
             )
-    
+
     if not all_weather:
         raise RuntimeError(
-            f"All municipality downloads failed for {state} {year}."
+            "All municipality downloads failed for "
+            f"{state} from {start} to {end}."
         )
 
     final_df = pd.concat(
@@ -238,28 +270,85 @@ def download_weather_for_state_year(
         ignore_index=True,
     )
 
-    output_file = output_path / f"{year}.csv"
-    final_df.to_csv(output_file, index=False)
+    output_file = (
+        output_path
+        / f"{start}_{end}.csv"
+    )
 
-    print(f"Weather data saved to {output_file}")
-    print(f"Successful municipalities: {len(all_weather)}")
-    print(f"Failed municipalities: {len(failed_downloads)}")
+    final_df.to_csv(
+        output_file,
+        index=False,
+    )
+
+    print(
+        f"Weather data saved to {output_file}"
+    )
+    print(
+        f"Successful municipalities: "
+        f"{len(all_weather)}"
+    )
+    print(
+        f"Failed municipalities: "
+        f"{len(failed_downloads)}"
+    )
 
     if failed_downloads:
-        failed_file = output_path / f"{year}_failed_downloads.csv"
+        failed_file = (
+            output_path
+            / f"{start}_{end}_failed_downloads.csv"
+        )
 
-        pd.DataFrame(failed_downloads).to_csv(
+        pd.DataFrame(
+            failed_downloads,
+        ).to_csv(
             failed_file,
             index=False,
         )
 
-        print(f"Failed download list saved to {failed_file}")
+        print(
+            "Failed download list saved to "
+            f"{failed_file}"
+        )
 
     return final_df
 
 
+def download_weather_for_state_periods(
+    metadata_df: pd.DataFrame,
+    parameters: list[str],
+    periods: list[tuple[str, str]],
+    state: str,
+    output_folder: Path = DEFAULT_OUTPUT_FOLDER,
+) -> None:
+    """
+    Download weather for multiple same-calendar-year periods.
+
+    Each start-end pair must remain within one calendar year.
+    """
+
+    if not periods:
+        raise ValueError(
+            "At least one download period is required."
+        )
+
+    for start, end in periods:
+        print(
+            f"\nDownloading {state} weather "
+            f"from {start} to {end}..."
+        )
+
+        download_weather_for_state_period(
+            metadata_df=metadata_df,
+            parameters=parameters,
+            start=start,
+            end=end,
+            state=state,
+            output_folder=output_folder,
+        )
+
+
 def main() -> None:
-    """Run the São Paulo weather download pipeline."""
+    """Download São Paulo weather required for the dashboard."""
 
     start_time = time.time()
 
@@ -267,16 +356,29 @@ def main() -> None:
         "data/metadata/sp_municipalities.csv"
     )
 
-    download_weather_for_state_year(
+    periods = [
+        ("20240901", "20241231"),
+        ("20250101", "20251231"),
+        ("20260101", "20260430"),
+    ]
+
+    download_weather_for_state_periods(
         metadata_df=metadata_df,
-        parameters=["PRECTOTCORR", "T2M", "RH2M"],
-        start="20210101",
-        end="20211231",
+        parameters=[
+            "PRECTOTCORR",
+            "T2M",
+            "RH2M",
+        ],
+        periods=periods,
         state="SP",
     )
 
     elapsed = time.time() - start_time
-    print(f"Finished in {elapsed:.1f} seconds.")
+
+    print(
+        "\nAll requested weather periods finished "
+        f"in {elapsed:.1f} seconds."
+    )
 
 
 if __name__ == "__main__":

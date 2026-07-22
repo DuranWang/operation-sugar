@@ -311,3 +311,17 @@ A future release may introduce:
 - maturation-window average temperature
 - harvest-date-based biological windows
 - sugar-quality and recoverable-sugar targets
+
+### July 21: Implemented a fully automated ETL pipeline for UNICA biweekly crushing reports.
+
+Pipeline:
+
+PDF
+→ Page Detection
+→ Table Extraction
+→ Data Normalization
+→ Validation
+→ CSV Export
+
+The pipeline successfully converts UNICA PDF reports into analysis-ready datasets
+without manual intervention.

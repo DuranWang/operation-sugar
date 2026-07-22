@@ -31,3 +31,13 @@ data/raw/
 
 # Logs
 *.log
+
+# Backup files
+*.backup.csv
+
+# Generated outputs (can be reproduced)
+data/processed/monthly_weather/
+data/processed/dashboard/
+
+# Cached UNICA reports (downloaded from the official website)
+data/processed/unica/crushing/reports/

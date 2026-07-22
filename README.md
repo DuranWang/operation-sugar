@@ -1,52 +1,63 @@
 ![Python](https://img.shields.io/badge/Python-3.12-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
-![Version](https://img.shields.io/badge/Version-1.0-orange?style=flat-square)
+![Version](https://img.shields.io/badge/Version-1.1-orange?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
-
-```text
-                 IBGE
-                   \
-                    \
-NASA POWER ──► ETL ──► Monthly Weather ──► Growing Season ──► ML Models
-                    /
-                   /
-               UNICA
-```
 
 # Operation Sugar
 
-Operation Sugar is an open-source data engineering project for Brazilian sugarcane analytics.
+An open-source agricultural data engineering platform for Brazilian sugarcane analytics.
 
-The project integrates municipal sugarcane production statistics published by IBGE with daily weather observations from NASA POWER, producing analysis-ready datasets for agricultural analytics and statistical modeling.
+Operation Sugar integrates official Brazilian sugarcane production statistics (IBGE), daily weather observations (NASA POWER), and harvest reports (UNICA) into reproducible weather–harvest datasets and analytics dashboards for Brazilian sugarcane research.
 
-Its long-term objective is to provide an extensible research platform for weather-driven sugarcane production analytics.
+## Highlights
+
+- 🌎 642 Brazilian sugar-producing municipalities
+- 🌦️ NASA POWER + IBGE + UNICA data integration
+- 🧪 167 automated unit tests (147 dedicated to the UNICA ETL pipeline)
+- 📊 Automated weather–harvest analytics dashboards
+- 🏗️ Modular ETL and feature engineering architecture
+
+```text
+          IBGE
+           │
+           ▼
+     Production Data
+           │
+           ▼
+
+NASA POWER ──► Weather ETL ──┐
+                             │
+UNICA ───────► Harvest ETL ──┼──► Weather–Harvest Dataset
+                             │
+Growing-Season Features ─────┘
+                 │
+                 ▼
+        Analytics Dashboard
+```
 
 ## Features
 
-- Validate municipality metadata
-
-- Download NASA POWER weather data
-
-- Process agricultural production data
-
-- Aggregate monthly weather
-
-- Engineer weather features
-
-- Generate growing-season features
-
-- Export analysis-ready datasets
+- Automated NASA POWER weather ingestion
+- UNICA harvest report ETL pipeline
+- Historical harvest database updater
+- Municipality-level weather aggregation
+- Growing-season feature engineering
+- Weather–harvest dataset construction
+- Static analytics dashboards
+- Comprehensive data validation
+- Automated unit testing
 
 ## Project Goals
 
 Build a reproducible end-to-end pipeline that:
+
 - Cleans and validates Brazilian sugarcane production data 
 - Engineers weather features relevant to sugarcane growth 
-- Prepares datasets for exploratory analysis and future forecasting models
+- Prepares datasets for exploratory analysis, future statistical analysis, and forecasting models
 
 ## Current Version Limitations
 
-Version 1.0 focuses on weather-driven biomass accumulation.
+Version 1.1 focuses on weather-driven biomass accumulation.
 
 It does not currently model:
 
@@ -75,6 +86,7 @@ Operation Sugar
 │
 ├── src/
 │   ├── etl/
+│   │   ├── unica/
 │   │   ├── loader.py
 │   │   ├── saver.py
 │   │   ├── summary.py
@@ -88,16 +100,23 @@ Operation Sugar
 │   │   ├── growing_season.py
 │   │   └── pipeline.py
 │   │
+│   ├── pipelines/
+│   │   └── build_weather_harvest_dataset.py
+│   │
+│   ├── visualization/
+│   │   ├── build_dashboard.py
+│   │   └── build_comparison_dashboard.py
+│   │
 │   └── schemas/
 │
 ├── src/tests/
 │   ├── etl/
+│   │   └── unica/
 │   └── feature_engineering/
 │
 ├── LICENSE
 ├── README.md
 └── requirements.txt
-
 ```
 
 ## Data Sources
@@ -114,12 +133,12 @@ The project integrates these independent data sources into a unified analysis-re
 
 Weather is one of the primary drivers of sugarcane growth and production. However, publicly available agricultural datasets are often fragmented across multiple sources with different formats and temporal resolutions.
 
-Operation Sugar integrates official production statistics from IBGE, daily weather observations from NASA POWER, and harvest information from UNICA into a single reproducible analytics pipeline, providing analysis-ready datasets for agricultural research, exploratory analysis, and future predictive modeling.
+Operation Sugar integrates official production statistics from IBGE, daily weather observations from NASA POWER, and harvest information from UNICA into a single reproducible analytics pipeline, providing analysis-ready datasets for agricultural research, exploratory analysis, future statistical analysis, and predictive modeling.
 
 
 ## Project Statistics
 
-Current Version (v1.0)
+Current Version (v1.1)
 
 | Metric              | Value                                    |
 | ------------------- | ---------------------------------------- |
@@ -128,7 +147,7 @@ Current Version (v1.0)
 | Weather Variables   | Rainfall, Temperature, Relative Humidity |
 | Input Years         | 2019–2021                                |
 | Harvest Years       | 2020–2021                                |
-| Automated Tests     | 20                                       |
+| Automated Tests     | 167 (147 for UNICA ETL)                  |
 | Python              | 3.12                                     |
 
 
@@ -137,29 +156,33 @@ The project is fully modularized, with dedicated ETL, feature engineering, valid
 
 ## Engineered Features
 
-| Category | Features |
-|----------|----------|
-| Rainfall | Total rainfall, Rainy days, Dry day count, Maximum consecutive dry days |
-| Temperature | Average temperature |
-| Humidity | Average humidity |
-| Growing Season | Growing-season total rainfall, Growing-season average temperature, Observation days, Start date, End date |
+### Weather Features
 
-## Example Output
+- Growing-season rainfall
+- Rainy days
+- Dry days
+- Average temperature
+- Average humidity
+- Maximum consecutive dry days
+- Average maximum consecutive dry days
 
-The growing-season feature pipeline produces one observation per municipality and harvest year.
+### Harvest Features
 
-Example (`data/processed/growing_season/SP/growing_season_features.csv`):
+- Harvest season
+- Latest report date
+- Harvest period count
+- Cumulative crushing
 
-```csv
-ibge_code,municipality,state,harvest_year,growing_season_total_rainfall,growing_season_average_temperature,growing_season_observation_days,growing_season_start,growing_season_end
-3500105,Adamantina,SP,2020,884.76,26.94,243,2019-09-01,2020-04-30
-3500105,Adamantina,SP,2021,538.19,27.83,242,2020-09-01,2021-04-30
-3500204,Adolfo,SP,2020,948.71,26.18,243,2019-09-01,2020-04-30
-3500204,Adolfo,SP,2021,648.53,27.03,242,2020-09-01,2021-04-30
-3500303,Aguaí,SP,2020,1037.72,23.46,243,2019-09-01,2020-04-30
-```
 
-Each record summarizes the weather conditions experienced by one municipality during a single sugarcane growing season.
+## Dashboard Preview
+
+### Single-season Dashboard
+
+![Dashboard](docs/dashboard_v1.png)
+
+### Season Comparison
+
+![Comparison](docs/dashboard_season_comparison.png)
 
 ## Output
 
@@ -167,33 +190,65 @@ The pipeline produces analysis-ready datasets, including:
 
 - Daily municipality weather observations
 - Monthly aggregated weather summaries
-- Growing-season feature tables
+- Growing-season weather features
+- Historical UNICA harvest database
+- Weather–harvest datasets
+- Analytics dashboard outputs
 
 Processed datasets are organized under:
 
 ```text
-data/processed/
-├── sp_monthly_weather_2020.csv
-└── growing_season/
-    └── SP/
-        └── growing_season_features.csv
+data/
+├── raw/
+│   ├── nasa_power/
+│   └── unica/
+│
+└── processed/
+    ├── monthly_weather/
+    ├── growing_season/
+    ├── unica/
+    │   └── crushing/
+    └── dashboard/
+        └── weather_harvest_dataset.csv
 ```
 
-All processed datasets are exported as CSV files.
+The visualization pipeline exports dashboard images to:
+
+```text
+docs/
+├── dashboard_v1.png
+└── dashboard_season_comparison.png
+```
+
+All processed datasets are exported as CSV files, while dashboard outputs are exported as PNG images.
 
 ## Pipeline Workflow
 
-1. Download municipality metadata
-2. Download NASA POWER weather observations
-3. Validate raw datasets
-4. Aggregate daily observations into monthly summaries
-5. Engineer weather features
-6. Build growing-season features
-7. Export processed datasets
+```text
+Metadata
+    │
+    ▼
+NASA POWER ETL
+    │
+    ▼
+UNICA ETL
+    │
+    ▼
+Validation
+    │
+    ▼
+Growing-Season Features
+    │
+    ▼
+Weather-Harvest Dataset
+    │
+    ▼
+Dashboard
+```
 
 ## Testing
 
-Run all automated tests
+Run all tests
 
 ```bash
 python -m pytest src/tests -v
@@ -202,9 +257,11 @@ python -m pytest src/tests -v
 Current status
 
 ```text
-20 automated tests
+167 automated unit tests
 100% passing
 ```
+
+The UNICA ETL pipeline alone is covered by 147 automated unit tests spanning PDF parsing, table extraction, normalization, validation, and historical database updates.
 
 ## Quick Start
 
@@ -221,23 +278,49 @@ Install dependencies
 pip install -r requirements.txt
 ```
 
-Run the weather downloader
+Download NASA POWER weather observations
 
 ```bash
 python -m src.download_nasa_power
 ```
 
-Run monthly aggregation
+Aggregate daily weather into monthly summaries
 
 ```bash
 python -m src.etl.aggregate_monthly_weather
 ```
 
-Generate growing-season features
+Generate growing-season weather features
 
 ```bash
 python -m src.etl.build_growing_season_features
 ```
+
+Build the weather–harvest dashboard dataset
+
+```bash
+python -m src.pipelines.build_weather_harvest_dataset
+```
+
+Generate the single-season dashboard
+
+```bash
+python -m src.visualization.build_dashboard
+```
+
+Generate the season-comparison dashboard
+
+```bash
+python -m src.visualization.build_comparison_dashboard
+```
+
+Run all automated tests
+
+```bash
+python -m pytest src/tests -v
+```
+
+The generated datasets and dashboard figures will be saved under the `data/processed/` and `docs/` directories.
 
 ## License
 
@@ -245,16 +328,22 @@ This project is released under the [MIT License](LICENSE).
 
 ## Roadmap
 
-### Version 1.0 ✅
+### Version 1.1 ✅
 
-- Weather download pipeline
-- Monthly aggregation
-- Weather feature engineering
-- Growing-season summaries
+- NASA POWER weather ETL
+- UNICA harvest ETL
+- Historical harvest database updater
+- Growing-season feature engineering
+- Weather–harvest dataset construction
+- Static analytics dashboards
+- 147 automated unit tests for the UNICA harvest ETL
 
-### Version 1.1 🔄
+### Version 2.0
 
-- Additional weather variables
+- Maturation-window feature engineering
+- Sugar yield and sucrose analytics
+- Harvest-weighted weather features
+- Additional environmental variables
   - Soil moisture
   - Evapotranspiration
   - Vapor pressure deficit
@@ -262,6 +351,13 @@ This project is released under the [MIT License](LICENSE).
   - ENSO
 - Remote sensing
   - Satellite products
+
+### Version 3.0
+
+- Exploratory data analysis
+- Machine learning models
+- Yield forecasting
+- Interactive dashboard
 
 ## Contributing
 
