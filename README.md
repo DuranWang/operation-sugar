@@ -17,6 +17,21 @@ Operation Sugar integrates official Brazilian sugarcane production statistics (I
 - 📊 Automated weather–harvest analytics dashboards
 - 🏗️ Modular ETL and feature engineering architecture
 
+## Dashboard Preview
+
+### Season Comparison Dashboard
+
+![Comparison](docs/dashboard_season_comparison.png)
+
+*Compare weather conditions and harvest progress across multiple Brazilian sugarcane seasons.*
+
+### Single-season Dashboard
+
+![Dashboard](docs/dashboard_v1.png)
+
+*Detailed weather and harvest analytics for an individual growing season.*
+
+## Architecture
 ```text
           IBGE
            │
@@ -45,11 +60,11 @@ Growing-Season Features ─────┘
 - Weather–harvest dataset construction
 - Static analytics dashboards
 - Comprehensive data validation
-- Automated unit testing
+- 167 automated unit tests
 
 ## Project Goals
 
-Build a reproducible end-to-end pipeline that:
+Operation Sugar aims to build a reproducible end-to-end pipeline that:
 
 - Cleans and validates Brazilian sugarcane production data 
 - Engineers weather features relevant to sugarcane growth 
@@ -131,9 +146,11 @@ The project integrates these independent data sources into a unified analysis-re
 
 ## Why this Project?
 
-Weather is one of the primary drivers of sugarcane growth and production. However, publicly available agricultural datasets are often fragmented across multiple sources with different formats and temporal resolutions.
+Public agricultural datasets are often fragmented across multiple organizations, formats, and temporal resolutions.
 
-Operation Sugar integrates official production statistics from IBGE, daily weather observations from NASA POWER, and harvest information from UNICA into a single reproducible analytics pipeline, providing analysis-ready datasets for agricultural research, exploratory analysis, future statistical analysis, and predictive modeling.
+Operation Sugar integrates IBGE production statistics, NASA POWER weather observations, and UNICA harvest reports into a unified, reproducible analytics pipeline.
+
+The resulting datasets support agricultural research, exploratory analysis, and future forecasting models.
 
 
 ## Project Statistics
@@ -173,16 +190,6 @@ The project is fully modularized, with dedicated ETL, feature engineering, valid
 - Harvest period count
 - Cumulative crushing
 
-
-## Dashboard Preview
-
-### Single-season Dashboard
-
-![Dashboard](docs/dashboard_v1.png)
-
-### Season Comparison
-
-![Comparison](docs/dashboard_season_comparison.png)
 
 ## Output
 
@@ -336,7 +343,7 @@ This project is released under the [MIT License](LICENSE).
 - Growing-season feature engineering
 - Weather–harvest dataset construction
 - Static analytics dashboards
-- 147 automated unit tests for the UNICA harvest ETL
+- 167 automated unit tests, including 147 for the UNICA harvest ETL
 
 ### Version 2.0
 
