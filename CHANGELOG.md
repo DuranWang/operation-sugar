@@ -2,8 +2,45 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is inspired by Keep a Changelog.
-Versioning follows Semantic Versioning.
+The format is inspired by **Keep a Changelog**.
+Versioning follows **Semantic Versioning**.
+
+---
+
+## [1.1.1] - 2026-07-23
+
+### Added
+
+- Added `research_engineering_challenges.md`.
+- Documented six major research engineering challenges encountered during platform development.
+- Added a final reflection describing the evolution of Operation Sugar from a forecasting project into a research engineering platform.
+
+### Documentation
+
+- Explained the rationale behind the platform's modular ETL architecture.
+- Documented engineering decisions related to:
+  - heterogeneous data integration
+  - large-scale API collection
+  - temporal alignment
+  - literature-driven feature engineering
+  - automated data validation
+  - reproducible research infrastructure
+
+### Changed
+
+- Expanded project documentation to emphasize research engineering principles rather than only technical implementation.
+
+### Highlights
+
+- Introduced comprehensive research engineering documentation.
+- Expanded project architecture and design rationale.
+- Improved reproducibility, maintainability, and developer experience.
+
+### Notes
+
+Although no new analytical features were introduced in this release, documenting the engineering decisions behind the platform is essential for reproducibility, maintainability, and future development.
+
+This release marks the transition of Operation Sugar from a collection of analytical tools toward a documented research engineering platform.
 
 ---
 
@@ -26,9 +63,9 @@ Versioning follows Semantic Versioning.
 
 ### Fixed
 
-- Correct cumulative harvest calculation
-- Improved UNICA data validation
-- Fixed duplicate harvest period handling
+- Corrected cumulative harvest calculation.
+- Improved UNICA data validation.
+- Fixed duplicate harvest period handling.
 
 ---
 
@@ -46,19 +83,5 @@ Versioning follows Semantic Versioning.
 
 ### Changed
 
-- Refactored ETL modules
-- Improved folder structure
-
----
-## Upcoming (v2.0)
-
-### Planned
-
-- Maturation-window feature engineering
-- Sugar yield analytics
-- Harvest-weighted weather features
-- Soil moisture integration
-- Evapotranspiration
-- Vapor pressure deficit
-- ENSO climate indices
-- Satellite-derived products
+- Refactored ETL modules.
+- Improved project folder structure.

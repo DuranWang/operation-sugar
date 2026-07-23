@@ -333,38 +333,6 @@ The generated datasets and dashboard figures will be saved under the `data/proce
 
 This project is released under the [MIT License](LICENSE).
 
-## Roadmap
-
-### Version 1.1 ✅
-
-- NASA POWER weather ETL
-- UNICA harvest ETL
-- Historical harvest database updater
-- Growing-season feature engineering
-- Weather–harvest dataset construction
-- Static analytics dashboards
-- 167 automated unit tests, including 147 for the UNICA harvest ETL
-
-### Version 2.0
-
-- Maturation-window feature engineering
-- Sugar yield and sucrose analytics
-- Harvest-weighted weather features
-- Additional environmental variables
-  - Soil moisture
-  - Evapotranspiration
-  - Vapor pressure deficit
-- Climate indices
-  - ENSO
-- Remote sensing
-  - Satellite products
-
-### Version 3.0
-
-- Exploratory data analysis
-- Machine learning models
-- Yield forecasting
-- Interactive dashboard
 
 ## Contributing
 
