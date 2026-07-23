@@ -495,7 +495,7 @@ DEFAULT_MONTHLY_WEATHER_FOLDER = (
 )
 
 MERGED_MONTHLY_WEATHER_FILENAME = (
-    "20240901_20260430_monthly.csv"
+    "20190101_20260430_monthly.csv"
 )
 
 def main() -> None:
@@ -504,6 +504,12 @@ def main() -> None:
     state = "SP"
 
     periods = [
+        "2019",
+        "2020",
+        "2021",
+        "20220101_20221231",
+        "20230101_20231231",
+        "20240101_20240831",
         "20240901_20241231",
         "20250101_20251231",
         "20260101_20260430",

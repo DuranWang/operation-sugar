@@ -7,6 +7,36 @@ Versioning follows **Semantic Versioning**.
 
 ---
 
+## [1.2.0] - 2026-07-23
+
+### Added
+
+- Historical weather archive supporting complete growing seasons from 2019–20 through 2026–27.
+- Multi-season historical benchmark dashboard.
+- Automatic generation of all research dashboards within the end-to-end pipeline.
+- Historical weather–harvest benchmark dataset.
+
+### Changed
+
+- Introduced matched-cutoff harvest benchmarking methodology.
+- Standardized cumulative harvest comparisons using identical UNICA reporting cutoffs.
+- Expanded monthly weather aggregation to support multi-season historical analysis.
+- Pipeline now generates all dashboard artifacts automatically.
+- Simplified the Quick Start workflow to a single pipeline command.
+
+### Highlights
+
+- Historical benchmark framework for weather and harvest analysis.
+- One-command end-to-end reproducible research pipeline.
+- Seven-season historical benchmarking capability.
+
+### Notes
+
+This release marks the evolution of Operation Sugar
+from a seasonal analytics project into a historical
+research platform capable of reproducible multi-season
+benchmarking.
+
 ## [1.1.1] - 2026-07-23
 
 ### Added

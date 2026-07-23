@@ -1,6 +1,6 @@
 ![Python](https://img.shields.io/badge/Python-3.12-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
-![Version](https://img.shields.io/badge/Version-1.1-orange?style=flat-square)
+![Version](https://img.shields.io/badge/Version-1.2-orange?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
 
 # Operation Sugar
@@ -15,6 +15,7 @@ Operation Sugar integrates official Brazilian sugarcane production statistics (I
 
 - 🌎 Weather and harvest analytics across 642 Brazilian sugar-producing municipalities
 - 🌦️ Integrated NASA POWER, IBGE, and UNICA public datasets
+- 📈 Seven-season historical benchmarking framework
 - 🧪 167 automated unit tests (147 dedicated to the UNICA ETL pipeline)
 - 📊 Automated weather–harvest analytics dashboards
 - 🏗️ Modular ETL, validation, and feature engineering architecture
@@ -27,7 +28,7 @@ Operation Sugar integrates official Brazilian sugarcane production statistics (I
 
 ![Comparison](docs/dashboard_season_comparison.png)
 
-*Compare weather conditions and harvest progress across multiple Brazilian sugarcane seasons.*
+*Compare historical weather conditions and matched-cutoff harvest progress across multiple Brazilian sugarcane seasons.*
 
 ### Single-season Dashboard
 
@@ -54,7 +55,8 @@ UNICA ───────► Harvest ETL ──┼──► Weather–Harvest 
 Growing-Season Features ─────┘
                  │
                  ▼
-        Analytics Dashboard
+      Historical Benchmark
+           Dashboards
 ```
 
 ---
@@ -67,7 +69,7 @@ Growing-Season Features ─────┘
 - Municipality-level weather aggregation
 - Growing-season feature engineering
 - Weather–harvest dataset construction
-- Static analytics dashboards
+- Historical benchmark dashboards
 - Comprehensive data validation
 - 167 automated unit tests
 
@@ -86,7 +88,7 @@ Operation Sugar aims to build a reproducible end-to-end research platform that:
 
 ## Current Version Limitations
 
-Version 1.1 focuses on weather-driven biomass accumulation.
+Version 1.2 focuses on weather-driven biomass accumulation.
 
 It does not currently model:
 
@@ -173,10 +175,9 @@ Rather than focusing solely on forecasting models, the project emphasizes the re
 | Metric | Value |
 |--------|-------|
 | Municipalities | 642 |
-| Temporal Resolution | Daily |
+| Weather Archive | 2019–20 to 2026–27 Growing Seasons |
 | Weather Variables | Rainfall, Temperature, Relative Humidity |
-| Input Years | 2019–2021 |
-| Harvest Years | 2020–2021 |
+| Historical Harvest Seasons | 2020–21 to 2026–27 |
 | Automated Tests | 167 |
 | Python | 3.12 |
 
@@ -214,7 +215,7 @@ The pipeline produces:
 - Growing-season weather features
 - Historical UNICA harvest database
 - Weather–harvest datasets
-- Analytics dashboard outputs
+- Historical benchmark dashboards
 
 ---
 
@@ -239,7 +240,7 @@ Growing-Season Features
 Weather-Harvest Dataset
     │
     ▼
-Dashboard
+Historical Benchmark Dashboards
 ```
 
 ---
@@ -272,20 +273,17 @@ cd operation-sugar
 
 pip install -r requirements.txt
 
-python -m src.download_nasa_power
-
-python -m src.etl.aggregate_monthly_weather
-
-python -m src.etl.build_growing_season_features
-
-python -m src.pipelines.build_weather_harvest_dataset
-
-python -m src.visualization.build_dashboard
-
-python -m src.visualization.build_comparison_dashboard
+python -m src.pipelines.run_pipeline
 
 python -m pytest src/tests -v
 ```
+
+The research pipeline automatically:
+
+- aggregates monthly weather
+- engineers growing-season features
+- builds the weather–harvest dataset
+- generates all dashboard figures
 
 Generated datasets are saved under:
 

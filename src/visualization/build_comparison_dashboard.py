@@ -1,8 +1,8 @@
 """
-Operation Sugar Season Comparison Dashboard
+Operation Sugar Multi-Season Historical Benchmark Dashboard.
 
-Create a static comparison dashboard for the two most recent
-matched weather-harvest seasons.
+Create a static dashboard comparing complete historical
+São Paulo growing seasons and matched-cutoff UNICA harvest progress.
 """
 
 from pathlib import Path
@@ -33,6 +33,8 @@ REQUIRED_COLUMNS = [
     "growing_season_start",
     "growing_season_end",
     "latest_report_date",
+    "matched_cutoff_date",
+    "has_complete_growing_season",
     "total_growing_season_rainfall",
     "average_growing_season_temperature",
     "average_growing_season_humidity",
@@ -43,71 +45,104 @@ REQUIRED_COLUMNS = [
     "cumulative_crush_tonnes",
 ]
 
-
-METRICS = [
+TABLE_COLUMNS = [
     {
-        "label": "Growing-season rainfall",
+        "label": "Season",
+        "column": "harvest_season",
+    },
+    {
+        "label": "Rainfall\n(mm)",
         "column": "total_growing_season_rainfall",
-        "unit": "mm",
         "decimals": 0,
         "scale": 1.0,
     },
     {
-        "label": "Average temperature",
+        "label": "Avg temp\n(°C)",
         "column": "average_growing_season_temperature",
-        "unit": "°C",
-        "decimals": 1,
-        "scale": 1.0,
-    },
-    {
-        "label": "Average humidity",
-        "column": "average_growing_season_humidity",
-        "unit": "%",
         "decimals": 1,
         "scale": 1.0,
     },
     {
         "label": "Rainy days",
         "column": "total_growing_season_rainy_days",
-        "unit": "days",
         "decimals": 1,
         "scale": 1.0,
     },
     {
         "label": "Dry days",
         "column": "total_growing_season_dry_days",
-        "unit": "days",
         "decimals": 1,
         "scale": 1.0,
     },
     {
-        "label": "Average maximum CDD",
+        "label": "Avg max\nCDD",
         "column": "average_max_consecutive_dry_days",
-        "unit": "days",
         "decimals": 1,
         "scale": 1.0,
     },
     {
-        "label": "Maximum CDD",
-        "column": "maximum_consecutive_dry_days",
-        "unit": "days",
-        "decimals": 0,
-        "scale": 1.0,
-    },
-    {
-        "label": "Cumulative crush",
+        "label": "Crush\n(Mt)",
         "column": "cumulative_crush_tonnes",
-        "unit": "Mt",
         "decimals": 2,
         "scale": 1_000_000.0,
     },
 ]
 
+TREND_METRICS = [
+    {
+        "title": "Growing-Season Rainfall",
+        "column": "total_growing_season_rainfall",
+        "unit": "mm",
+        "scale": 1.0,
+    },
+    {
+        "title": "Average Temperature",
+        "column": "average_growing_season_temperature",
+        "unit": "°C",
+        "scale": 1.0,
+    },
+    {
+        "title": "Average Maximum CDD",
+        "column": "average_max_consecutive_dry_days",
+        "unit": "days",
+        "scale": 1.0,
+    },
+    {
+        "title": "Matched-Cutoff Crush",
+        "column": "cumulative_crush_tonnes",
+        "unit": "Mt",
+        "scale": 1_000_000.0,
+    },
+]
+
+CURRENT_SEASON_COLOR = "#E8F5E9"
+CURRENT_MARKER_COLOR = "#2E7D32"
+
+TOP_RANK_COLOR = "#2E7D32"
+MIDDLE_RANK_COLOR = "#616161"
+BOTTOM_RANK_COLOR = "#C62828"
+
+
+def extract_season_start_year(
+    season: str,
+) -> int:
+    """Extract the four-digit starting year from a season label."""
+
+    season_start = int(
+        str(season).split("-")[0]
+    )
+
+    return 2000 + season_start
+
 
 def load_comparison_data(
     input_path: Path,
 ) -> pd.DataFrame:
-    """Load and validate the weather-harvest dashboard dataset."""
+    """
+    Load and validate complete historical weather-harvest seasons.
+
+    Incomplete growing seasons are excluded from the benchmark.
+    """
 
     if not input_path.exists():
         raise FileNotFoundError(
@@ -138,6 +173,7 @@ def load_comparison_data(
         "growing_season_start",
         "growing_season_end",
         "latest_report_date",
+        "matched_cutoff_date",
     ]
 
     for column in date_columns:
@@ -146,95 +182,522 @@ def load_comparison_data(
             errors="raise",
         )
 
-    dashboard_df = (
-        dashboard_df
+    dashboard_df[
+        "has_complete_growing_season"
+    ] = (
+        dashboard_df[
+            "has_complete_growing_season"
+        ]
+        .astype(str)
+        .str.lower()
+        .map(
+            {
+                "true": True,
+                "false": False,
+            }
+        )
+    )
+
+    if dashboard_df[
+        "has_complete_growing_season"
+    ].isna().any():
+        raise ValueError(
+            "has_complete_growing_season contains "
+            "invalid boolean values."
+        )
+
+    comparison_df = dashboard_df.loc[
+        dashboard_df[
+            "has_complete_growing_season"
+        ]
+    ].copy()
+
+    if comparison_df.empty:
+        raise ValueError(
+            "No complete growing seasons are available "
+            "for historical benchmarking."
+        )
+
+    comparison_df[
+        "season_start_year"
+    ] = (
+        comparison_df[
+            "harvest_season"
+        ]
+        .apply(
+            extract_season_start_year
+        )
+    )
+
+    comparison_df = (
+        comparison_df
         .sort_values(
             [
                 "state",
-                "harvest_season",
+                "season_start_year",
             ]
         )
         .reset_index(drop=True)
     )
 
-    if len(dashboard_df) < 2:
+    duplicate_seasons = comparison_df.duplicated(
+        subset=[
+            "state",
+            "harvest_season",
+        ],
+        keep=False,
+    )
+
+    if duplicate_seasons.any():
         raise ValueError(
-            "At least two matched harvest seasons are required "
-            "to build the season-comparison dashboard. "
-            f"Current matched season count: {len(dashboard_df)}."
+            "Historical benchmark contains duplicate "
+            "state-season records."
         )
 
-    return dashboard_df
+    if len(comparison_df) < 3:
+        raise ValueError(
+            "At least three complete seasons are required "
+            "for a historical benchmark dashboard. "
+            f"Current complete season count: {len(comparison_df)}."
+        )
+
+    return comparison_df
 
 
-def format_value(
+def format_table_value(
     value: float,
-    unit: str,
     decimals: int,
+    scale: float,
 ) -> str:
-    """Format one metric value."""
+    """Format one numeric value for the historical table."""
 
-    return (
-        f"{value:,.{decimals}f} "
-        f"{unit}"
+    scaled_value = (
+        float(value)
+        / scale
     )
 
-
-def format_difference(
-    difference: float,
-    unit: str,
-    decimals: int,
-) -> str:
-    """Format a signed season-to-season difference."""
-
-    return (
-        f"{difference:+,.{decimals}f} "
-        f"{unit}"
-    )
+    return f"{scaled_value:,.{decimals}f}"
 
 
-def format_percent_change(
-    previous_value: float,
-    current_value: float,
-) -> str:
-    """Calculate and format percentage change."""
+def build_table_data(
+    comparison_df: pd.DataFrame,
+) -> list[list[str]]:
+    """Build formatted rows for the multi-season table."""
 
-    if previous_value == 0:
-        return "N/A"
+    table_rows: list[list[str]] = []
 
-    percent_change = (
-        (
-            current_value
-            - previous_value
+    for _, row in comparison_df.iterrows():
+        formatted_row: list[str] = []
+
+        for table_column in TABLE_COLUMNS:
+            column_name = table_column[
+                "column"
+            ]
+
+            if column_name == "harvest_season":
+                formatted_row.append(
+                    str(row[column_name])
+                )
+                continue
+
+            formatted_row.append(
+                format_table_value(
+                    value=row[column_name],
+                    decimals=table_column[
+                        "decimals"
+                    ],
+                    scale=table_column[
+                        "scale"
+                    ],
+                )
+            )
+
+        table_rows.append(
+            formatted_row
         )
-        / abs(previous_value)
-        * 100
+
+    return table_rows
+
+
+def calculate_descending_rank(
+    comparison_df: pd.DataFrame,
+    column: str,
+) -> tuple[int, int]:
+    """
+    Calculate the current season's descending rank.
+
+    Rank 1 represents the highest historical value.
+    """
+
+    if comparison_df[column].isna().any():
+        raise ValueError(
+            f"Cannot rank metric with missing values: {column}"
+        )
+
+    ranked_values = (
+        comparison_df[column]
+        .astype(float)
+        .rank(
+            method="min",
+            ascending=False,
+        )
     )
 
-    return f"{percent_change:+.1f}%"
+    current_rank = int(
+        ranked_values.iloc[-1]
+    )
+
+    total_seasons = len(
+        comparison_df
+    )
+
+    return (
+        current_rank,
+        total_seasons,
+    )
+
+
+def ordinal_suffix(
+    rank: int,
+) -> str:
+    """Format an integer as an ordinal ranking."""
+
+    if 10 <= rank % 100 <= 20:
+        suffix = "th"
+    else:
+        suffix = {
+            1: "st",
+            2: "nd",
+            3: "rd",
+        }.get(
+            rank % 10,
+            "th",
+        )
+
+    return f"{rank}{suffix}"
+
+
+def get_rank_color(
+    rank: int,
+    total_seasons: int,
+) -> str:
+    """
+    Return a display color based on historical rank.
+
+    Top two observations are highlighted in green,
+    bottom two in red, and middle ranks in neutral gray.
+    """
+
+    if rank <= 2:
+        return TOP_RANK_COLOR
+
+    if rank >= total_seasons - 1:
+        return BOTTOM_RANK_COLOR
+
+    return MIDDLE_RANK_COLOR
+
+
+def draw_historical_table(
+    axis: plt.Axes,
+    comparison_df: pd.DataFrame,
+) -> None:
+    """Draw the multi-season historical metric table."""
+
+    axis.axis(
+        "off"
+    )
+
+    table_data = build_table_data(
+        comparison_df
+    )
+
+    column_labels = [
+        column["label"]
+        for column in TABLE_COLUMNS
+    ]
+
+    table = axis.table(
+        cellText=table_data,
+        colLabels=column_labels,
+        cellLoc="center",
+        colLoc="center",
+        bbox=[
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+        ],
+    )
+
+    table.auto_set_font_size(
+        False
+    )
+
+    table.set_fontsize(
+        9
+    )
+
+    table.scale(
+        1.0,
+        1.45,
+    )
+
+    current_row_index = len(
+        comparison_df
+    )
+
+    for (
+        row_index,
+        column_index,
+    ), cell in table.get_celld().items():
+        cell.set_linewidth(
+            0.5
+        )
+
+        if row_index == 0:
+            cell.set_text_props(
+                weight="bold"
+            )
+
+        if row_index == current_row_index:
+            cell.set_facecolor(
+                CURRENT_SEASON_COLOR
+            )
+
+            cell.set_text_props(
+                weight="bold",
+            )
+
+    axis.set_title(
+        "Historical Benchmark Table",
+        fontsize=13,
+        weight="bold",
+        pad=12,
+    )
+
+
+def draw_current_season_ranking(
+    axis: plt.Axes,
+    comparison_df: pd.DataFrame,
+) -> None:
+    """Draw current-season rankings against complete history."""
+
+    axis.axis(
+        "off"
+    )
+
+    current_row = comparison_df.iloc[-1]
+
+    current_season = current_row[
+        "harvest_season"
+    ]
+
+    ranking_metrics = [
+        (
+            "Rainfall",
+            "total_growing_season_rainfall",
+        ),
+        (
+            "Average temperature",
+            "average_growing_season_temperature",
+        ),
+        (
+            "Average maximum CDD",
+            "average_max_consecutive_dry_days",
+        ),
+        (
+            "Matched-cutoff crush",
+            "cumulative_crush_tonnes",
+        ),
+    ]
+
+    axis.text(
+        0.0,
+        0.97,
+        "Current-Season Ranking",
+        fontsize=13,
+        weight="bold",
+        va="top",
+    )
+
+    axis.text(
+        0.0,
+        0.88,
+        (
+            f"{current_season} versus "
+            f"{len(comparison_df) - 1} prior seasons"
+        ),
+        fontsize=10,
+        va="top",
+    )
+
+    starting_y = 0.72
+    spacing = 0.16
+
+    for index, (
+        label,
+        column,
+    ) in enumerate(
+        ranking_metrics
+    ):
+        rank, total_seasons = (
+            calculate_descending_rank(
+                comparison_df,
+                column,
+            )
+        )
+
+        y_position = (
+            starting_y
+            - index * spacing
+        )
+
+        rank_color = get_rank_color(
+            rank=rank,
+            total_seasons=total_seasons,
+        )
+
+        axis.text(
+            0.0,
+            y_position,
+            label,
+            fontsize=10,
+            weight="bold",
+            va="top",
+        )
+
+        axis.text(
+            0.0,
+            y_position - 0.065,
+            (
+                f"{ordinal_suffix(rank)} "
+                f"of {total_seasons} "
+                "(high to low)"
+            ),
+            fontsize=10,
+            weight="bold",
+            color=rank_color,
+            va="top",
+        )
+
+    matched_cutoff = (
+        current_row[
+            "matched_cutoff_date"
+        ]
+        .strftime("%B %d")
+    )
+
+    axis.text(
+        0.0,
+        0.02,
+        (
+            "Harvest comparison cutoff:\n"
+            f"{matched_cutoff} in every season"
+        ),
+        fontsize=9,
+        va="bottom",
+    )
+
+
+def draw_trend_chart(
+    axis: plt.Axes,
+    comparison_df: pd.DataFrame,
+    metric: dict,
+) -> None:
+    """Draw one historical trend chart."""
+
+    seasons = (
+        comparison_df[
+            "harvest_season"
+        ]
+        .astype(str)
+        .tolist()
+    )
+
+    values = (
+        comparison_df[
+            metric["column"]
+        ]
+        .astype(float)
+        / metric["scale"]
+    )
+
+    axis.plot(
+        seasons,
+        values,
+        marker="o",
+        linewidth=1.8,
+    )
+
+    axis.scatter(
+        seasons[-1],
+        values.iloc[-1],
+        s=110,
+        color=CURRENT_MARKER_COLOR,
+        edgecolor="white",
+        linewidth=1.2,
+        zorder=4,
+    )
+
+    axis.set_title(
+        metric["title"],
+        fontsize=11,
+        weight="bold",
+    )
+
+    axis.set_ylabel(
+        metric["unit"],
+        fontsize=9,
+    )
+
+    axis.tick_params(
+        axis="x",
+        labelrotation=45,
+        labelsize=8,
+    )
+
+    axis.tick_params(
+        axis="y",
+        labelsize=8,
+    )
+
+    axis.grid(
+        axis="y",
+        alpha=0.25,
+    )
+
+    axis.annotate(
+        f"{values.iloc[-1]:,.1f}",
+        xy=(
+            seasons[-1],
+            values.iloc[-1],
+        ),
+        xytext=(
+            6,
+            7,
+        ),
+        textcoords="offset points",
+        fontsize=8,
+        weight="bold",
+        color=CURRENT_MARKER_COLOR,
+    )
 
 
 def build_comparison_dashboard(
     dashboard_df: pd.DataFrame,
     output_path: Path,
 ) -> None:
-    """Build and save the two-season comparison dashboard."""
+    """Build and save the multi-season historical dashboard."""
 
-    comparison_df = (
-        dashboard_df
-        .tail(2)
-        .copy()
-        .reset_index(drop=True)
-    )
+    comparison_df = dashboard_df.copy()
 
-    previous_row = comparison_df.iloc[0]
-    current_row = comparison_df.iloc[1]
+    current_row = comparison_df.iloc[-1]
 
-    previous_season = previous_row[
+    current_season = current_row[
         "harvest_season"
     ]
 
-    current_season = current_row[
+    first_season = comparison_df.iloc[0][
         "harvest_season"
     ]
 
@@ -242,288 +705,122 @@ def build_comparison_dashboard(
         "state"
     ]
 
-    figure = plt.figure(
-        figsize=(15, 10)
-    )
-
-    figure.suptitle(
-        "Operation Sugar Dashboard",
-        fontsize=23,
-        weight="bold",
-        y=0.965,
-    )
-
-    figure.text(
-        0.5,
-        0.915,
-        (
-            "São Paulo Growing-Season "
-            "and Harvest Comparison"
-        ),
-        ha="center",
-        fontsize=16,
-        weight="bold",
-    )
-
-    figure.text(
-        0.5,
-        0.875,
-        (
-            f"{previous_season} vs {current_season} "
-            f"| State: {state}"
-        ),
-        ha="center",
-        fontsize=12,
-    )
-
-    column_positions = {
-        "metric": 0.07,
-        "previous": 0.43,
-        "current": 0.62,
-        "difference": 0.80,
-        "percent": 0.93,
-    }
-
-    header_y = 0.81
-
-    figure.text(
-        column_positions["metric"],
-        header_y,
-        "Metric",
-        fontsize=12,
-        weight="bold",
-    )
-
-    figure.text(
-        column_positions["previous"],
-        header_y,
-        previous_season,
-        fontsize=12,
-        weight="bold",
-        ha="right",
-    )
-
-    figure.text(
-        column_positions["current"],
-        header_y,
-        current_season,
-        fontsize=12,
-        weight="bold",
-        ha="right",
-    )
-
-    figure.text(
-        column_positions["difference"],
-        header_y,
-        "Difference",
-        fontsize=12,
-        weight="bold",
-        ha="right",
-    )
-
-    figure.text(
-        column_positions["percent"],
-        header_y,
-        "% change",
-        fontsize=12,
-        weight="bold",
-        ha="right",
-    )
-
-    line = plt.Line2D(
-        [
-            0.06,
-            0.94,
-        ],
-        [
-            0.79,
-            0.79,
-        ],
-        transform=figure.transFigure,
-        linewidth=1,
-    )
-
-    figure.add_artist(
-        line
-    )
-
-    first_row_y = 0.745
-    row_spacing = 0.075
-
-    for index, metric in enumerate(METRICS):
-        y_position = (
-            first_row_y
-            - index * row_spacing
-        )
-
-        previous_raw = float(
-            previous_row[
-                metric["column"]
-            ]
-        )
-
-        current_raw = float(
-            current_row[
-                metric["column"]
-            ]
-        )
-
-        previous_value = (
-            previous_raw
-            / metric["scale"]
-        )
-
-        current_value = (
-            current_raw
-            / metric["scale"]
-        )
-
-        difference = (
-            current_value
-            - previous_value
-        )
-
-        figure.text(
-            column_positions["metric"],
-            y_position,
-            metric["label"],
-            fontsize=11,
-        )
-
-        figure.text(
-            column_positions["previous"],
-            y_position,
-            format_value(
-                previous_value,
-                metric["unit"],
-                metric["decimals"],
-            ),
-            fontsize=11,
-            ha="right",
-        )
-
-        figure.text(
-            column_positions["current"],
-            y_position,
-            format_value(
-                current_value,
-                metric["unit"],
-                metric["decimals"],
-            ),
-            fontsize=11,
-            ha="right",
-            weight="bold",
-        )
-
-        figure.text(
-            column_positions["difference"],
-            y_position,
-            format_difference(
-                difference,
-                metric["unit"],
-                metric["decimals"],
-            ),
-            fontsize=11,
-            ha="right",
-        )
-
-        figure.text(
-            column_positions["percent"],
-            y_position,
-            format_percent_change(
-                previous_value,
-                current_value,
-            ),
-            fontsize=11,
-            ha="right",
-        )
-
-        if index < len(METRICS) - 1:
-            separator_y = (
-                y_position
-                - row_spacing / 2
-            )
-
-            separator = plt.Line2D(
-                [
-                    0.06,
-                    0.94,
-                ],
-                [
-                    separator_y,
-                    separator_y,
-                ],
-                transform=figure.transFigure,
-                linewidth=0.4,
-                alpha=0.35,
-            )
-
-            figure.add_artist(
-                separator
-            )
-
-    previous_growing_period = (
-        f"{previous_row['growing_season_start']:%Y-%m-%d}"
-        f" to "
-        f"{previous_row['growing_season_end']:%Y-%m-%d}"
-    )
-
-    current_growing_period = (
-        f"{current_row['growing_season_start']:%Y-%m-%d}"
-        f" to "
-        f"{current_row['growing_season_end']:%Y-%m-%d}"
-    )
-
-    previous_report_date = (
-        previous_row[
-            "latest_report_date"
-        ]
-        .strftime("%Y-%m-%d")
-    )
-
-    current_report_date = (
+    matched_cutoff = (
         current_row[
-            "latest_report_date"
+            "matched_cutoff_date"
         ]
-        .strftime("%Y-%m-%d")
+        .strftime("%B %d")
     )
 
-    figure.text(
-        0.07,
-        0.095,
-        (
-            f"{previous_season} growing season: "
-            f"{previous_growing_period}\n"
-            f"Latest matched UNICA report: "
-            f"{previous_report_date}"
+    figure = plt.figure(
+        figsize=(
+            17,
+            12,
         ),
-        fontsize=9,
-        va="bottom",
+        constrained_layout=True,
     )
 
-    figure.text(
-        0.57,
-        0.095,
-        (
-            f"{current_season} growing season: "
-            f"{current_growing_period}\n"
-            f"Latest matched UNICA report: "
-            f"{current_report_date}"
-        ),
-        fontsize=9,
-        va="bottom",
+    grid = figure.add_gridspec(
+        nrows=3,
+        ncols=4,
+        height_ratios=[
+            0.18,
+            1.05,
+            0.9,
+        ],
     )
+
+    title_axis = figure.add_subplot(
+        grid[0, :]
+    )
+
+    table_axis = figure.add_subplot(
+        grid[1, :3]
+    )
+
+    ranking_axis = figure.add_subplot(
+        grid[1, 3]
+    )
+
+    trend_axes = [
+        figure.add_subplot(
+            grid[2, column_index]
+        )
+        for column_index in range(4)
+    ]
+
+    title_axis.axis(
+        "off"
+    )
+
+    title_axis.text(
+        0.5,
+        0.82,
+        "Operation Sugar Dashboard",
+        ha="center",
+        fontsize=24,
+        weight="bold",
+    )
+
+    title_axis.text(
+        0.5,
+        0.48,
+        (
+            "São Paulo Multi-Season "
+            "Historical Benchmark"
+        ),
+        ha="center",
+        fontsize=17,
+        weight="bold",
+    )
+
+    title_axis.text(
+        0.5,
+        0.14,
+        (
+            f"{first_season} through "
+            f"{current_season} | "
+            f"State: {state} | "
+            f"Matched harvest cutoff: {matched_cutoff}"
+        ),
+        ha="center",
+        fontsize=11,
+    )
+
+    draw_historical_table(
+        axis=table_axis,
+        comparison_df=comparison_df,
+    )
+
+    draw_current_season_ranking(
+        axis=ranking_axis,
+        comparison_df=comparison_df,
+    )
+
+    for axis, metric in zip(
+        trend_axes,
+        TREND_METRICS,
+        strict=True,
+    ):
+        draw_trend_chart(
+            axis=axis,
+            comparison_df=comparison_df,
+            metric=metric,
+        )
 
     figure.text(
         0.5,
-        0.035,
+        0.008,
         (
             "Weather source: NASA POWER | "
             "Harvest source: UNICA | "
-            "Difference = current season minus previous season"
+            "Weather aggregated over complete September-April "
+            "growing seasons | "
+            "Harvest totals normalized using a June 1 "
+            "reporting cutoff across all seasons"
         ),
         ha="center",
-        fontsize=9,
+        fontsize=8.5,
     )
 
     output_path.parent.mkdir(
@@ -542,13 +839,13 @@ def build_comparison_dashboard(
     )
 
     print(
-        "Season comparison dashboard saved successfully: "
-        f"{output_path}"
+        "Multi-season historical benchmark dashboard "
+        f"saved successfully: {output_path}"
     )
 
 
 def main() -> None:
-    """Run the season-comparison visualization pipeline."""
+    """Run the multi-season comparison visualization pipeline."""
 
     dashboard_df = load_comparison_data(
         INPUT_PATH

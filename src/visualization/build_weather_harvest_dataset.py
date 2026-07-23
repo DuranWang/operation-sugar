@@ -33,7 +33,7 @@ WEATHER_INPUT_PATH = (
     / "processed"
     / "monthly_weather"
     / "SP"
-    / "20240901_20260430_monthly.csv"
+    / "20190101_20260430_monthly.csv"
 )
 
 UNICA_HISTORY_PATH = (
@@ -96,30 +96,32 @@ def assign_harvest_season(
     month: int,
 ) -> str:
     """
-    Assign a harvest-season label to a growing-season month.
+    Assign a UNICA harvest-season label to a growing-season month.
 
-    September to December belong to the season beginning
-    in the same calendar year.
+    The September-April weather window precedes the associated
+    Centre-South harvest season.
 
-    January to April belong to the season beginning
-    in the previous calendar year.
+    Examples
+    --------
+    September 2025 to April 2026 maps to harvest season 2026/27.
+    September 2024 to April 2025 maps to harvest season 2025/26.
     """
 
     if month >= 9:
-        start_year = year
+        harvest_start_year = year + 1
     elif month <= 4:
-        start_year = year - 1
+        harvest_start_year = year
     else:
         raise ValueError(
             f"Month {month} is outside the "
             "September-April growing season."
         )
 
-    end_year = start_year + 1
+    harvest_end_year = harvest_start_year + 1
 
     return (
-        f"{str(start_year)[-2:]}-"
-        f"{str(end_year)[-2:]}"
+        f"{str(harvest_start_year)[-2:]}-"
+        f"{str(harvest_end_year)[-2:]}"
     )
 
 
@@ -488,8 +490,19 @@ def build_harvest_summary(
     harvest_dataframe: pd.DataFrame,
 ) -> pd.DataFrame:
     """
-    Build cumulative crushing totals through the latest
-    available report date for every state and harvest season.
+    Build season-to-date crushing totals using a matched reporting cutoff.
+
+    The latest available report date in the newest harvest season
+    determines the comparison month and day. Historical seasons are
+    truncated at the corresponding calendar date so cumulative crushing
+    totals are comparable across seasons.
+
+    Example
+    -------
+    If the newest season is available through 2026-06-01:
+
+    2025/26 is summarized through 2025-06-01.
+    2026/27 is summarized through 2026-06-01.
     """
 
     missing_columns = (
@@ -503,42 +516,103 @@ def build_harvest_summary(
             f"{sorted(missing_columns)}"
         )
 
-    harvest_summary = harvest_dataframe.copy()
+    harvest_data = harvest_dataframe.copy()
 
-    harvest_summary["state"] = (
-        harvest_summary["region"]
+    harvest_data["state"] = (
+        harvest_data["region"]
         .map(REGION_MAPPING)
     )
 
-    # The current weather model is state-level.
-    # Keep only UNICA regions that map to a state code.
-    harvest_summary = harvest_summary.loc[
-        harvest_summary["state"].notna()
+    harvest_data = harvest_data.loc[
+        harvest_data["state"].notna()
     ].copy()
 
-    if harvest_summary.empty:
+    if harvest_data.empty:
         raise ValueError(
             "No UNICA regions could be mapped "
             "to state-level weather data."
         )
 
-    harvest_summary["harvest_season"] = (
-        harvest_summary["season"]
+    harvest_data["harvest_season"] = (
+        harvest_data["season"]
         .apply(normalize_harvest_season)
     )
 
-    harvest_summary["period_end_date"] = pd.to_datetime(
-        harvest_summary["period_end_date"],
+    harvest_data["period_end_date"] = pd.to_datetime(
+        harvest_data["period_end_date"],
         errors="raise",
     )
 
-    harvest_summary["crush_tonnes"] = pd.to_numeric(
-        harvest_summary["crush_tonnes"],
+    harvest_data["crush_tonnes"] = pd.to_numeric(
+        harvest_data["crush_tonnes"],
         errors="raise",
     )
+
+    # Extract the starting calendar year from labels such as "26-27".
+    harvest_data["harvest_start_year"] = (
+        2000
+        + harvest_data[
+            "harvest_season"
+        ]
+        .str[:2]
+        .astype(int)
+    )
+
+    # Identify the newest available harvest season.
+    latest_harvest_start_year = (
+        harvest_data[
+            "harvest_start_year"
+        ]
+        .max()
+    )
+
+    latest_season_data = harvest_data.loc[
+        harvest_data["harvest_start_year"]
+        == latest_harvest_start_year
+    ]
+
+    if latest_season_data.empty:
+        raise ValueError(
+            "Latest harvest season contains no observations."
+        )
+
+    reference_report_date = (
+        latest_season_data[
+            "period_end_date"
+        ]
+        .max()
+    )
+
+    reference_month = reference_report_date.month
+    reference_day = reference_report_date.day
+
+    # Give every season its equivalent cutoff date.
+    #
+    # Example:
+    # 25-26 -> 2025-06-01
+    # 26-27 -> 2026-06-01
+    harvest_data["matched_cutoff_date"] = pd.to_datetime(
+        harvest_data[
+            "harvest_start_year"
+        ]
+        .astype(str)
+        + f"-{reference_month:02d}-{reference_day:02d}",
+        errors="raise",
+    )
+
+    matched_harvest_data = harvest_data.loc[
+        harvest_data["period_end_date"]
+        <= harvest_data["matched_cutoff_date"]
+    ].copy()
+
+    if matched_harvest_data.empty:
+        raise ValueError(
+            "No UNICA observations remain after applying "
+            "the matched reporting cutoff."
+        )
 
     harvest_summary = (
-        harvest_summary
+        matched_harvest_data
         .groupby(
             [
                 "state",
@@ -549,6 +623,10 @@ def build_harvest_summary(
         .agg(
             latest_report_date=(
                 "period_end_date",
+                "max",
+            ),
+            matched_cutoff_date=(
+                "matched_cutoff_date",
                 "max",
             ),
             cumulative_crush_tonnes=(
@@ -585,6 +663,7 @@ def build_harvest_summary(
 
     return harvest_summary
 
+
 def build_weather_harvest_dataset(
     weather_summary: pd.DataFrame,
     harvest_summary: pd.DataFrame,
@@ -610,13 +689,17 @@ def build_weather_harvest_dataset(
             "matching state-season records."
         )
 
-    growing_season_start_year = (
+    harvest_start_year = (
         2000
         + dashboard_df[
             "harvest_season"
         ]
         .str[:2]
         .astype(int)
+    )
+
+    growing_season_start_year = (
+        harvest_start_year - 1
     )
 
     dashboard_df[
@@ -654,6 +737,7 @@ def build_weather_harvest_dataset(
             "growing_season_start",
             "growing_season_end",
             "latest_report_date",
+            "matched_cutoff_date",
             "municipality_count",
             "growing_season_month_count",
             "has_complete_growing_season",

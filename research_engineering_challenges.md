@@ -127,7 +127,8 @@ Examples include:
 - growing season weather aggregation
 - maturation window analysis
 - harvest progress alignment
-- weather-harvest visualization
+- matched-cutoff historical benchmarking
+- weather–harvest visualization
 
 This framework allows weather observations from different stages of crop development to be analyzed within a biologically meaningful context.
 
@@ -275,10 +276,8 @@ Operation Sugar began as an attempt to understand Brazilian sugarcane production
 
 Over time, it evolved into a research engineering platform focused on building reliable, reproducible, and extensible infrastructure for commodity research.
 
-The greatest challenge was never selecting a statistical model.
+The greatest challenge was never selecting a statistical model. It was designing a system capable of transforming heterogeneous public datasets into trustworthy analytical workflows.
 
-It was designing a system capable of transforming heterogeneous public datasets into trustworthy analytical workflows.
-
-This experience fundamentally changed my perspective on data science.
+This experience fundamentally changed my perspective on data science, and the evolution of Operation Sugar from a seasonal analytics project to a historical benchmarking platform further reinforced this perspective.
 
 Reliable research starts long before model training—it starts with research engineering.

@@ -4,18 +4,19 @@ This document outlines the planned development milestones for future releases.
 
 ---
 
-## v1.2.0
+## v1.3.0
 
 ### Planned
 
-- Automated UNICA update pipeline
-- Interactive harvest dashboards
-- Continuous harvest monitoring
-- Expanded visualization modules
+- Harvest calendar analytics
+- Historical harvest pace comparison
+- Harvest progress benchmarking
+- Weather–harvest timing analysis
+- Interactive harvest calendar dashboard
 
 ---
 
-## v1.3.0
+## v1.4.0
 
 ### Planned
 
@@ -42,4 +43,4 @@ This document outlines the planned development milestones for future releases.
 
 ## Long-Term Vision
 
-Transform Operation Sugar into a reproducible research platform for weather-driven commodity analytics by integrating high-quality public datasets, transparent feature engineering, automated validation, and modular analytical workflows.
+Transform Operation Sugar into a reproducible research platform for weather-driven commodity analytics by integrating heterogeneous public datasets, transparent feature engineering, automated validation, historical benchmarking, and modular analytical workflows.
