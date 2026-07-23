@@ -311,7 +311,15 @@ See **[CHANGELOG](CHANGELOG.md)** for release history.
 
 Released under the MIT License.
 
+For research collaboration, commercial partnerships,
+or custom development related to Operation Sugar,
+please contact the author via LinkedIn:
+
+https://www.linkedin.com/in/duranwang/
+
 ---
+
+
 
 ## Contributing
 
