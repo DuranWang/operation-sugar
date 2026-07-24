@@ -33,11 +33,11 @@ Rather than focusing solely on predictive models, the project emphasizes reprodu
 
 *Compare historical weather conditions and matched-cutoff harvest progress across multiple Brazilian sugarcane seasons.*
 
-### Single-Season Dashboard
+### Historical Harvest Calendar
 
-![Dashboard](docs/dashboard_v1.png)
+![Historical Harvest Calendar](docs/figures/harvest_heatmap.png)
 
-*Detailed weather and harvest analytics for an individual growing and harvest cycle.*
+*Visualize historical harvest progression across sixteen completed Center-South Brazilian sugarcane seasons using season-relative monthly harvest distributions.*
 
 ---
 
