@@ -10,6 +10,14 @@ from pathlib import Path
 
 import pandas as pd
 
+from src.analysis.harvest_intelligence import (
+    build_comparable_crush_snapshot,
+    build_cumulative_crush_history,
+    build_harvest_ranking_summary,
+    build_percentile_band_dashboard_dataset,
+    rank_cumulative_crush,
+)
+
 from src.feature_engineering.harvest_metrics import (
     build_harvest_metrics,
 )
@@ -38,10 +46,41 @@ HARVEST_METRICS_OUTPUT_PATH = (
     / "harvest_metrics.csv"
 )
 
+HARVEST_INTELLIGENCE_OUTPUT_DIR = (
+    PROJECT_ROOT
+    / "data"
+    / "processed"
+    / "unica"
+    / "harvest_intelligence"
+)
+
+CUMULATIVE_CRUSH_HISTORY_OUTPUT_PATH = (
+    HARVEST_INTELLIGENCE_OUTPUT_DIR
+    / "cumulative_crush_history.csv"
+)
+
+COMPARABLE_CRUSH_SNAPSHOT_OUTPUT_PATH = (
+    HARVEST_INTELLIGENCE_OUTPUT_DIR
+    / "comparable_crush_snapshot.csv"
+)
+
+CUMULATIVE_CRUSH_RANKING_OUTPUT_PATH = (
+    HARVEST_INTELLIGENCE_OUTPUT_DIR
+    / "cumulative_crush_ranking.csv"
+)
+
+HISTORICAL_PERCENTILE_BANDS_OUTPUT_PATH = (
+    HARVEST_INTELLIGENCE_OUTPUT_DIR
+    / "historical_percentile_bands.csv"
+)
+
 START_THRESHOLD = 0.10
 END_THRESHOLD = 0.90
 
 SHARE_SUM_TOLERANCE = 1e-9
+
+CURRENT_SEASON = "26-27"
+MAX_DAY_DIFFERENCE = 7
 
 SEASON_MONTH_ORDER_MAPPING = {
     5: 2,
@@ -509,6 +548,50 @@ def save_harvest_metrics(
         output_path
     )
 
+def save_harvest_intelligence_outputs(
+    cumulative_crush_df: pd.DataFrame,
+    comparable_snapshot_df: pd.DataFrame,
+    harvest_ranking_df: pd.DataFrame,
+    cumulative_output_path: Path,
+    snapshot_output_path: Path,
+    ranking_output_path: Path,
+) -> None:
+    """
+    Save processed historical harvest intelligence datasets.
+    """
+
+    output_dataframes = {
+        cumulative_output_path: cumulative_crush_df,
+        snapshot_output_path: comparable_snapshot_df,
+        ranking_output_path: harvest_ranking_df,
+    }
+
+    for output_path, output_df in output_dataframes.items():
+        if output_df.empty:
+            raise ValueError(
+                "Harvest intelligence output dataframe "
+                f"for {output_path.name!r} is empty."
+            )
+
+        output_path.parent.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        output_df.to_csv(
+            output_path,
+            index=False,
+        )
+
+        print(
+            "\nHarvest intelligence dataset saved to:"
+        )
+
+        print(
+            output_path
+        )
+
+
 def main() -> None:
     """
     Run the historical harvest calendar analysis.
@@ -516,6 +599,42 @@ def main() -> None:
 
     harvest_df = load_unica_history(
         INPUT_PATH
+    )
+
+    cumulative_crush_df = (
+        build_cumulative_crush_history(
+            harvest_df=harvest_df,
+            region="sao_paulo",
+        )
+    )
+
+    comparable_snapshot_df = (
+        build_comparable_crush_snapshot(
+            cumulative_df=cumulative_crush_df,
+            current_season=CURRENT_SEASON,
+            max_day_difference=MAX_DAY_DIFFERENCE,
+        )
+    )
+
+    harvest_ranking_df = (
+        rank_cumulative_crush(
+            snapshot_df=comparable_snapshot_df,
+            current_season=CURRENT_SEASON,
+        )
+    )
+
+    harvest_ranking_summary = (
+        build_harvest_ranking_summary(
+            ranking_df=harvest_ranking_df,
+            current_season=CURRENT_SEASON,
+        )
+    )
+
+    percentile_band_df = (
+        build_percentile_band_dashboard_dataset(
+            cumulative_df=cumulative_crush_df,
+            current_season=CURRENT_SEASON,
+        )
     )
 
     season_summary = (
@@ -541,6 +660,44 @@ def main() -> None:
             complete_monthly_summary,
             start_threshold=START_THRESHOLD,
             end_threshold=END_THRESHOLD,
+        )
+    )
+
+    print(
+        "\nComparable cumulative crush snapshot:\n"
+    )
+
+    print(
+        comparable_snapshot_df.to_string(
+            index=False
+        )
+    )
+
+    print(
+        "\nCumulative crushing pace ranking:\n"
+    )
+
+    print(
+        harvest_ranking_df.to_string(
+            index=False
+        )
+    )
+
+    print(
+        "\nHarvest ranking summary:\n"
+    )
+
+    print(
+        harvest_ranking_summary
+    )
+
+    print(
+        "\nHistorical percentile bands:\n"
+    )
+
+    print(
+        percentile_band_df.to_string(
+            index=False
         )
     )
 
@@ -587,9 +744,43 @@ def main() -> None:
     )
 
     save_harvest_metrics(
-            harvest_metrics_df=harvest_metrics_df,
-            output_path=HARVEST_METRICS_OUTPUT_PATH,
-        )
+        harvest_metrics_df=harvest_metrics_df,
+        output_path=HARVEST_METRICS_OUTPUT_PATH,
+    )
+
+    save_harvest_intelligence_outputs(
+        cumulative_crush_df=cumulative_crush_df,
+        comparable_snapshot_df=comparable_snapshot_df,
+        harvest_ranking_df=harvest_ranking_df,
+        cumulative_output_path=(
+            CUMULATIVE_CRUSH_HISTORY_OUTPUT_PATH
+        ),
+        snapshot_output_path=(
+            COMPARABLE_CRUSH_SNAPSHOT_OUTPUT_PATH
+        ),
+        ranking_output_path=(
+            CUMULATIVE_CRUSH_RANKING_OUTPUT_PATH
+        ),
+    )
+
+    HISTORICAL_PERCENTILE_BANDS_OUTPUT_PATH.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    percentile_band_df.to_csv(
+        HISTORICAL_PERCENTILE_BANDS_OUTPUT_PATH,
+        index=False,
+    )
+
+    print(
+        "\nHistorical percentile-band dataset saved to:"
+    )
+
+    print(
+        HISTORICAL_PERCENTILE_BANDS_OUTPUT_PATH
+    )
+
 
 if __name__ == "__main__":
     main()
