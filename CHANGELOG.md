@@ -1,9 +1,43 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to Operation Sugar are documented in this file.
 
-The format is inspired by **Keep a Changelog**.
-Versioning follows **Semantic Versioning**.
+This project follows **Semantic Versioning** and the general structure proposed by **Keep a Changelog**.
+
+---
+
+## [1.3.0] - 2026-07-24
+
+### Added
+
+- Historical harvest calendar covering 16 completed Center-South Brazilian sugarcane seasons (2010–11 through 2025–26).
+- Season-relative harvest timeline.
+- Historical harvest calendar heatmap.
+- Harvest timing metrics (start, end, and duration).
+- Monthly harvest summary datasets.
+- Dedicated harvest analytics workflow.
+- Three-stage seasonal framework.
+- Documentation for data-driven harvest analytics.
+
+### Changed
+
+- Introduced data-driven harvest-stage inference based on historical UNICA observations.
+- Standardized historical harvest comparisons using season-relative months.
+- Improved harvest outputs with both numeric indices and human-readable labels.
+- Reorganized project documentation.
+
+### Highlights
+
+- Data-driven harvest analytics.
+- Historical harvest calendar.
+- Harvest timing metrics.
+- Three-stage seasonal framework.
+
+### Notes
+
+Version 1.3 introduces the project's first data-driven harvest analytics layer, extending Operation Sugar beyond literature-informed growing-season analytics.
+
+Historical UNICA crushing observations now provide an empirical benchmark for future weather–harvest relationship analysis.
 
 ---
 
@@ -11,66 +45,53 @@ Versioning follows **Semantic Versioning**.
 
 ### Added
 
-- Historical weather archive supporting complete growing seasons from 2019–20 through 2026–27.
+- Historical weather archive supporting complete growing seasons from 2019–20 through 2025–26.
 - Multi-season historical benchmark dashboard.
-- Automatic generation of all research dashboards within the end-to-end pipeline.
+- Automatic dashboard generation within the end-to-end pipeline.
 - Historical weather–harvest benchmark dataset.
 
 ### Changed
 
-- Introduced matched-cutoff harvest benchmarking methodology.
+- Introduced matched-cutoff harvest benchmarking.
 - Standardized cumulative harvest comparisons using identical UNICA reporting cutoffs.
-- Expanded monthly weather aggregation to support multi-season historical analysis.
-- Pipeline now generates all dashboard artifacts automatically.
-- Simplified the Quick Start workflow to a single pipeline command.
+- Expanded monthly weather aggregation for multi-season analysis.
+- Simplified the research pipeline to a single execution command.
+- Established the literature-informed growing-season framework.
 
 ### Highlights
 
-- Historical benchmark framework for weather and harvest analysis.
-- One-command end-to-end reproducible research pipeline.
-- Seven-season historical benchmarking capability.
+- Historical weather benchmarking.
+- Automated end-to-end research pipeline.
+- Multi-season benchmark dashboards.
+- Literature-informed growing-season analytics.
 
 ### Notes
 
-This release marks the evolution of Operation Sugar
-from a seasonal analytics project into a historical
-research platform capable of reproducible multi-season
-benchmarking.
+Version 1.2 established the literature-informed growing-season framework used throughout Operation Sugar for biomass-oriented weather analytics.
+
+---
 
 ## [1.1.1] - 2026-07-23
 
 ### Added
 
-- Added `research_engineering_challenges.md`.
-- Documented six major research engineering challenges encountered during platform development.
-- Added a final reflection describing the evolution of Operation Sugar from a forecasting project into a research engineering platform.
-
-### Documentation
-
-- Explained the rationale behind the platform's modular ETL architecture.
-- Documented engineering decisions related to:
-  - heterogeneous data integration
-  - large-scale API collection
-  - temporal alignment
-  - literature-driven feature engineering
-  - automated data validation
-  - reproducible research infrastructure
+- `research_engineering_challenges.md`.
+- Documentation describing the platform's major research engineering challenges.
+- Final reflection on the evolution of Operation Sugar into a research engineering platform.
 
 ### Changed
 
-- Expanded project documentation to emphasize research engineering principles rather than only technical implementation.
+- Expanded documentation describing project architecture, engineering rationale, and reproducibility principles.
 
 ### Highlights
 
-- Introduced comprehensive research engineering documentation.
-- Expanded project architecture and design rationale.
-- Improved reproducibility, maintainability, and developer experience.
+- Research engineering documentation.
+- Improved project maintainability.
+- Expanded design rationale.
 
 ### Notes
 
-Although no new analytical features were introduced in this release, documenting the engineering decisions behind the platform is essential for reproducibility, maintainability, and future development.
-
-This release marks the transition of Operation Sugar from a collection of analytical tools toward a documented research engineering platform.
+Although no analytical functionality was added, this release documents the engineering decisions supporting the platform's long-term reproducibility and maintainability.
 
 ---
 
@@ -78,24 +99,24 @@ This release marks the transition of Operation Sugar from a collection of analyt
 
 ### Added
 
-- UNICA harvest ETL pipeline
-- Historical harvest database updater
-- Weather–harvest dataset construction
-- Static analytics dashboards
-- Dashboard comparison visualization
-- 147 automated unit tests for the UNICA ETL modules
+- UNICA harvest ETL pipeline.
+- Historical harvest database updater.
+- Weather–harvest dataset construction.
+- Static analytics dashboards.
+- Dashboard comparison visualization.
+- 147 automated unit tests for the UNICA ETL pipeline.
 
 ### Changed
 
-- Reorganized project structure
-- Updated README documentation
-- Improved project architecture
+- Reorganized project structure.
+- Improved project architecture.
+- Updated project documentation.
 
 ### Fixed
 
-- Corrected cumulative harvest calculation.
-- Improved UNICA data validation.
-- Fixed duplicate harvest period handling.
+- Corrected cumulative harvest calculations.
+- Improved UNICA validation.
+- Fixed duplicate harvest-period handling.
 
 ---
 
@@ -103,15 +124,15 @@ This release marks the transition of Operation Sugar from a collection of analyt
 
 ### Added
 
-- NASA POWER weather downloader
-- Municipality metadata validation
-- Monthly weather aggregation
-- Growing-season feature engineering
-- Weather feature modules
-- Initial automated testing
-- Project documentation
+- NASA POWER weather downloader.
+- Municipality metadata validation.
+- Monthly weather aggregation.
+- Growing-season feature engineering.
+- Weather feature modules.
+- Initial automated testing.
+- Initial project documentation.
 
 ### Changed
 
 - Refactored ETL modules.
-- Improved project folder structure.
+- Improved project structure.

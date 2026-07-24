@@ -96,45 +96,75 @@ Key design decisions include:
 
 These safeguards allow large-scale data collection to be resumed safely while ensuring dataset completeness.
 
-## Challenge 3 — Aligning Multiple Temporal Scales
+## Challenge 3 — Constructing Biologically Meaningful Seasonal Frameworks
 
 ### Problem
 
-Operation Sugar combines datasets collected at fundamentally different temporal resolutions:
+Operation Sugar integrates datasets collected at fundamentally different temporal resolutions:
 
-- NASA POWER: daily weather observations
-- UNICA: biweekly harvest progress
-- IBGE: annual municipality-level production statistics
+NASA POWER: daily weather observations
+UNICA: biweekly harvest progress
+IBGE: annual municipality-level production statistics
 
-These datasets cannot be merged directly because they describe different aspects of the agricultural production cycle.
+These datasets cannot simply be aligned using calendar years because they represent different stages of the sugarcane production cycle.
 
-Furthermore, sugarcane is a multi-month crop whose biological growth does not follow calendar years. Weather conditions occurring months before harvest may have a greater influence on production than conditions observed immediately before harvesting.
+More importantly, sugarcane development is governed by biological and operational processes rather than by the calendar.
+
+The weather conditions that influence vegetative growth are not necessarily the same conditions that determine sucrose accumulation or harvest timing.
+
+Treating an entire production cycle as a single "season" therefore ignores important differences between these processes.
 
 ### Why This Matters
 
-Many agricultural datasets are naturally asynchronous.
+MMeaningful agricultural research requires distinguishing what is being studied, rather than merely when observations were recorded.
 
-Using calendar-year aggregation would ignore the biological processes governing crop development and potentially obscure important weather-production relationships.
+Operation Sugar separates the sugarcane production cycle into three analytical stages:
 
-Meaningful research therefore requires a biologically informed temporal framework rather than a purely chronological one.
+Growing Stage, representing biomass accumulation;
+Maturation Stage, representing sucrose accumulation;
+Harvest Stage, representing observed crushing activity.
+
+Each stage answers a different scientific question and therefore requires a different analytical definition.
+
+Using a single calendar-year aggregation would blur these distinctions and potentially obscure weather–production relationships.
 
 ### Solution
 
-Instead of relying solely on calendar-year aggregation, Operation Sugar introduces crop-specific temporal windows based on published agronomic literature.
+Operation Sugar adopts a stage-specific seasonal framework.
 
-Examples include:
+Growing Stage:
 
-- growing season weather aggregation
-- maturation window analysis
-- harvest progress alignment
-- matched-cutoff historical benchmarking
-- weather–harvest visualization
+The growing stage is defined using published agronomic literature and regional crop-calendar assumptions.
 
-This framework allows weather observations from different stages of crop development to be analyzed within a biologically meaningful context.
+This analytical window represents the period during which weather conditions primarily influence vegetative development and biomass accumulation.
+
+Rather than being inferred from observations, it is a literature-informed biological definition.
+
+Maturation Stage:
+
+The maturation stage represents the transition from vegetative growth toward sucrose accumulation.
+
+Although this stage is not yet fully implemented, future versions of Operation Sugar will construct maturation windows using published agronomic evidence to study pre-harvest weather effects.
+
+Harvest Stage:
+
+Unlike the previous two stages, the harvest stage is defined empirically.
+
+Historical UNICA crushing reports are aggregated into season-relative months, allowing Operation Sugar to construct historical harvest calendars directly from observed harvest activity.
+
+Harvest start, harvest end, and harvest duration are then estimated using cumulative crushing thresholds.
+
+This produces a data-driven harvest-stage definition rather than relying on a predefined crop calendar.
 
 ### Lessons Learned
 
-Meaningful feature engineering begins with understanding the underlying biological system rather than simply aggregating data over convenient time intervals.
+A biologically meaningful seasonal framework cannot be defined using a single calendar-based rule.
+
+Different stages of crop development represent different biological and operational processes, and therefore require different sources of evidence.
+
+Literature informs the growing and maturation stages, while observed harvest data define the harvest stage.
+
+Distinguishing these stages provides a more transparent foundation for future weather–harvest relationship analysis.
 
 ---
 
@@ -274,10 +304,10 @@ A well-designed research platform should make future research easier rather than
 
 Operation Sugar began as an attempt to understand Brazilian sugarcane production through weather-driven quantitative research.
 
-Over time, it evolved into a research engineering platform focused on building reliable, reproducible, and extensible infrastructure for commodity research.
+Operation Sugar evolved into a research engineering platform for Brazilian sugarcane analytics, combining agronomic knowledge with observed harvest data to construct reproducible seasonal analytics for commodity research.
 
 The greatest challenge was never selecting a statistical model. It was designing a system capable of transforming heterogeneous public datasets into trustworthy analytical workflows.
 
 This experience fundamentally changed my perspective on data science, and the evolution of Operation Sugar from a seasonal analytics project to a historical benchmarking platform further reinforced this perspective.
 
-Reliable research starts long before model training—it starts with research engineering.
+Reliable research starts long before model training. It begins with research engineering, transparent seasonal definitions, and a deep understanding of the biological system being studied.

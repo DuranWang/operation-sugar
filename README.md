@@ -1,24 +1,27 @@
 ![Python](https://img.shields.io/badge/Python-3.12-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
-![Version](https://img.shields.io/badge/Version-1.2-orange?style=flat-square)
+![Version](https://img.shields.io/badge/Version-1.3-orange?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
 
 # Operation Sugar
 
 An open-source research engineering platform for Brazilian sugarcane analytics.
 
-Operation Sugar integrates official Brazilian sugarcane production statistics (IBGE), daily weather observations (NASA POWER), and harvest reports (UNICA) into reproducible datasets, modular ETL pipelines, and transparent research workflows for quantitative agricultural research.
+Operation Sugar integrates official Brazilian sugarcane production statistics from IBGE, daily weather observations from NASA POWER, and harvest reports from UNICA into reproducible datasets, modular ETL pipelines, and transparent research workflows for quantitative agricultural research.
+
+Rather than focusing solely on predictive models, the project emphasizes reproducible research infrastructure, biologically meaningful seasonal analytics, and transparent engineering workflows for agricultural data science.
 
 ---
 
 ## Highlights
 
-- 🌎 Weather and harvest analytics across 642 Brazilian sugar-producing municipalities
+- 🌎 Weather analytics across 642 Brazilian sugar-producing municipalities
 - 🌦️ Integrated NASA POWER, IBGE, and UNICA public datasets
-- 📈 Seven-season historical benchmarking framework
-- 🧪 167 automated unit tests (147 dedicated to the UNICA ETL pipeline)
-- 📊 Automated weather–harvest analytics dashboards
-- 🏗️ Modular ETL, validation, and feature engineering architecture
+- 📈 Historical harvest analytics across 16 completed sugarcane seasons
+- 🗓️ Data-driven harvest timing metrics
+- 🧪 167 automated unit tests, including 147 dedicated to the UNICA ETL pipeline
+- 📊 Automated weather and historical benchmark dashboards
+- 🏗️ Modular ETL, validation, analytics, and visualization architecture
 
 ---
 
@@ -30,44 +33,48 @@ Operation Sugar integrates official Brazilian sugarcane production statistics (I
 
 *Compare historical weather conditions and matched-cutoff harvest progress across multiple Brazilian sugarcane seasons.*
 
-### Single-season Dashboard
+### Single-Season Dashboard
 
 ![Dashboard](docs/dashboard_v1.png)
 
-*Detailed weather and harvest analytics for an individual growing season.*
+*Detailed weather and harvest analytics for an individual growing and harvest cycle.*
 
 ---
 
-## Architecture
+## Why Operation Sugar?
+
+Brazilian sugarcane data are publicly available but fragmented across multiple organizations, temporal resolutions, and geographic scales.
+
+Operation Sugar integrates these heterogeneous datasets into a reproducible research platform for weather and harvest analytics.
+
+## Seasonal Research Framework
+
+Operation Sugar studies the annual sugarcane production cycle through three analytical stages.
 
 ```text
-          IBGE
-           │
-           ▼
-     Production Data
-           │
-           ▼
-
-NASA POWER ──► Weather ETL ──┐
-                             │
-UNICA ───────► Harvest ETL ──┼──► Weather–Harvest Dataset
-                             │
-Growing-Season Features ─────┘
-                 │
-                 ▼
-      Historical Benchmark
-           Dashboards
+Growing Stage
+        │
+        ▼
+Maturation Stage
+        │
+        ▼
+Harvest Stage
 ```
 
 ---
 
 ## Core Capabilities
 
+Operation Sugar provides a reproducible research engineering workflow for Brazilian sugarcane analytics, including:
+
 - Automated NASA POWER weather ingestion
 - UNICA harvest report ETL pipeline
 - Historical harvest database updater
 - Municipality-level weather aggregation
 - Growing-season feature engineering
+- Historical harvest calendar construction
+- Monthly crushing distribution analysis
+- Harvest timing metrics
 - Weather–harvest dataset construction
 - Historical benchmark dashboards
 - Comprehensive data validation
@@ -79,94 +86,61 @@ Growing-Season Features ─────┘
 
 Operation Sugar aims to build a reproducible end-to-end research platform that:
 
-- Cleans and validates Brazilian sugarcane production data
-- Engineers biologically meaningful weather features
-- Integrates heterogeneous public datasets into unified research workflows
-- Produces analysis-ready datasets for exploratory analysis, statistical modeling, and future forecasting research
+- integrates heterogeneous public agricultural datasets;
+- engineers interpretable weather and harvest variables;
+- produces analysis-ready datasets for statistical analysis;
+- supports transparent and reproducible research workflows;
+- establishes reliable data infrastructure before predictive modeling;
+- evaluates new variables based on their incremental analytical value rather than simply increasing feature count.
 
 ---
 
-## Current Version Limitations
+## Current Version
 
-Version 1.2 focuses on weather-driven biomass accumulation.
+Version **1.3** establishes the project's baseline research infrastructure.
 
-It does not currently model:
+The current release provides a reproducible platform for weather analytics, harvest analytics, and historical benchmark construction.
 
-- Sugar price
-- Sucrose concentration
-- ATR
-- Recoverable sugar
-- Mill-level production
-
-The scope is intentionally limited to establish a reliable and reproducible research platform before incorporating more advanced environmental variables and predictive models.
+See **CHANGELOG.md** for detailed release history.
 
 ---
 
-## Project Structure
+## Current Limitations
 
-```text
-Operation Sugar
-│
-├── data
-│   ├── raw/
-│   │   ├── nasa_power/
-│   │   └── unica/
-│   │
-│   ├── processed/
-│   └── metadata/
-│
-├── docs/
-│
-├── src/
-│   ├── etl/
-│   ├── feature_engineering/
-│   ├── pipelines/
-│   ├── visualization/
-│   └── schemas/
-│
-├── src/tests/
-│
-├── CHANGELOG.md
-├── ROADMAP.md
-├── research_engineering_challenges.md
-├── LICENSE
-├── README.md
-└── requirements.txt
-```
+Operation Sugar does **not** currently model:
+
+- causal weather–harvest relationships;
+- maturation-stage weather effects;
+- soil moisture;
+- vapor pressure deficit;
+- solar radiation;
+- evapotranspiration;
+- sucrose concentration;
+- ATR;
+- recoverable sugar;
+- mill-level production;
+- satellite-derived crop conditions;
+- sugar price forecasting.
+
+These topics remain future research directions and are intentionally excluded from Version 1.3.
 
 ---
 
 ## Documentation
 
-Additional project documentation is available below.
+Detailed project documentation is available in the `docs/` directory.
 
 | Document | Description |
 |----------|-------------|
-| **[Research Engineering Challenges](research_engineering_challenges.md)** | Engineering decisions behind the platform, including heterogeneous data integration, temporal alignment, validation, and reproducible research workflows. |
-| **[ROADMAP](ROADMAP.md)** | Planned development milestones and future project direction. |
-| **[CHANGELOG](CHANGELOG.md)** | Complete release history and notable project updates. |
-
----
-
-## Data Sources
-
-| Source | Description |
-|---------|-------------|
-| **NASA POWER** | Daily gridded weather observations including precipitation, air temperature, and relative humidity. |
-| **IBGE** | Official Brazilian municipality metadata and annual sugarcane production statistics. |
-| **UNICA** | Harvest progress, sugarcane crushing, sugar production, and ethanol production statistics for Brazil's Center-South region. |
-
-Operation Sugar integrates these heterogeneous public datasets into a unified analysis-ready database through reproducible ETL pipelines.
-
----
-
-## Why Operation Sugar?
-
-Public agricultural datasets are often fragmented across multiple organizations, formats, and temporal resolutions.
-
-Operation Sugar transforms heterogeneous public datasets into reproducible research workflows through modular ETL pipelines, automated validation, and transparent feature engineering.
-
-Rather than focusing solely on forecasting models, the project emphasizes the research infrastructure required to produce reliable analytical datasets.
+| **Architecture** | Overall platform architecture and system organization |
+| **Seasonal Framework** | Definitions of growing, maturation, and harvest stages |
+| **Analytical Framework** | Design of weather and harvest analytics |
+| **Research Decisions** | Major analytical and research decisions |
+| **Feature Dictionary** | Definitions of engineered variables |
+| **Literature Registry** | Supporting agronomic literature |
+| **Research Engineering Challenges** | Engineering challenges encountered during development |
+| **ROADMAP** | Planned future development |
+| **CHANGELOG** | Release history |
 
 ---
 
@@ -175,34 +149,55 @@ Rather than focusing solely on forecasting models, the project emphasizes the re
 | Metric | Value |
 |--------|-------|
 | Municipalities | 642 |
-| Weather Archive | 2019–20 to 2026–27 Growing Seasons |
+| Monthly Weather Archive | September 2019 – April 2026 |
+| Completed Weather Seasons | 2019–20 to 2025–26 |
+| Historical Harvest Seasons | 16 |
 | Weather Variables | Rainfall, Temperature, Relative Humidity |
-| Historical Harvest Seasons | 2020–21 to 2026–27 |
 | Automated Tests | 167 |
+| UNICA ETL Tests | 147 |
 | Python | 3.12 |
-
-The project follows a modular research engineering architecture with dedicated ETL, validation, feature engineering, visualization, and testing components to ensure reproducibility and maintainability.
 
 ---
 
 ## Engineered Features
 
-### Weather Features
+### Weather Analytics
 
-- Growing-season rainfall
-- Rainy days
-- Dry days
-- Average temperature
-- Average humidity
-- Maximum consecutive dry days
-- Average maximum consecutive dry days
+- Baseline weather summaries
+- Growing-season weather variables
+- Drought indicators
 
-### Harvest Features
+### Harvest Analytics
 
-- Harvest season
-- Latest report date
-- Harvest period count
-- Cumulative crushing
+Current harvest analytics include:
+
+- Historical harvest calendar
+- Harvest timing metrics
+- Season-relative harvest analytics
+
+### Planned Features
+
+Future research will extend the platform with:
+
+- Maturation-stage weather analytics
+- Soil moisture
+- Vapor pressure deficit (VPD)
+- Solar radiation
+- Evapotranspiration
+- Sugar quality metrics (ATR, sucrose)
+- Satellite-derived crop indicators
+
+---
+
+## Data Sources
+
+| Source | Description |
+|---------|-------------|
+| **NASA POWER** | Daily weather observations |
+| **IBGE** | Municipality metadata and annual sugarcane production |
+| **UNICA** | Harvest progress and crushing statistics |
+
+These heterogeneous public datasets are integrated through reproducible ETL, validation, aggregation, and analytics workflows.
 
 ---
 
@@ -210,57 +205,10 @@ The project follows a modular research engineering architecture with dedicated E
 
 The pipeline produces:
 
-- Daily municipality weather observations
-- Monthly weather summaries
-- Growing-season weather features
-- Historical UNICA harvest database
-- Weather–harvest datasets
-- Historical benchmark dashboards
-
----
-
-## Pipeline Workflow
-
-```text
-Metadata
-    │
-    ▼
-NASA POWER ETL
-    │
-    ▼
-UNICA ETL
-    │
-    ▼
-Validation
-    │
-    ▼
-Growing-Season Features
-    │
-    ▼
-Weather-Harvest Dataset
-    │
-    ▼
-Historical Benchmark Dashboards
-```
-
----
-
-## Testing
-
-Run all tests
-
-```bash
-python -m pytest src/tests -v
-```
-
-Current status
-
-```text
-167 automated unit tests
-100% passing
-```
-
-The UNICA ETL pipeline is supported by 147 automated unit tests covering PDF parsing, table extraction, normalization, validation, cumulative harvest calculations, and historical database updates.
+- processed weather datasets
+- harvest analytics datasets
+- benchmark dashboards
+- unified research datasets
 
 ---
 
@@ -278,32 +226,55 @@ python -m src.pipelines.run_pipeline
 python -m pytest src/tests -v
 ```
 
-The research pipeline automatically:
+What happens?
 
-- aggregates monthly weather
-- engineers growing-season features
-- builds the weather–harvest dataset
-- generates all dashboard figures
+✓ Download weather data
 
-Generated datasets are saved under:
+✓ Process harvest reports
 
-- `data/processed/`
+✓ Build research datasets
 
-Dashboard figures are exported to:
-
-- `docs/`
+✓ Generate dashboards
 
 ---
 
-## Learn More
+## Testing
 
-Interested in the engineering decisions behind Operation Sugar?
+Run all tests:
 
-Read **[Research Engineering Challenges](research_engineering_challenges.md)** to learn how the platform evolved from a forecasting project into a reproducible research engineering platform.
+```bash
+python -m pytest src/tests -v
+```
 
-See **[ROADMAP](ROADMAP.md)** for planned future development.
+Current status:
 
-See **[CHANGELOG](CHANGELOG.md)** for release history.
+```text
+167 automated tests
+100% passing
+```
+
+The automated test suite covers:
+
+- ETL pipelines
+- Validation
+- Schema consistency
+- Historical harvest processing
+- Duplicate detection
+- Temporal consistency
+
+---
+
+## Contributing
+
+Suggestions, bug reports, feature requests, and research collaborations are welcome.
+
+Contributions should prioritize:
+
+- reproducibility;
+- transparent assumptions;
+- reliable validation;
+- interpretable analytics;
+- clear documentation.
 
 ---
 
@@ -311,16 +282,6 @@ See **[CHANGELOG](CHANGELOG.md)** for release history.
 
 Released under the MIT License.
 
-For research collaboration, commercial partnerships,
-or custom development related to Operation Sugar,
-please contact the author via LinkedIn:
+For research collaboration, commercial partnerships, or custom development related to Operation Sugar, please contact the author via LinkedIn:
 
 https://www.linkedin.com/in/duranwang/
-
----
-
-
-
-## Contributing
-
-Suggestions, bug reports, feature requests, and research collaborations are always welcome.
