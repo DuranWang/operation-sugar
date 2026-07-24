@@ -1,6 +1,6 @@
 ![Python](https://img.shields.io/badge/Python-3.12-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
-![Version](https://img.shields.io/badge/Version-1.3-orange?style=flat-square)
+![Version](https://img.shields.io/badge/Version-1.4-orange?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
 
 # Operation Sugar
@@ -17,7 +17,8 @@ Rather than focusing solely on predictive models, the project emphasizes reprodu
 
 - 🌎 Weather analytics across 642 Brazilian sugar-producing municipalities
 - 🌦️ Integrated NASA POWER, IBGE, and UNICA public datasets
-- 📈 Historical harvest analytics across 16 completed sugarcane seasons
+- 📈 Historical harvest intelligence across 16 completed sugarcane seasons
+- 📊 Historical percentile-band benchmarking of current harvest progress
 - 🗓️ Data-driven harvest timing metrics
 - 🧪 167 automated unit tests, including 147 dedicated to the UNICA ETL pipeline
 - 📊 Automated weather and historical benchmark dashboards
@@ -37,8 +38,15 @@ Rather than focusing solely on predictive models, the project emphasizes reprodu
 
 ![Historical Harvest Calendar](docs/figures/harvest_heatmap.png)
 
-*Visualize historical harvest progression across sixteen completed Center-South Brazilian sugarcane seasons using season-relative monthly harvest distributions.*
+*Visualize how annual sugarcane crushing is distributed throughout sixteen completed São Paulo crop seasons.*
 
+### Historical Percentile Bands
+
+![Historical Percentile Bands](docs/figures/harvest_percentile_bands.png)
+
+*Benchmark the current harvest against the full historical distribution of completed seasons using cumulative crushing percentile bands.*
+
+For a detailed explanation of the Harvest Intelligence methodology, see **docs/harvest_intelligence.md**.
 ---
 
 ## Why Operation Sugar?
@@ -75,6 +83,9 @@ Operation Sugar provides a reproducible research engineering workflow for Brazil
 - Historical harvest calendar construction
 - Monthly crushing distribution analysis
 - Harvest timing metrics
+- Historical percentile-band benchmarking
+- Comparable historical harvest snapshots
+- Automated harvest research summaries
 - Weather–harvest dataset construction
 - Historical benchmark dashboards
 - Comprehensive data validation
@@ -97,7 +108,7 @@ Operation Sugar aims to build a reproducible end-to-end research platform that:
 
 ## Current Version
 
-Version **1.3** establishes the project's baseline research infrastructure.
+Version **1.4** introduces the Harvest Intelligence module, extending the platform with historical harvest benchmarking, percentile-band analytics, automated research summaries, and cumulative harvest pace analysis.
 
 The current release provides a reproducible platform for weather analytics, harvest analytics, and historical benchmark construction.
 
@@ -122,7 +133,7 @@ Operation Sugar does **not** currently model:
 - satellite-derived crop conditions;
 - sugar price forecasting.
 
-These topics remain future research directions and are intentionally excluded from Version 1.3.
+These topics remain future research directions and are intentionally excluded from Version 1.4.
 
 ---
 
@@ -151,7 +162,7 @@ Detailed project documentation is available in the `docs/` directory.
 | Municipalities | 642 |
 | Monthly Weather Archive | September 2019 – April 2026 |
 | Completed Weather Seasons | 2019–20 to 2025–26 |
-| Historical Harvest Seasons | 16 |
+| Historical Harvest Seasons | 17 (16 completed) |
 | Weather Variables | Rainfall, Temperature, Relative Humidity |
 | Automated Tests | 167 |
 | UNICA ETL Tests | 147 |
@@ -172,8 +183,11 @@ Detailed project documentation is available in the `docs/` directory.
 Current harvest analytics include:
 
 - Historical harvest calendar
+- Historical percentile-band benchmarking
+- Comparable historical harvest snapshots
+- Cumulative harvest pace rankings
 - Harvest timing metrics
-- Season-relative harvest analytics
+- Automated harvest research summaries
 
 ### Planned Features
 
@@ -208,6 +222,8 @@ The pipeline produces:
 - processed weather datasets
 - harvest analytics datasets
 - benchmark dashboards
+- harvest intelligence datasets
+- automated research summaries
 - unified research datasets
 
 ---

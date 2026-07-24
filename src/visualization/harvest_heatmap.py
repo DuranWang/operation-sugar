@@ -730,14 +730,6 @@ def save_harvest_heatmap(
         output_path=output_path,
     )
 
-    print(
-        "\nHarvest heatmap saved to:"
-    )
-
-    print(
-        output_path
-    )
-
     return heatmap_df
 
 

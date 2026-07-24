@@ -24,6 +24,7 @@ INPUT_PATH = (
 OUTPUT_PATH = (
     PROJECT_ROOT
     / "docs"
+    / "figures"
     / "dashboard_season_comparison.png"
 )
 

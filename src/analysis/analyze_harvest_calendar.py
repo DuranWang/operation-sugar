@@ -10,12 +10,18 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.analysis.harvest_intelligence import (
+from src.analysis.harvest_benchmark import (
     build_comparable_crush_snapshot,
-    build_cumulative_crush_history,
-    build_harvest_ranking_summary,
-    build_percentile_band_dashboard_dataset,
     rank_cumulative_crush,
+)
+from src.analysis.harvest_dashboard import (
+    build_percentile_band_dashboard_dataset,
+)
+from src.analysis.harvest_preprocessing import (
+    build_cumulative_crush_history,
+)
+from src.analysis.harvest_reporting import (
+    build_harvest_ranking_summary,
 )
 
 from src.feature_engineering.harvest_metrics import (
@@ -24,6 +30,9 @@ from src.feature_engineering.harvest_metrics import (
 from src.visualization.harvest_heatmap import (
     filter_complete_seasons,
     save_harvest_heatmap,
+)
+from src.visualization.harvest_percentile_bands import (
+    save_harvest_percentile_bands,
 )
 
 
@@ -72,6 +81,13 @@ CUMULATIVE_CRUSH_RANKING_OUTPUT_PATH = (
 HISTORICAL_PERCENTILE_BANDS_OUTPUT_PATH = (
     HARVEST_INTELLIGENCE_OUTPUT_DIR
     / "historical_percentile_bands.csv"
+)
+
+HARVEST_PERCENTILE_BANDS_OUTPUT_PATH = (
+    PROJECT_ROOT
+    / "docs"
+    / "figures"
+    / "harvest_percentile_bands.png"
 )
 
 START_THRESHOLD = 0.10
@@ -517,6 +533,7 @@ def build_monthly_harvest_summary(
 
     return monthly_summary
 
+
 def save_harvest_metrics(
     harvest_metrics_df: pd.DataFrame,
     output_path: Path,
@@ -540,13 +557,6 @@ def save_harvest_metrics(
         index=False,
     )
 
-    print(
-        "\nHarvest metrics saved to:"
-    )
-
-    print(
-        output_path
-    )
 
 def save_harvest_intelligence_outputs(
     cumulative_crush_df: pd.DataFrame,
@@ -581,14 +591,6 @@ def save_harvest_intelligence_outputs(
         output_df.to_csv(
             output_path,
             index=False,
-        )
-
-        print(
-            "\nHarvest intelligence dataset saved to:"
-        )
-
-        print(
-            output_path
         )
 
 
@@ -637,6 +639,15 @@ def main() -> None:
         )
     )
 
+    percentile_band_plot_df = (
+        save_harvest_percentile_bands(
+            dashboard_df=percentile_band_df,
+            output_path=(
+                HARVEST_PERCENTILE_BANDS_OUTPUT_PATH
+            ),
+        )
+    )
+
     season_summary = (
         build_season_coverage_summary(
             harvest_df
@@ -663,84 +674,8 @@ def main() -> None:
         )
     )
 
-    print(
-        "\nComparable cumulative crush snapshot:\n"
-    )
-
-    print(
-        comparable_snapshot_df.to_string(
-            index=False
-        )
-    )
-
-    print(
-        "\nCumulative crushing pace ranking:\n"
-    )
-
-    print(
-        harvest_ranking_df.to_string(
-            index=False
-        )
-    )
-
-    print(
-        "\nHarvest ranking summary:\n"
-    )
-
-    print(
-        harvest_ranking_summary
-    )
-
-    print(
-        "\nHistorical percentile bands:\n"
-    )
-
-    print(
-        percentile_band_df.to_string(
-            index=False
-        )
-    )
-
-    print(
-        "\nSeason coverage summary:\n"
-    )
-
-    print(
-        season_summary.to_string(
-            index=False
-        )
-    )
-
-    print(
-        "\nMonthly harvest summary:\n"
-    )
-
-    print(
-        monthly_summary.to_string(
-            index=False
-        )
-    )
-
-    print(
-        "\nHarvest metrics:\n"
-    )
-
-    print(
-        harvest_metrics_df.to_string(
-            index=False
-        )
-    )
-
     heatmap_df = save_harvest_heatmap(
         monthly_summary
-    )
-
-    print(
-        "\nHarvest heatmap dataframe:\n"
-    )
-
-    print(
-        heatmap_df.to_string()
     )
 
     save_harvest_metrics(
@@ -774,11 +709,155 @@ def main() -> None:
     )
 
     print(
-        "\nHistorical percentile-band dataset saved to:"
+        "\nHarvest Calendar Analytics"
     )
 
     print(
-        HISTORICAL_PERCENTILE_BANDS_OUTPUT_PATH
+        "-" * 60
+    )
+
+    print(
+        "✓ UNICA harvest history loaded "
+        f"({len(harvest_df):,} observations)"
+    )
+
+    print(
+        "✓ Season coverage summary generated "
+        f"({len(season_summary):,} seasons)"
+    )
+
+    print(
+        "✓ Monthly harvest summary generated "
+        f"({len(monthly_summary):,} observations)"
+    )
+
+    print(
+        "✓ Complete historical seasons identified "
+        f"({complete_monthly_summary['season'].nunique():,} seasons)"
+    )
+
+    print(
+        "✓ Harvest window metrics generated "
+        f"({len(harvest_metrics_df):,} seasons)"
+    )
+
+    print(
+        "✓ Harvest heatmap dataset generated "
+        f"({heatmap_df.shape[0]:,} seasons × "
+        f"{heatmap_df.shape[1]:,} months)"
+    )
+
+    print(
+        "\nHarvest Intelligence"
+    )
+
+    print(
+        "-" * 60
+    )
+
+    print(
+        "✓ Cumulative crush history generated "
+        f"({len(cumulative_crush_df):,} observations)"
+    )
+
+    print(
+        "✓ Comparable historical snapshot generated "
+        f"({comparable_snapshot_df['season'].nunique():,} seasons)"
+    )
+
+    print(
+        "✓ Cumulative crushing ranking generated "
+        f"({len(harvest_ranking_df):,} seasons)"
+    )
+
+    print(
+        "✓ Historical percentile bands generated "
+        f"({len(percentile_band_df):,} reporting periods)"
+    )
+
+    print(
+        "✓ Historical percentile-band visualization generated "
+        f"({len(percentile_band_plot_df):,} reporting periods)"
+    )
+
+    print(
+        "✓ Dashboard-ready harvest intelligence dataset generated"
+    )
+
+    print(
+        "✓ Automated research summary generated"
+    )
+
+    print(
+        "\nResearch Summary"
+    )
+
+    print(
+        "-" * 60
+    )
+
+    print(
+        harvest_ranking_summary
+    )
+
+    print(
+        "\nOutputs"
+    )
+
+    print(
+        "-" * 60
+    )
+
+    print(
+        "✓ Harvest heatmap saved"
+    )
+
+    print(
+        "✓ Harvest percentile-band chart saved to:"
+    )
+
+    print(
+        f"  {HARVEST_PERCENTILE_BANDS_OUTPUT_PATH}"
+    )
+
+    print(
+        "✓ Harvest metrics saved to:"
+    )
+
+    print(
+        f"  {HARVEST_METRICS_OUTPUT_PATH}"
+    )
+
+    print(
+        "✓ Cumulative crush history saved to:"
+    )
+
+    print(
+        f"  {CUMULATIVE_CRUSH_HISTORY_OUTPUT_PATH}"
+    )
+
+    print(
+        "✓ Comparable crush snapshot saved to:"
+    )
+
+    print(
+        f"  {COMPARABLE_CRUSH_SNAPSHOT_OUTPUT_PATH}"
+    )
+
+    print(
+        "✓ Cumulative crush ranking saved to:"
+    )
+
+    print(
+        f"  {CUMULATIVE_CRUSH_RANKING_OUTPUT_PATH}"
+    )
+
+    print(
+        "✓ Historical percentile bands saved to:"
+    )
+
+    print(
+        f"  {HISTORICAL_PERCENTILE_BANDS_OUTPUT_PATH}"
     )
 
 

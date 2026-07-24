@@ -8,7 +8,7 @@ Rather than continuously adding new variables, each release is designed to answe
 
 # Version 1.x — Baseline Research Platform
 
-The Version 1.x series establishes the complete research infrastructure required for Brazilian sugarcane weather analytics.
+The Version 1.x series establishes the complete research infrastructure required for Brazilian sugarcane weather and harvest analytics.
 
 Completed milestones include:
 
@@ -45,9 +45,7 @@ Completed milestones include:
 
 - Historical harvest calendar
 - Harvest calendar heatmap
-- Harvest start metrics
-- Harvest end metrics
-- Harvest duration metrics
+- Harvest timing metrics
 - Data-driven harvest-stage inference
 - Three-stage seasonal research framework
   - Growing Stage
@@ -56,19 +54,40 @@ Completed milestones include:
 
 ---
 
-## v1.4.0 (Planned)
+## v1.4.0
 
-### Weather–Harvest Relationship
+### Harvest Intelligence
+
+Objectives:
+
+- Construct cumulative historical harvest benchmarks
+- Compare the current harvest with completed historical seasons
+- Generate historical percentile bands
+- Rank current harvest pace relative to historical seasons
+- Produce automated harvest research summaries
+- Generate reproducible harvest intelligence visualizations
+
+Version 1.4 establishes a historical benchmarking framework for evaluating harvest progress using standardized UNICA reporting periods.
+
+---
+
+## v1.5.0 (Planned)
+
+### Weather–Harvest Relationships
+
+Research Question
+
+> How are historical harvest dynamics associated with weather conditions throughout the growing season?
 
 Objectives:
 
 - Construct weather–harvest analytical datasets
-- Correlation analysis between weather and harvest timing
-- Regression analysis
+- Exploratory correlation analysis
+- Baseline regression models
 - Historical weather–harvest visualization
-- Baseline explanatory models
+- Initial statistical benchmarking
 
-Version 1.4 establishes the baseline relationship between traditional weather variables and historical harvest behavior.
+Version 1.5 establishes the baseline statistical relationship between traditional weather variables and historical harvest behavior.
 
 ---
 
@@ -90,7 +109,7 @@ Rather than introducing these variables directly into predictive models, Version
 - correlation with existing weather features;
 - multicollinearity;
 - incremental explanatory value;
-- model improvement relative to the baseline established in Version 1.x.
+- model improvement relative to the Version 1 baseline.
 
 The objective is feature selection rather than feature accumulation.
 
@@ -148,10 +167,10 @@ Potential future extensions include:
 
 Operation Sugar aims to become a reproducible research platform for Brazilian sugarcane analytics by integrating agronomic knowledge, observed harvest behavior, heterogeneous public datasets, transparent feature engineering, automated validation, and modular analytical workflows.
 
-Rather than treating sugarcane production as a single "season", the platform studies the complete annual production cycle through three complementary analytical stages:
+Rather than treating sugarcane production as a single growing season, the platform studies the complete annual production cycle through three complementary analytical stages:
 
 - Growing Stage
 - Maturation Stage
 - Harvest Stage
 
-Future releases will continue expanding each stage while maintaining transparency, reproducibility, and scientific interpretability.
+Future releases will continue expanding each stage while maintaining transparency, reproducibility, scientific interpretability, and incremental research value.

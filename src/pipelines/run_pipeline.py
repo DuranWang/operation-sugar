@@ -2,7 +2,7 @@
 Operation Sugar Research Pipeline Runner.
 
 Run the complete local research workflow from monthly weather
-aggregation to final analytics dashboards.
+aggregation to weather analytics, dashboards, and Harvest Intelligence.
 
 Usage
 -----
@@ -20,6 +20,9 @@ from contextlib import redirect_stderr, redirect_stdout
 from dataclasses import dataclass
 from time import perf_counter
 
+from src.analysis.analyze_harvest_calendar import (
+    main as build_harvest_intelligence,
+)
 from src.config.version import __version__
 from src.etl.aggregate_monthly_weather import (
     main as aggregate_monthly_weather,
@@ -50,6 +53,14 @@ class PipelineStage:
     function: Callable[[], None]
 
 
+@dataclass(frozen=True)
+class ArtifactGroup:
+    """Represent one named group of generated research artifacts."""
+
+    name: str
+    artifacts: tuple[str, ...]
+
+
 PIPELINE_STAGES: tuple[PipelineStage, ...] = (
     PipelineStage(
         name="Aggregate Monthly Weather",
@@ -71,12 +82,45 @@ PIPELINE_STAGES: tuple[PipelineStage, ...] = (
         name="Build Historical Comparison Dashboard",
         function=build_comparison_dashboard,
     ),
+    PipelineStage(
+        name="Build Harvest Intelligence",
+        function=build_harvest_intelligence,
+    ),
 )
 
-RESEARCH_ARTIFACTS: tuple[str, ...] = (
-    "data/processed/dashboard/weather_harvest_dataset.csv",
-    "docs/dashboard_v1.png",
-    "docs/dashboard_season_comparison.png",
+RESEARCH_ARTIFACT_GROUPS: tuple[ArtifactGroup, ...] = (
+    ArtifactGroup(
+        name="Weather Analytics",
+        artifacts=(
+            "data/processed/dashboard/weather_harvest_dataset.csv",
+            "docs/figures/dashboard_v1.png",
+            "docs/figures/dashboard_season_comparison.png",
+        ),
+    ),
+    ArtifactGroup(
+        name="Harvest Intelligence",
+        artifacts=(
+            "docs/figures/harvest_heatmap.png",
+            "docs/figures/harvest_percentile_bands.png",
+            "data/processed/unica/harvest_metrics.csv",
+            (
+                "data/processed/unica/harvest_intelligence/"
+                "cumulative_crush_history.csv"
+            ),
+            (
+                "data/processed/unica/harvest_intelligence/"
+                "comparable_crush_snapshot.csv"
+            ),
+            (
+                "data/processed/unica/harvest_intelligence/"
+                "cumulative_crush_ranking.csv"
+            ),
+            (
+                "data/processed/unica/harvest_intelligence/"
+                "historical_percentile_bands.csv"
+            ),
+        ),
+    ),
 )
 
 
@@ -105,6 +149,15 @@ def format_elapsed_time(seconds: float) -> str:
     minutes, remaining_seconds = divmod(seconds, 60)
 
     return f"{int(minutes)}m {remaining_seconds:.2f}s"
+
+
+def count_research_artifacts() -> int:
+    """Return the total number of declared research artifacts."""
+
+    return sum(
+        len(group.artifacts)
+        for group in RESEARCH_ARTIFACT_GROUPS
+    )
 
 
 def print_pipeline_header(
@@ -205,16 +258,10 @@ def run_stage(
     return elapsed_time
 
 
-def print_pipeline_summary(
+def print_stage_summary(
     stage_times: list[tuple[str, float]],
-    total_elapsed_time: float,
 ) -> None:
-    """Print the final pipeline execution summary."""
-
-    print()
-    print("=" * SEPARATOR_WIDTH)
-    print("Research pipeline completed successfully")
-    print("=" * SEPARATOR_WIDTH)
+    """Print elapsed time for each completed pipeline stage."""
 
     for stage_name, elapsed_time in stage_times:
         dotted_name = f"{stage_name} ".ljust(
@@ -227,14 +274,43 @@ def print_pipeline_summary(
             f"{format_elapsed_time(elapsed_time)}"
         )
 
-    print("-" * SEPARATOR_WIDTH)
+
+def print_research_artifacts() -> None:
+    """Print generated research artifacts by analytical group."""
 
     print()
     print("Research Artifacts")
-    print()
 
-    for artifact in RESEARCH_ARTIFACTS:
-        print(f"[✓] {artifact}")
+    for group in RESEARCH_ARTIFACT_GROUPS:
+        print()
+        print(group.name)
+        print("-" * len(group.name))
+
+        for artifact in group.artifacts:
+            print(f"[✓] {artifact}")
+
+
+def print_pipeline_summary(
+    stage_times: list[tuple[str, float]],
+    total_elapsed_time: float,
+) -> None:
+    """Print the final pipeline execution summary."""
+
+    print()
+    print("=" * SEPARATOR_WIDTH)
+    print(
+        f"Operation Sugar v{__version__} "
+        "completed successfully"
+    )
+    print("=" * SEPARATOR_WIDTH)
+
+    print_stage_summary(
+        stage_times
+    )
+
+    print("-" * SEPARATOR_WIDTH)
+
+    print_research_artifacts()
 
     print()
     print("-" * SEPARATOR_WIDTH)
@@ -243,6 +319,12 @@ def print_pipeline_summary(
         "Total Runtime: "
         f"{format_elapsed_time(total_elapsed_time)}"
     )
+
+    print(
+        "Generated Outputs: "
+        f"{count_research_artifacts()}"
+    )
+
     print("=" * SEPARATOR_WIDTH)
 
 

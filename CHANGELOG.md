@@ -6,6 +6,30 @@ This project follows **Semantic Versioning** and the general structure proposed 
 
 ---
 
+## [1.4.0] - 2026-07-24
+
+### Added
+
+- Harvest Intelligence module
+- Historical harvest calendar analytics
+- Historical percentile-band benchmarking
+- Comparable historical harvest snapshots
+- Current season cumulative harvest rankings
+- Automated harvest research summaries
+- Harvest percentile-band visualization
+
+### Improved
+
+- Refactored harvest analytics into modular components
+- Centralized pipeline logging
+- Improved dashboard generation workflow
+
+### Documentation
+
+- Added Harvest Intelligence documentation
+- Updated README with new dashboard previews
+- Expanded analytical framework
+
 ## [1.3.0] - 2026-07-24
 
 ### Added
