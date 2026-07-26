@@ -185,7 +185,7 @@ This document describes the software architecture of Operation Sugar.
 
 The agronomic framework is documented in **seasonal_framework.md**.
 
-The research and modeling decisions are documented in **research/research_decisions.md**.
+The research and modeling decisions are documented in **research_decisions.md**.
 
 The statistical modeling methodology is documented in **modeling_framework.md**.
 

@@ -242,7 +242,9 @@ Operation Sugar provides an end-to-end research engineering workflow for Brazili
 
 ## Documentation
 
-Detailed project documentation is available under the **docs/** directory.
+Project documentation is organized into platform documentation, research documentation, and project management.
+
+### Platform Documentation
 
 | Document | Description |
 |----------|-------------|
@@ -252,14 +254,25 @@ Detailed project documentation is available under the **docs/** directory.
 | [`docs/seasonal_framework.md`](docs/seasonal_framework.md) | Biological and operational seasonal structure |
 | [`docs/harvest_intelligence.md`](docs/harvest_intelligence.md) | Historical harvest benchmark methodology |
 | [`docs/feature_dictionary.md`](docs/feature_dictionary.md) | Definitions of engineered variables |
-| [`docs/research/research_decisions.md`](docs/research/research_decisions.md) | Major engineering and analytical decisions |
-| [`docs/research/statistical_experiments.md`](docs/research/statistical_experiments.md) | Statistical experiment specifications and records |
-| [`docs/research/month_level_model_findings.md`](docs/research/month_level_model_findings.md) | Version 1.5.1 modeling results and interpretation |
-| [`docs/research/negative_results.md`](docs/research/negative_results.md) | Modeling approaches that did not generalize |
+| [`docs/literature_registry.md`](docs/literature_registry.md) | Supporting agronomic literature |
+
+### Research Documentation
+
+| Document | Description |
+|----------|-------------|
+| [`research_decisions.md`](research_decisions.md) | Major engineering and analytical decisions |
+| [`statistical_experiments.md`](statistical_experiments.md) | Statistical experiment specifications and records |
+| [`month_level_model_findings.md`](month_level_model_findings.md) | Version 1.5.1 modeling results and interpretation |
+| [`negative_results.md`](negative_results.md) | Modeling approaches that did not generalize |
+
+### Project Management
+
+| Document | Description |
+|----------|-------------|
 | [`ROADMAP.md`](ROADMAP.md) | Planned future development |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release history |
 
-For readers interested in the complete modeling methodology, validation procedure, and experimental results, the documentation provides substantially more detail than this project overview.
+For readers interested in the complete modeling methodology, validation procedure, and experimental results, these documents provide substantially more detail than this repository overview.
 
 ---
 

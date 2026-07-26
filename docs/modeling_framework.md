@@ -415,22 +415,22 @@ Conclusions must not extend beyond the target, data, variables, models, and vali
 
 ## 13. Relationship to Project Documentation
 
-Operation Sugar separates variable construction, modeling methods, experimental records, and findings.
+Operation Sugar separates variable construction, modeling methods, experimental records, and research findings into independent documents with clearly defined responsibilities.
 
 | Document | Responsibility |
 |---|---|
-| `docs/seasonal_framework.md` | Defines biological and operational stages of the sugarcane cycle |
+| `docs/seasonal_framework.md` | Defines the biological and operational stages of the sugarcane production cycle |
 | `docs/analytical_framework.md` | Defines and validates analytical variables |
-| `docs/feature_dictionary.md` | Records implemented variable definitions |
-| `docs/modeling_framework.md` | Defines how variables enter models and are statistically evaluated |
-| `docs/research/research_decisions.md` | Records major research design decisions |
-| `docs/research/statistical_experiments.md` | Records individual experiment specifications |
-| `docs/research/month_level_model_findings.md` | Reports the Version 1.5.1 month-level study |
-| `docs/research/negative_results.md` | Preserves unsuccessful and non-generalizing results |
-| `ROADMAP.md` | Defines future research directions |
-| `CHANGELOG.md` | Records release-level changes |
+| `docs/feature_dictionary.md` | Documents implemented analytical variable definitions |
+| `docs/modeling_framework.md` | Defines statistical modeling, validation, and evaluation methodology |
+| `research_decisions.md` | Records major engineering and research design decisions |
+| `statistical_experiments.md` | Records statistical experiment specifications and implementation details |
+| `month_level_model_findings.md` | Reports Version 1.5.1 experimental results and interpretation |
+| `negative_results.md` | Documents modeling approaches that did not generalize |
+| `ROADMAP.md` | Describes planned future research directions |
+| `CHANGELOG.md` | Records release history and project evolution |
 
-This separation prevents stable frameworks from becoming release-specific experiment reports.
+This separation keeps stable methodological frameworks independent from release-specific experiments, allowing the research platform to evolve without mixing foundational methodology with individual experimental results.
 
 ---
 
