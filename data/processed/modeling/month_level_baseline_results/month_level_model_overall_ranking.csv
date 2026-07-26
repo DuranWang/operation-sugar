@@ -1,0 +1,8 @@
+model,model_label,model_family,model_order,horizon_count,mean_rmse_rank,median_rmse_rank,mean_mae_rank,mean_r_squared_rank,horizons_won_by_rmse,horizons_beating_block_only,mean_rmse_improvement_vs_block_percent,mean_mae_improvement_vs_block_percent,mean_r_squared_difference_vs_block,mean_rmse_gap_from_best_percent,overall_rank
+block_only_ols,Block-Only OLS,block_only_ols,2,5,1.0,1.0,1.0,1.0,5,0,0.0,0.0,0.0,0.0,1
+temperature_month_level_ridge,Temperature Month-Level Ridge,month_level_ridge,6,5,2.0,2.0,2.0,2.0,0,0,-0.9950100195288287,-0.6736381294168339,-0.0014211361382058473,0.9950100195288287,2
+aggregate_ols,Existing Aggregate OLS,aggregate_ols,1,5,3.0,3.0,3.2,3.0,0,0,-2.4533053346824354,-3.011508668365855,-0.00358484323465591,2.4533053346824354,3
+rainfall_month_level_ridge,Rainfall Month-Level Ridge,month_level_ridge,4,5,4.0,4.0,3.8,4.0,0,0,-2.753235863479532,-3.215287545988354,-0.004196484282936441,2.753235863479532,4
+joint_month_level_ridge,Joint Month-Level Ridge,month_level_ridge,7,5,5.0,5.0,5.0,5.0,0,0,-11.760444683553123,-12.813117380661712,-0.017829952626532954,11.760444683553123,5
+temperature_month_level_ols,Temperature Month-Level OLS,month_level_ols,5,5,6.0,6.0,6.0,6.0,0,0,-14.734056196243836,-22.67978187862091,-0.02207931171564794,14.734056196243836,6
+rainfall_month_level_ols,Rainfall Month-Level OLS,month_level_ols,3,5,7.0,7.0,7.0,7.0,0,0,-28.204592007402947,-41.72600261379925,-0.04690781097499637,28.204592007402947,7

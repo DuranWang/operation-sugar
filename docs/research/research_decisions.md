@@ -1,4 +1,4 @@
-# Research Design Decisions
+# Research Decisions
 
 This document records the major analytical, statistical, and engineering decisions made during the development of Operation Sugar.
 
@@ -230,6 +230,71 @@ Out-of-sample evaluation provides a more reliable assessment of predictive value
 - Random train-test splits
 
 ---
+
+## Decision 13 — Historical Harvest Profile as the Primary Benchmark
+
+### Decision
+
+Use the historical harvest-block profile (Block-Only OLS) as the primary benchmark for evaluating weather-based prediction models.
+
+### Reason
+
+Historical harvest timing explains a substantial proportion of predictable variation in block-level crushing volumes.
+
+Any weather representation should therefore be evaluated based on its incremental predictive value beyond the historical harvest profile rather than against a weather-free mean benchmark.
+
+Using Block-Only OLS establishes a stronger and more operationally meaningful baseline for future model development.
+
+### Alternatives Considered
+
+- Training-season historical mean
+- Aggregate weather baseline only
+
+---
+
+## Decision 14 — Nested Ridge Regularization
+
+### Decision
+
+Use nested Leave-One-Season-Out cross-validation to select Ridge regularization strength.
+
+### Reason
+
+Selecting the Ridge penalty on the same held-out season used for model evaluation would introduce optimistic bias.
+
+Nested cross-validation separates hyperparameter selection from final model evaluation, providing an unbiased estimate of out-of-sample performance.
+
+Weather predictors are standardized independently within each outer training fold to prevent information leakage.
+
+### Alternatives Considered
+
+- Fixed Ridge penalty
+- Ordinary cross-validation
+- Non-nested hyperparameter tuning
+
+---
+
+## Decision 15 — Exclusion of Joint Month-Level OLS
+
+### Decision
+
+Do not estimate an unregularized joint month-level rainfall–temperature OLS model.
+
+### Reason
+
+Each outer Leave-One-Season-Out training fold contains only 15 harvest seasons.
+
+After centering the weather predictors, the maximum identifiable weather rank is therefore 14.
+
+The joint month-level specification contains 16 monthly weather predictors, making the unregularized system non-identifiable within the training folds.
+
+Ridge regularization produces a unique solution and therefore serves as the appropriate estimator for the joint specification.
+
+### Alternatives Considered
+
+- Joint Month-Level OLS
+- Dimension reduction before OLS
+- Principal component regression
 
 # Summary
 

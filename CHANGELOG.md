@@ -5,6 +5,59 @@ All notable changes to Operation Sugar are documented in this file.
 This project follows **Semantic Versioning** and the general structure proposed by **Keep a Changelog**.
 
 ---
+## [1.5.1] - 2026-07-26
+
+### Month-Level Weather Modeling
+
+Operation Sugar v1.5.1 extends the aggregate weather baseline framework with month-level weather representations, nested Ridge regularization, and a unified seven-model comparison framework for São Paulo harvest-block prediction.
+
+### Added
+
+- Added September–April month-level rainfall features.
+- Added September–April month-level temperature features.
+- Added Rainfall Month-Level OLS models.
+- Added Rainfall Month-Level Ridge models.
+- Added Temperature Month-Level OLS models.
+- Added Temperature Month-Level Ridge models.
+- Added Joint Month-Level Ridge models combining monthly rainfall and temperature predictors.
+- Added nested leave-one-season-out cross-validation for Ridge hyperparameter selection.
+- Added fold-specific weather standardization to all Ridge workflows.
+- Added partially penalized Ridge regression with:
+  - unpenalized intercept;
+  - unpenalized harvest-block fixed effects;
+  - penalized weather coefficients.
+- Added effective weather degrees-of-freedom diagnostics.
+- Added Ridge alpha-boundary diagnostics.
+- Added fold-level alpha selection diagnostics.
+- Added coefficient summaries and fold-level model diagnostics.
+- Added unified seven-model comparison tables across all harvest aggregation horizons.
+- Added publication-style reporting figures for:
+  - model comparison;
+  - RMSE improvement;
+  - Ridge boundary selection;
+  - effective weather degrees of freedom.
+- Added `month_level_model_findings.md` documenting the complete Version 1.5 modeling study.
+
+### Changed
+
+- Refactored the month-level OLS engine to support generic weather feature specifications.
+- Standardized model outputs across aggregate, rainfall, temperature, and joint weather models.
+- Unified reporting pipelines for all seven evaluated models.
+- Updated project documentation and README to reflect the completed month-level modeling framework.
+
+### Notes
+
+Version 1.5.1 completes the first month-level weather modeling framework in Operation Sugar.
+
+The release adds nested Ridge regularization, unified seven-model evaluation, publication-style reporting figures, and accompanying research documentation.
+
+See:
+
+- `README.md`
+- `docs/research/month_level_model_findings.md`
+
+for the complete methodology, diagnostics, and research findings.
+
 
 ## [1.5.0] - 2026-07-26
 

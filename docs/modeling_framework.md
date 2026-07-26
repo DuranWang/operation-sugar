@@ -1,216 +1,445 @@
-# Modeling Framework
+# Operation Sugar Modeling Framework
 
 This document defines the statistical modeling framework used throughout Operation Sugar.
 
-It describes how statistical models are designed, evaluated, and progressively extended across the project.
+It begins after analytical variables have been constructed and validated under `docs/analytical_framework.md`. Its purpose is to define how those variables enter statistical experiments, how models are evaluated, and how results are interpreted.
 
-The research and engineering decisions that motivated this framework are documented in **research_design_decisions.md**.
+Detailed experiment specifications and results are documented separately in:
 
-The statistical experiments conducted under this framework are documented in **statistical_experiments.md**.
-
----
-
-# Modeling Philosophy
-
-Operation Sugar is designed as a quantitative research platform rather than a prediction competition.
-
-The objective is not simply to maximize predictive accuracy, but to understand how weather information contributes to explaining historical sugarcane production through transparent, reproducible statistical experiments.
-
-Statistical complexity is introduced only after simpler hypotheses have been rigorously evaluated.
+- `docs/research/statistical_experiments.md`
+- `docs/research/month_level_model_findings.md`
+- `docs/research/negative_results.md`
 
 ---
 
-# Modeling Workflow
+## 1. Modeling Objective
 
-Each statistical experiment follows the same workflow.
+Operation Sugar uses statistical models to test whether newly constructed variables provide explanatory or predictive value beyond an appropriate historical benchmark.
+
+The objective is not to maximize predictive accuracy through unrestricted model expansion. Each model must answer a clearly defined research question and must be evaluated using a transparent, reproducible, and leakage-resistant procedure.
+
+Statistical complexity is introduced only when simpler specifications have been evaluated first.
+
+---
+
+## 2. Modeling Workflow
+
+Each statistical experiment follows the same general workflow.
 
 ```text
 Research Question
         │
         ▼
-Response Variable
+Prediction Target
         │
         ▼
-Weather Representation
+Predictor Representation
         │
         ▼
-Benchmark Model
+Benchmark Definition
         │
         ▼
-Model Training
+Model Specification
         │
         ▼
 Out-of-Sample Validation
         │
         ▼
-Performance Evaluation
+Performance Comparison
+        │
+        ▼
+Diagnostics
         │
         ▼
 Research Interpretation
 ```
 
-This workflow ensures that every experiment is directly linked to a clearly defined scientific question.
+The research question, target, benchmark, and validation design must be defined before model performance is examined.
 
 ---
 
-# Response Variables
+## 3. Prediction Tasks
 
-Operation Sugar currently considers two prediction tasks.
+A prediction task is defined by its observational unit and response variable.
 
-## Harvest-Block Prediction
+Operation Sugar currently distinguishes between two principal task structures.
 
-Response variable:
+### Harvest-Block Prediction
 
-- cumulative sugarcane crushing over one or more consecutive harvest blocks.
+The observational unit is a non-overlapping harvest block within a harvest season.
 
-Purpose:
+The response variable represents crushing volume within that block.
 
-Evaluate whether weather information explains short-term harvest dynamics.
+Because multiple observations occur within each season, the model may include harvest-block structure to represent the historical harvest calendar.
 
----
+### Complete-Season Prediction
 
-## Complete-Season Prediction
+The observational unit is a complete harvest season.
 
-Response variable:
+The response variable represents total crushing across the full season.
 
-- total sugarcane crushing over one complete harvest season.
+Each season contributes one observation, so harvest-block fixed effects are not applicable.
 
-Purpose:
+### Future Prediction Tasks
 
-Evaluate whether weather information explains long-term seasonal production.
+Future targets may include cane yield, sugar yield, ATR, CCS, recoverable sugar, or harvest timing.
 
----
+Each new target requires its own:
 
-## Future Response Variables
+- observational unit;
+- response definition;
+- benchmark;
+- validation design;
+- interpretation boundary.
 
-Future releases may introduce additional prediction targets, including:
-
-- sugar yield;
-- ATR;
-- recoverable sugar;
-- sugar production.
-
----
-
-# Predictor Hierarchy
-
-Weather information is introduced progressively according to its temporal resolution and biological specificity.
-
-```text
-Aggregate Weather
-        │
-        ▼
-Monthly Weather
-        │
-        ▼
-Regularized Monthly Models
-        │
-        ▼
-Advanced Agroclimatic Variables
-        │
-        ▼
-Maturation Weather
-        │
-        ▼
-Sugar Production Analytics
-```
-
-Each stage establishes the statistical baseline for the next stage.
+Benchmarks and model structures must not be transferred mechanically across prediction tasks.
 
 ---
 
-# Benchmark Strategy
+## 4. Predictor Representations
 
-Every new weather representation is evaluated relative to an established statistical baseline.
+Predictor representations determine how validated analytical variables are presented to a model.
 
-Current benchmark models include:
+Common representations include:
 
-| Prediction Task | Benchmark |
-|-----------------|-----------|
-| Harvest-block prediction | Harvest-block position |
-| Complete-season prediction | Training-season historical mean |
+### Benchmark-Only Representation
 
-Future weather representations are expected to demonstrate improvement relative to these benchmark models before additional model complexity is introduced.
+Contains only the structural predictors required to represent the historical baseline.
 
----
+Examples include harvest-block indicators for block-level prediction or an intercept for complete-season prediction.
 
-# Validation Framework
+### Aggregate Representation
 
-All statistical models are evaluated using Leave-One-Season-Out Cross-Validation.
+Compresses a complete analytical window into a small number of summary variables.
 
-Each historical harvest season is treated once as an independent test season while all remaining seasons are used for model training.
+Examples include total growing-season rainfall or average growing-season temperature.
 
-This validation framework evaluates model generalization across historical harvest seasons while preventing information leakage between training and testing data.
+Aggregate representations provide interpretable low-dimensional reference specifications.
 
----
+### Temporally Structured Representation
 
-# Evaluation Metrics
+Preserves variation across months, biological stages, or other defined time windows.
 
-Primary evaluation metrics include:
+Examples include month-level weather variables or stage-specific weather summaries.
 
-- Cross-validated coefficient of determination;
-- Cross-validated normalized root mean squared error.
+Temporally structured representations may capture information lost through complete-season aggregation, but they also increase estimation variance and model complexity.
 
-Whenever benchmark models are available, incremental performance relative to the benchmark is also reported.
+### Combined Representation
 
-Operation Sugar emphasizes out-of-sample predictive performance rather than in-sample goodness of fit.
+Includes multiple predictor groups in the same model.
 
----
+Combined models must be checked for:
 
-# Modeling Principles
+- exact linear dependence;
+- redundant aggregate and component variables;
+- dimensionality relative to the number of independent seasons;
+- unstable coefficient estimation.
 
-Every statistical experiment follows the same principles.
-
-## Principle 1
-
-Each experiment answers one clearly defined research question.
+The construction and scientific justification of predictors belong to `docs/analytical_framework.md`. The modeling framework evaluates whether those predictors generalize.
 
 ---
 
-## Principle 2
+## 5. Benchmark Strategy
 
-Introduce one major methodological advancement at a time.
+Every predictive model must be compared with a benchmark appropriate to the prediction unit.
 
-This allows the contribution of each new weather representation to be evaluated independently.
+### Harvest-Block Benchmark
 
----
+The primary harvest-block benchmark represents the historical harvest profile using harvest-block fixed effects without weather predictors.
 
-## Principle 3
+A weather or agronomic model provides incremental predictive value only if it improves out-of-sample performance beyond this benchmark.
 
-Every new model must be compared against an established statistical baseline.
+### Complete-Season Benchmark
 
-Model complexity alone is not considered scientific progress.
+The primary complete-season benchmark is the historical mean estimated from the training seasons.
 
----
+Because the complete-season dataset contains one observation per season, harvest-block fixed effects are neither meaningful nor identifiable.
 
-## Principle 4
+### Benchmark Principles
 
-Prefer interpretable models before complex models.
+A benchmark must:
 
-Simple statistical models provide stronger scientific insight and clearer biological interpretation.
+- be defined before model comparison;
+- use only information available in the training data;
+- match the observational unit of the target;
+- remain identical across models being compared;
+- represent a credible alternative to the proposed predictors.
 
----
-
-## Principle 5
-
-Evaluate predictive performance using out-of-sample validation.
-
-In-sample goodness of fit is not considered sufficient evidence of predictive value.
+In-sample fit, nonzero coefficients, or improvement over an intercept-only model are not sufficient when a stronger domain-specific benchmark exists.
 
 ---
 
-## Principle 6
+## 6. Model Classes
 
-Negative results are valuable research outcomes.
+Operation Sugar introduces model classes progressively.
 
-Demonstrating that a weather representation does not improve predictive performance establishes an important statistical baseline for future experiments.
+### Ordinary Least Squares
+
+OLS provides the primary unregularized reference model.
+
+It is used when the design matrix is identifiable and the sample size supports direct coefficient estimation.
+
+OLS is valuable for:
+
+- transparent coefficient interpretation;
+- identifying overfitting in higher-dimensional representations;
+- establishing an unregularized comparison for penalized models.
+
+### Regularized Linear Models
+
+Regularization is introduced when predictor dimensionality or coefficient instability makes unregularized estimation unreliable.
+
+Penalty selection must occur entirely within the training data of each outer validation fold.
+
+Where appropriate, structural predictors such as the intercept and harvest-block effects may remain unpenalized while weather or agronomic coefficients are penalized.
+
+### Structured or Nonlinear Models
+
+More complex models may be introduced only when they test a substantive research hypothesis that simpler models cannot represent.
+
+Examples may include:
+
+- structured penalties;
+- nonlinear response functions;
+- threshold models;
+- biologically supported interactions;
+- spatial or regional heterogeneity.
+
+Additional complexity must be justified by the research question rather than by a search for improved fit alone.
 
 ---
 
-# Relationship to Project Documentation
+## 7. Validation Framework
 
-This document defines how statistical modeling is performed throughout Operation Sugar.
+Validation is organized around complete harvest seasons.
 
-The research and engineering decisions underlying this framework are documented in **research_design_decisions.md**.
+### Leave-One-Season-Out Validation
 
-Individual statistical experiments—including research questions, experimental design, results, and interpretation—are documented in **statistical_experiments.md**.
+Each outer fold holds out one complete season for evaluation and trains the model on all remaining seasons.
+
+This design prevents observations from the same season from appearing in both the training and test sets.
+
+It also evaluates the intended generalization problem: prediction for an unseen harvest season.
+
+### Nested Model Selection
+
+When a model contains tuning parameters, selection occurs through an inner validation procedure using only the outer training seasons.
+
+The held-out outer season must not influence:
+
+- penalty selection;
+- feature scaling;
+- imputation;
+- variable screening;
+- model specification changes.
+
+### Fold-Specific Preprocessing
+
+All learned preprocessing steps are fitted separately within each training fold and then applied to the held-out season.
+
+This includes:
+
+- centering;
+- scaling;
+- imputation;
+- dimensionality reduction;
+- data-driven transformations.
+
+### Consistent Comparison Folds
+
+Models compared within the same prediction task must use the same seasons, horizons, response definitions, and outer folds.
+
+A performance difference is interpretable only when the comparison is based on the same held-out observations.
+
+---
+
+## 8. Evaluation Metrics
+
+Operation Sugar evaluates predictive performance using multiple complementary metrics.
+
+### Root Mean Squared Error
+
+RMSE is the primary ranking metric when larger prediction errors should receive greater weight.
+
+### Mean Absolute Error
+
+MAE provides a more direct measure of typical absolute prediction error and is less sensitive to a small number of large misses.
+
+### Out-of-Sample R-Squared
+
+Out-of-sample \(R^2\) measures performance relative to the relevant training-data benchmark.
+
+Negative values indicate that the model performs worse than the benchmark on held-out observations.
+
+### Relative Performance
+
+Model performance should also be reported relative to the primary benchmark.
+
+For an error metric such as RMSE:
+
+\[
+\text{Improvement}_{m}
+=
+\frac{\text{RMSE}_{\text{benchmark}}-\text{RMSE}_{m}}
+{\text{RMSE}_{\text{benchmark}}}
+\times 100.
+\]
+
+Positive values indicate improvement over the benchmark. Negative values indicate worse performance.
+
+No single metric should be interpreted without considering the others and the underlying prediction task.
+
+---
+
+## 9. Model Comparison
+
+Model comparison is based primarily on out-of-sample performance.
+
+A candidate model is evaluated by asking:
+
+1. Does it improve on the appropriate benchmark?
+2. Is the improvement consistent across aggregation horizons or related tasks?
+3. Is the result stable across held-out seasons?
+4. Does the model retain a plausible and identifiable level of complexity?
+5. Does the added complexity provide incremental research value?
+
+Model rankings should be reported together with absolute metrics, relative benchmark performance, and diagnostic evidence.
+
+A model that improves substantially on a weaker specification but does not beat the primary benchmark is not considered a successful incremental prediction model.
+
+---
+
+## 10. Model Diagnostics
+
+Predictive metrics alone are insufficient for evaluating statistical reliability.
+
+Diagnostics may include:
+
+### Design Diagnostics
+
+- predictor count;
+- matrix rank;
+- condition number;
+- exact linear dependence;
+- observations and independent seasons relative to model dimension.
+
+### Regularization Diagnostics
+
+- selected penalty values;
+- minimum- and maximum-grid selections;
+- variation in selected penalties across outer folds;
+- effective degrees of freedom;
+- retained model complexity.
+
+### Fold Diagnostics
+
+- fold-level prediction errors;
+- influential held-out seasons;
+- changes in coefficients or tuning parameters when individual seasons are excluded;
+- concentration of average performance in a small number of folds.
+
+### Coefficient Diagnostics
+
+- standardized coefficients;
+- raw-unit coefficients;
+- sign stability;
+- magnitude stability;
+- sensitivity to predictor representation.
+
+Diagnostics are used to distinguish among:
+
+- numerical identification problems;
+- statistical overfitting;
+- unstable relationships;
+- weak incremental signal;
+- genuine out-of-sample improvement.
+
+---
+
+## 11. Research Interpretation
+
+Model conclusions must remain limited to the evaluated:
+
+- sample;
+- geographic scope;
+- response variable;
+- predictor definitions;
+- model classes;
+- validation procedure.
+
+Failure to improve a benchmark does not imply that the underlying biological process is unimportant.
+
+It means that the evaluated representation and model did not provide stable incremental predictive value for the specified task.
+
+Likewise, a plausible coefficient or strong in-sample fit does not establish a generalizable relationship.
+
+Negative and unstable results are retained because they:
+
+- answer defined research questions;
+- establish stronger future benchmarks;
+- reveal limitations of current variables or models;
+- prevent repeated investigation of unsupported specifications;
+- guide the design of future experiments.
+
+---
+
+## 12. Modeling Principles
+
+Operation Sugar follows six modeling principles.
+
+### Benchmark Before Complexity
+
+Every model must first be compared with a credible task-specific benchmark.
+
+### Out-of-Sample Evidence First
+
+Research conclusions are based primarily on held-out-season performance rather than complete-sample fit.
+
+### Seasons Are the Independent Validation Unit
+
+Training and test data are separated by complete harvest season.
+
+### Prevent Information Leakage
+
+All learned preprocessing and model selection occur within the relevant training fold.
+
+### Diagnose, Do Not Only Rank
+
+Performance rankings must be accompanied by model-complexity and fold-stability diagnostics.
+
+### Preserve Narrow Interpretation
+
+Conclusions must not extend beyond the target, data, variables, models, and validation design that were actually evaluated.
+
+---
+
+## 13. Relationship to Project Documentation
+
+Operation Sugar separates variable construction, modeling methods, experimental records, and findings.
+
+| Document | Responsibility |
+|---|---|
+| `docs/seasonal_framework.md` | Defines biological and operational stages of the sugarcane cycle |
+| `docs/analytical_framework.md` | Defines and validates analytical variables |
+| `docs/feature_dictionary.md` | Records implemented variable definitions |
+| `docs/modeling_framework.md` | Defines how variables enter models and are statistically evaluated |
+| `docs/research/research_decisions.md` | Records major research design decisions |
+| `docs/research/statistical_experiments.md` | Records individual experiment specifications |
+| `docs/research/month_level_model_findings.md` | Reports the Version 1.5.1 month-level study |
+| `docs/research/negative_results.md` | Preserves unsuccessful and non-generalizing results |
+| `ROADMAP.md` | Defines future research directions |
+| `CHANGELOG.md` | Records release-level changes |
+
+This separation prevents stable frameworks from becoming release-specific experiment reports.
+
+---
+
+## Summary
+
+The Operation Sugar modeling framework defines how validated analytical variables are tested through statistical models.
+
+Its central standard is incremental out-of-sample value beyond an appropriate historical benchmark.
+
+Models are evaluated using season-level validation, fold-specific preprocessing, transparent metrics, consistent comparisons, and explicit diagnostics.
+
+The framework does not determine whether a particular variable or model succeeds. It defines the procedure through which that question is answered.

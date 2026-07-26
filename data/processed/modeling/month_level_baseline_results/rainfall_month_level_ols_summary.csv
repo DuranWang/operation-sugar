@@ -1,0 +1,6 @@
+model,horizon,season_count,observation_count,blocks_per_season,weather_predictor_count,full_sample_weather_rank,full_sample_weather_max_rank,full_sample_weather_condition_number,loso_rmse,loso_mae,loso_r_squared,all_folds_weather_full_rank,all_folds_design_full_rank,maximum_fold_weather_condition_number
+rainfall_month_level_ols,1,16,192,12,9,9,9,5.77259028170928,6882774.818678592,5241977.043097709,0.895433553556091,True,True,8.286676239529575
+rainfall_month_level_ols,2,16,96,6,9,9,9,5.77259028170928,11903875.248587893,9493542.6278566,0.9130605254285641,True,True,8.286676239529575
+rainfall_month_level_ols,3,16,64,4,9,9,9,5.77259028170928,17756407.278524652,13365902.764464222,0.9055364219299326,True,True,8.286676239529575
+rainfall_month_level_ols,4,16,48,3,9,9,9,5.77259028170928,21354171.307968523,17285504.777708054,0.919533006879742,True,True,8.286676239529575
+rainfall_month_level_ols,5,16,32,2,9,9,9,5.77259028170928,27841723.95133029,22350480.334081825,0.7883682525194537,True,True,8.286676239529575

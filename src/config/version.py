@@ -1,3 +1,3 @@
 """Operation Sugar package version."""
 
-__version__ = "1.4.0"
+__version__ = "1.5.1"

@@ -23,7 +23,10 @@ from src.etl.saver import save_dataframe_csv
 from src.etl.unica.unica_normalizer import (
     normalize_harvest_season,
 )
-
+from src.feature_engineering.month_level_weather import (
+    get_month_level_feature_columns,
+    pivot_monthly_weather_features,
+)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -465,7 +468,10 @@ def summarize_growing_season_weather(
 def build_growing_season_weather_summary(
     weather_dataframe: pd.DataFrame,
 ) -> pd.DataFrame:
-    """Build state-level growing-season weather summaries."""
+    """
+    Build state-level growing-season aggregate and
+    month-level weather features.
+    """
 
     state_weather = aggregate_weather_to_state(
         weather_dataframe
@@ -483,7 +489,77 @@ def build_growing_season_weather_summary(
         )
     )
 
-    return weather_summary
+    complete_season_keys = weather_summary.loc[
+        weather_summary[
+            "has_complete_growing_season"
+        ],
+        [
+            "state",
+            "harvest_season",
+        ],
+    ].copy()
+
+    if complete_season_keys.empty:
+        raise ValueError(
+            "No complete growing seasons are available "
+            "for month-level weather features."
+        )
+
+    complete_monthly_weather = (
+        growing_season_weather.merge(
+            complete_season_keys,
+            on=[
+                "state",
+                "harvest_season",
+            ],
+            how="inner",
+            validate="many_to_one",
+        )
+    )
+
+    month_level_weather = (
+        pivot_monthly_weather_features(
+            complete_monthly_weather
+        )
+    )
+
+    weather_summary = weather_summary.merge(
+        month_level_weather,
+        on=[
+            "state",
+            "harvest_season",
+        ],
+        how="left",
+        validate="one_to_one",
+    )
+
+    month_level_columns = (
+        get_month_level_feature_columns()
+    )
+
+    complete_season_rows = weather_summary[
+        "has_complete_growing_season"
+    ]
+
+    if weather_summary.loc[
+        complete_season_rows,
+        month_level_columns,
+    ].isna().any().any():
+        raise ValueError(
+            "Complete growing seasons contain missing "
+            "month-level weather features."
+        )
+
+    return (
+        weather_summary
+        .sort_values(
+            [
+                "state",
+                "harvest_season",
+            ]
+        )
+        .reset_index(drop=True)
+    )
 
 
 def build_harvest_summary(
@@ -743,6 +819,7 @@ def build_weather_harvest_dataset(
             "has_complete_growing_season",
             "total_growing_season_rainfall",
             "average_growing_season_temperature",
+            *get_month_level_feature_columns(),
             "average_growing_season_humidity",
             "total_growing_season_rainy_days",
             "total_growing_season_dry_days",

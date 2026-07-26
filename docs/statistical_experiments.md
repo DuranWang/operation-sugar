@@ -10,7 +10,7 @@ The statistical modeling philosophy, predictor hierarchy, benchmark strategy, va
 
 # Experiment 1
 
-## Aggregate Weather Baselines (Version 1.5)
+## Aggregate Weather Baselines (Version 1.5.0)
 
 ### Research Question
 
@@ -63,19 +63,11 @@ Five aggregation horizons are evaluated.
 | h = 4 | Crushing summed over four consecutive harvest blocks |
 | h = 5 | Crushing summed over five consecutive harvest blocks |
 
-For example,
-
-- **h = 1** predicts crushing during one harvest block.
-- **h = 3** predicts cumulative crushing over three consecutive harvest blocks.
-- **h = 5** predicts cumulative crushing over five consecutive harvest blocks.
-
 Increasing the aggregation horizon smooths short-term harvest variability while reducing the number of independent observations available for model estimation.
 
 ---
 
 ### Complete-Season Prediction
-
-#### Response Variable
 
 The response variable is total sugarcane crushing over one complete harvest season.
 
@@ -85,84 +77,160 @@ Each historical harvest season contributes one observation.
 
 ## Modeling Configuration
 
-This experiment follows the statistical modeling framework defined in **modeling_framework.md**.
-
-Configuration:
-
-- Aggregate weather predictors
-- Benchmark models defined in the Modeling Framework
+- Aggregate rainfall
+- Aggregate temperature
+- Harvest-block fixed effects
 - Leave-One-Season-Out Cross-Validation
-- Cross-validated evaluation metrics
+- Out-of-sample RMSE, MAE and \(R^2\)
 
 ---
 
-## Research Findings
+## Findings
 
-### Harvest-Block Prediction
+Aggregate growing-season rainfall and average temperature did not improve out-of-sample prediction for either harvest-block or complete-season crushing.
 
-#### Findings
-
-Across all five aggregation horizons, aggregate weather variables failed to improve predictive performance relative to the harvest-calendar benchmark.
-
-In several aggregation horizons, predictive performance was marginally lower than the benchmark model.
-
-#### Conclusion
-
-Aggregate growing-season rainfall and average temperature provided no additional predictive information beyond historical harvest timing.
-
----
-
-### Complete-Season Prediction
-
-#### Findings
-
-Aggregate weather variables did not outperform the training-season historical mean benchmark under out-of-sample evaluation.
-
-Although positive regression coefficients were observed when fitting the complete dataset, these relationships failed to generalize to unseen harvest seasons.
-
-#### Conclusion
-
-Aggregate growing-season weather failed to improve out-of-sample prediction of complete-season sugarcane crushing.
+The aggregate weather model consistently underperformed the historical harvest-profile benchmark.
 
 ---
 
 ## Interpretation
 
-The negative results are consistent across both prediction tasks.
+Compressing the entire September–April growing season into one rainfall total and one average temperature removes potentially important temporal structure.
 
-Compressing the entire September–April growing season into a single rainfall total and a single average temperature removes important temporal information relevant to sugarcane production.
-
-This experiment establishes the first statistical baseline within the Operation Sugar modeling framework.
-
-Future experiments will determine whether preserving the temporal structure of weather observations improves predictive performance.
+This experiment established the benchmark against which all subsequent weather models were evaluated.
 
 ---
 
-## Future Work
+# Experiment 2
 
-### Experiment 2 (Version 1.5.1)
+## Month-Level Weather Models (Version 1.5.1)
 
 ### Research Question
 
-> Which months of the growing season contain predictive weather information?
+> Does preserving the monthly structure of growing-season weather improve out-of-sample prediction of historical sugarcane crushing?
 
-The next experiment will extend the aggregate weather baseline by preserving the temporal structure of weather observations.
+---
 
-Planned additions include:
+## Objective
 
-- Month-level weather predictors
-- Month-specific regression coefficients
-- Regularized month weighting
-- Temporal feature interpretation
+Evaluate whether month-level weather representations provide stable incremental predictive value beyond the historical harvest-block profile.
 
-The objective is to determine whether month-level weather representations improve out-of-sample predictive performance relative to aggregate growing-season weather.
+---
+
+## Weather Representations
+
+Five weather specifications were evaluated.
+
+| Model | Weather predictors |
+|------|--------------------|
+| Aggregate Weather OLS | Growing-season rainfall + temperature |
+| Rainfall Month-Level OLS | September–April rainfall |
+| Rainfall Month-Level Ridge | September–April rainfall |
+| Temperature Month-Level OLS | September–April temperature |
+| Temperature Month-Level Ridge | September–April temperature |
+| Joint Month-Level Ridge | September–April rainfall + September–April temperature |
+
+All month-level models included harvest-block fixed effects.
+
+The Ridge models additionally employed:
+
+- nested Leave-One-Season-Out cross-validation;
+- fold-specific weather standardization;
+- partially penalized Ridge regression;
+- logarithmic alpha grid from \(10^{-4}\) to \(10^{8}\).
+
+---
+
+## Prediction Task
+
+The response variable remained harvest-block crushing aggregated over five horizons:
+
+| Horizon | Blocks per observation |
+|---------|------------------------|
+| h = 1 | 1 |
+| h = 2 | 2 |
+| h = 3 | 3 |
+| h = 4 | 4 |
+| h = 5 | 5 |
+
+---
+
+## Model Comparison
+
+Seven models were ultimately compared:
+
+1. Block-Only OLS
+2. Temperature Month-Level Ridge
+3. Aggregate Weather OLS
+4. Rainfall Month-Level Ridge
+5. Joint Month-Level Ridge
+6. Temperature Month-Level OLS
+7. Rainfall Month-Level OLS
+
+The ranking was identical across every aggregation horizon.
+
+---
+
+## Findings
+
+### Historical Harvest Profile
+
+Block-Only OLS achieved the lowest out-of-sample RMSE across all five horizons.
+
+Historical harvest timing therefore remained the strongest predictor of block-level crushing.
+
+---
+
+### Month-Level Temperature
+
+Temperature Month-Level Ridge was the strongest weather model.
+
+However, it remained between approximately 0.6% and 1.5% worse than Block-Only OLS across all horizons.
+
+---
+
+### Month-Level Rainfall
+
+Rainfall Month-Level Ridge substantially outperformed Rainfall Month-Level OLS, demonstrating that Ridge effectively reduced overfitting.
+
+Nevertheless, rainfall models remained consistently worse than both Block-Only OLS and Temperature Ridge.
+
+---
+
+### Joint Weather Representation
+
+Combining rainfall and temperature into a single month-level model further reduced predictive performance.
+
+The joint Ridge model consistently underperformed both single-weather-family Ridge models.
+
+---
+
+### Ridge Diagnostics
+
+Nested LOSO selected the maximum alpha in approximately 75–81% of outer folds.
+
+Median effective weather degrees of freedom remained approximately zero for every Ridge model.
+
+Only a small number of influential seasons retained meaningful weather complexity after regularization.
+
+---
+
+## Interpretation
+
+Preserving monthly weather structure substantially reduced overfitting compared with aggregate weather models.
+
+Nevertheless, no evaluated month-level specification consistently outperformed the historical harvest-block profile.
+
+Within the available 16 complete harvest seasons and the evaluated linear modeling framework, month-level growing-season weather did not provide stable incremental out-of-sample predictive value beyond historical harvest timing.
 
 ---
 
 # Relationship to the Modeling Framework
 
-This document records the statistical experiments performed under the Operation Sugar modeling framework.
+This document records completed statistical experiments conducted under the Operation Sugar modeling framework.
 
-The statistical modeling philosophy, benchmark strategy, validation methodology, and evaluation principles are defined in **modeling_framework.md**.
+General modeling principles, validation methodology, benchmark definitions, and evaluation philosophy are documented in **modeling_framework.md**.
 
-The research and engineering decisions that motivated these experiments are documented in **research_design_decisions.md**.
+Major research decisions are documented in **research/research_decisions.md**.
+
+Detailed Version 1.5.1 model diagnostics, Ridge analyses, and full experimental results are documented in **month_level_model_findings.md**.

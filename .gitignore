@@ -41,3 +41,5 @@ data/processed/dashboard/
 
 # Cached UNICA reports (downloaded from the official website)
 data/processed/unica/crushing/reports/
+
+github-recovery-codes.txt
