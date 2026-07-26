@@ -6,6 +6,98 @@ This project follows **Semantic Versioning** and the general structure proposed 
 
 ---
 
+## [1.5.0] - 2026-07-26
+
+### Aggregate Weather Baselines
+
+Operation Sugar v1.5.0 introduces the project's first formal
+out-of-sample statistical modeling framework for São Paulo
+weather and sugarcane crushing.
+
+### Added
+
+- Expanded the São Paulo NASA POWER weather archive to cover
+  September 2009 through April 2026.
+- Extended growing-season weather features across 17 harvest years
+  and 642 São Paulo municipalities.
+- Constructed model-ready weather–harvest datasets for
+  16 complete historical harvest seasons.
+- Built five harvest-block aggregation datasets using
+  aggregation horizons \(h = 1, 2, 3, 4, 5\).
+- Implemented aggregate weather baseline models using:
+  - total growing-season rainfall;
+  - average growing-season temperature;
+  - harvest-block position.
+- Added harvest-block baseline models without weather predictors.
+- Added complete-season baseline models comparing:
+  - a training-season mean benchmark;
+  - an aggregate weather model.
+- Implemented leave-one-season-out cross-validation for all
+  baseline models.
+- Added standardized weather coefficients, prediction residuals,
+  normalized error metrics, and incremental model comparisons.
+- Added aggregate weather baseline dashboards for both
+  harvest-block and complete-season prediction tasks.
+
+### Changed
+
+- Updated weather ingestion and aggregation workflows to
+  automatically discover historical weather files rather than
+  relying on manually maintained year lists.
+- Updated the weather–harvest dataset to use the complete
+  historical weather archive.
+- Standardized weather predictors within each training fold
+  to eliminate information leakage during cross-validation.
+- Adopted complete harvest seasons as the unit of
+  out-of-sample validation.
+
+### Research Findings
+
+Across 16 complete São Paulo harvest seasons, aggregate
+growing-season rainfall and average temperature did not improve
+out-of-sample crushing predictions.
+
+At the harvest-block level:
+
+- harvest-block position explained most of the predictable
+  variation in seasonal crushing activity;
+- adding aggregate rainfall and temperature slightly reduced
+  predictive performance across all five aggregation horizons.
+
+At the complete-season level:
+
+- aggregate rainfall and temperature did not outperform a
+  benchmark that predicted each held-out season using the
+  average total crushing volume of the remaining training
+  seasons;
+- the aggregate weather model produced a lower
+  cross-validated coefficient of determination and a higher
+  normalized root mean squared error than the
+  training-season mean benchmark.
+
+Although rainfall and temperature coefficients were positive in
+the complete-sample regressions, these relationships did not
+generalize reliably to held-out harvest seasons.
+
+### Research Interpretation
+
+The results indicate that the strong predictive performance
+observed at the harvest-block level is primarily driven by the
+historical harvest calendar rather than aggregate weather
+information.
+
+The failure of aggregate weather variables at both the
+harvest-block and complete-season levels suggests that
+compressing the entire September–April growing season into one
+rainfall total and one average temperature removes important
+temporal information.
+
+These findings establish the motivation for the next research
+phase: month-level weather representations and temporally
+structured statistical models.
+
+---
+
 ## [1.4.0] - 2026-07-24
 
 ### Added

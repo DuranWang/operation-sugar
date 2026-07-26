@@ -495,25 +495,13 @@ DEFAULT_MONTHLY_WEATHER_FOLDER = (
 )
 
 MERGED_MONTHLY_WEATHER_FILENAME = (
-    "20190101_20260430_monthly.csv"
+    "20090901_20260430_monthly.csv"
 )
 
 def main() -> None:
     """Build and merge São Paulo monthly weather datasets."""
 
     state = "SP"
-
-    periods = [
-        "2019",
-        "2020",
-        "2021",
-        "20220101_20221231",
-        "20230101_20231231",
-        "20240101_20240831",
-        "20240901_20241231",
-        "20250101_20251231",
-        "20260101_20260430",
-    ]
 
     input_folder = (
         DEFAULT_DAILY_WEATHER_FOLDER
@@ -530,13 +518,19 @@ def main() -> None:
         exist_ok=True,
     )
 
+    input_paths = sorted(
+        input_folder.glob("*.csv")
+    )
+
+    if not input_paths:
+        raise FileNotFoundError(
+            f"No daily weather datasets found in {input_folder}"
+        )
+
     monthly_datasets = []
 
-    for period in periods:
-        input_path = (
-            input_folder
-            / f"{period}.csv"
-        )
+    for input_path in input_paths:
+        period = input_path.stem
 
         output_path = (
             output_folder
@@ -544,7 +538,7 @@ def main() -> None:
         )
 
         print(
-            f"\nProcessing {period}..."
+            f"\nProcessing {input_path.name}..."
         )
 
         monthly_weather = build_monthly_weather(
@@ -583,7 +577,3 @@ def main() -> None:
         "\nFinished building and merging all "
         "monthly weather datasets."
     )
-
-
-if __name__ == "__main__":
-    main()

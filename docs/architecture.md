@@ -1,6 +1,6 @@
 # Operation Sugar Architecture
 
-Operation Sugar is organized as a modular research engineering platform that processes heterogeneous public datasets through independent ETL pipelines before integrating them into unified research datasets for downstream analytics.
+Operation Sugar is organized as a modular quantitative research platform that processes heterogeneous public datasets through independent ETL pipelines before integrating them into unified research datasets for statistical modeling and downstream analytics.
 
 ---
 
@@ -22,13 +22,14 @@ Seasonal Framework ────────────────────�
                                                         │
                            ┌────────────────────────────┴────────────────────────────┐
                            ▼                                                         ▼
-                Weather Analytics                                      Harvest Analytics
+                  Statistical Modeling                                   Historical Analytics
                            │                                                         │
                            └────────────────────────────┬────────────────────────────┘
                                                         ▼
-                                             Historical Benchmark
-                                                   Dashboards
+                                                 Research Outputs
 ```
+
+The Unified Research Dataset serves as the common analytical foundation for statistical modeling, historical analytics, and future research workflows.
 
 ---
 
@@ -53,7 +54,7 @@ Feature Engineering
 Weather Dataset
 ```
 
-The weather pipeline transforms daily NASA POWER observations into validated analysis-ready weather datasets.
+The weather pipeline transforms daily NASA POWER observations into validated analysis-ready weather datasets for downstream statistical modeling and analytics.
 
 ---
 
@@ -81,10 +82,11 @@ The harvest pipeline maintains a continuously updated historical harvest databas
 
 # Unified Research Dataset
 
-The weather and harvest pipelines are processed independently before integration.
+Weather and harvest pipelines are processed independently before integration.
 
-The unified dataset serves as the foundation for:
+The resulting unified research dataset serves as the common input for:
 
+- statistical modeling;
 - weather analytics;
 - harvest analytics;
 - historical benchmark dashboards;
@@ -96,7 +98,7 @@ The unified dataset serves as the foundation for:
 
 ## Modular Architecture
 
-Weather processing, harvest processing, validation, and analytics are implemented as independent modules to improve maintainability and extensibility.
+Weather processing, harvest processing, feature engineering, statistical modeling, and analytics are implemented as independent modules to improve maintainability and extensibility.
 
 ---
 
@@ -112,20 +114,32 @@ Every processing stage performs validation before downstream analysis to ensure 
 
 ---
 
-## Unified Analytics Layer
+## Unified Research Dataset
 
-Weather and harvest data remain independent during processing but are combined into a unified analytical dataset for downstream research.
+Weather and harvest data remain independent during processing before being integrated into a unified research dataset for downstream statistical modeling and analytics.
 
 ---
 
-# Related Documentation
+## Reproducible Research
 
-For analytical methodology, see:
+Research datasets are generated through reproducible ETL pipelines, ensuring that statistical experiments can be repeated using the same validated data sources.
 
-- `seasonal_framework.md`
-- `analytical_framework.md`
-- `research_design_decisions.md`
+---
 
-For future development, see:
+# Relationship to Project Documentation
 
-- `ROADMAP.md`
+This document describes the software architecture of Operation Sugar.
+
+The agronomic framework is documented in **seasonal_framework.md**.
+
+The research and engineering decisions are documented in **research_design_decisions.md**.
+
+The statistical modeling methodology is documented in **modeling_framework.md**.
+
+Individual statistical experiments are documented in **statistical_experiments.md**.
+
+---
+
+# Future Development
+
+Future architectural extensions are described in **ROADMAP.md**.

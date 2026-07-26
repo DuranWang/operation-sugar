@@ -1,0 +1,5 @@
+specification,feature,coefficient
+mean_only,training_mean,345245955.3125
+weather,intercept,345245955.3125
+weather,growing_season_total_rainfall,8695430.814120688
+weather,growing_season_average_temperature,2715634.4283593046

@@ -1,15 +1,15 @@
 ![Python](https://img.shields.io/badge/Python-3.12-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
-![Version](https://img.shields.io/badge/Version-1.4-orange?style=flat-square)
+![Version](https://img.shields.io/badge/Version-1.5-orange?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
 
 # Operation Sugar
 
 An open-source research engineering platform for Brazilian sugarcane analytics.
 
-Operation Sugar integrates official Brazilian sugarcane production statistics from IBGE, daily weather observations from NASA POWER, and harvest reports from UNICA into reproducible datasets, modular ETL pipelines, and transparent research workflows for quantitative agricultural research.
+Operation Sugar integrates official Brazilian sugarcane production statistics from IBGE, daily weather observations from NASA POWER, and harvest reports from UNICA into reproducible datasets, modular ETL pipelines, transparent statistical modeling workflows, and quantitative agricultural research.
 
-Rather than focusing solely on predictive models, the project emphasizes reproducible research infrastructure, biologically meaningful seasonal analytics, and transparent engineering workflows for agricultural data science.
+Rather than focusing solely on predictive performance, the project emphasizes reproducible research infrastructure, biologically meaningful seasonal analytics, transparent engineering workflows, and rigorous out-of-sample model evaluation.
 
 ---
 
@@ -18,42 +18,58 @@ Rather than focusing solely on predictive models, the project emphasizes reprodu
 - 🌎 Weather analytics across 642 Brazilian sugar-producing municipalities
 - 🌦️ Integrated NASA POWER, IBGE, and UNICA public datasets
 - 📈 Historical harvest intelligence across 16 completed sugarcane seasons
-- 📊 Historical percentile-band benchmarking of current harvest progress
-- 🗓️ Data-driven harvest timing metrics
+- 📊 Aggregate weather baseline modeling with leave-one-season-out cross-validation
+- 📉 Quantitative evaluation of weather predictors against historical benchmarks
 - 🧪 167 automated unit tests, including 147 dedicated to the UNICA ETL pipeline
-- 📊 Automated weather and historical benchmark dashboards
-- 🏗️ Modular ETL, validation, analytics, and visualization architecture
+- 🏗️ Modular ETL, validation, analytics, modeling, and visualization architecture
 
 ---
 
 ## Dashboard Preview
 
-### Season Comparison Dashboard
+### Weather & Harvest Benchmark
 
 ![Comparison](docs/dashboard_season_comparison.png)
 
-*Compare historical weather conditions and matched-cutoff harvest progress across multiple Brazilian sugarcane seasons.*
+*Compare historical weather conditions and matched-cutoff harvest progress across multiple São Paulo sugarcane seasons.*
 
 ### Historical Harvest Calendar
 
 ![Historical Harvest Calendar](docs/figures/harvest_heatmap.png)
 
-*Visualize how annual sugarcane crushing is distributed throughout sixteen completed São Paulo crop seasons.*
+*Visualize how annual sugarcane crushing is distributed across sixteen completed São Paulo harvest seasons.*
 
-### Historical Percentile Bands
+### Historical Percentile Benchmark
 
 ![Historical Percentile Bands](docs/figures/harvest_percentile_bands.png)
 
-*Benchmark the current harvest against the full historical distribution of completed seasons using cumulative crushing percentile bands.*
+*Benchmark the current harvest against the historical distribution of completed seasons.*
+
+### Harvest-Block Aggregate Weather Baseline
+
+![Aggregate Baseline Dashboard](docs/figures/aggregate_baseline_dashboard.png)
+
+*Evaluate whether aggregate growing-season rainfall and temperature improve out-of-sample prediction of harvest-block crushing beyond historical harvest timing.*
+
+### Complete-Season Aggregate Weather Baseline
+
+![Season Total Baseline Dashboard](docs/figures/season_total_baseline_dashboard.png)
+
+*Compare aggregate weather predictors against a historical mean benchmark for complete-season crushing using leave-one-season-out cross-validation.*
+
+Across both prediction tasks, aggregate growing-season weather did **not** improve out-of-sample predictive performance, motivating the transition toward month-level weather representations in future releases.
 
 For a detailed explanation of the Harvest Intelligence methodology, see **docs/harvest_intelligence.md**.
+
 ---
 
 ## Why Operation Sugar?
 
 Brazilian sugarcane data are publicly available but fragmented across multiple organizations, temporal resolutions, and geographic scales.
 
-Operation Sugar integrates these heterogeneous datasets into a reproducible research platform for weather and harvest analytics.
+Operation Sugar integrates these heterogeneous datasets into a reproducible research platform for weather analytics, harvest intelligence, and statistical modeling.
+
+---
 
 ## Seasonal Research Framework
 
@@ -87,6 +103,8 @@ Operation Sugar provides a reproducible research engineering workflow for Brazil
 - Comparable historical harvest snapshots
 - Automated harvest research summaries
 - Weather–harvest dataset construction
+- Statistical baseline modeling
+- Leave-one-season-out cross-validation
 - Historical benchmark dashboards
 - Comprehensive data validation
 - 167 automated unit tests
@@ -108,9 +126,9 @@ Operation Sugar aims to build a reproducible end-to-end research platform that:
 
 ## Current Version
 
-Version **1.4** introduces the Harvest Intelligence module, extending the platform with historical harvest benchmarking, percentile-band analytics, automated research summaries, and cumulative harvest pace analysis.
+Version **1.5** extends Operation Sugar beyond data engineering and historical analytics by introducing its first statistical modeling framework.
 
-The current release provides a reproducible platform for weather analytics, harvest analytics, and historical benchmark construction.
+The current release evaluates aggregate growing-season weather variables using reproducible out-of-sample validation and establishes quantitative baselines for future month-level weather models.
 
 See **CHANGELOG.md** for detailed release history.
 
@@ -120,7 +138,7 @@ See **CHANGELOG.md** for detailed release history.
 
 Operation Sugar does **not** currently model:
 
-- causal weather–harvest relationships;
+- month-level weather effects;
 - maturation-stage weather effects;
 - soil moisture;
 - vapor pressure deficit;
@@ -133,7 +151,7 @@ Operation Sugar does **not** currently model:
 - satellite-derived crop conditions;
 - sugar price forecasting.
 
-These topics remain future research directions and are intentionally excluded from Version 1.4.
+These topics remain future research directions and are intentionally excluded from Version 1.5.
 
 ---
 
@@ -160,10 +178,11 @@ Detailed project documentation is available in the `docs/` directory.
 | Metric | Value |
 |--------|-------|
 | Municipalities | 642 |
-| Monthly Weather Archive | September 2019 – April 2026 |
-| Completed Weather Seasons | 2019–20 to 2025–26 |
+| Historical Weather Archive | September 2009 – April 2026 |
 | Historical Harvest Seasons | 17 (16 completed) |
 | Weather Variables | Rainfall, Temperature, Relative Humidity |
+| Statistical Models | Aggregate Weather Baselines |
+| Cross Validation | Leave-One-Season-Out |
 | Automated Tests | 167 |
 | UNICA ETL Tests | 147 |
 | Python | 3.12 |
@@ -189,10 +208,21 @@ Current harvest analytics include:
 - Harvest timing metrics
 - Automated harvest research summaries
 
+### Statistical Modeling
+
+Current statistical modeling includes:
+
+- Aggregate weather baseline models
+- Harvest-block prediction
+- Complete-season prediction
+- Leave-one-season-out cross-validation
+- Historical benchmark comparison
+
 ### Planned Features
 
 Future research will extend the platform with:
 
+- Month-level weather modeling
 - Maturation-stage weather analytics
 - Soil moisture
 - Vapor pressure deficit (VPD)
@@ -211,7 +241,7 @@ Future research will extend the platform with:
 | **IBGE** | Municipality metadata and annual sugarcane production |
 | **UNICA** | Harvest progress and crushing statistics |
 
-These heterogeneous public datasets are integrated through reproducible ETL, validation, aggregation, and analytics workflows.
+These heterogeneous public datasets are integrated through reproducible ETL, validation, aggregation, analytics, and statistical modeling workflows.
 
 ---
 
@@ -219,12 +249,13 @@ These heterogeneous public datasets are integrated through reproducible ETL, val
 
 The pipeline produces:
 
-- processed weather datasets
-- harvest analytics datasets
-- benchmark dashboards
-- harvest intelligence datasets
-- automated research summaries
-- unified research datasets
+- processed weather datasets;
+- harvest analytics datasets;
+- statistical modeling datasets;
+- benchmark dashboards;
+- harvest intelligence datasets;
+- automated research summaries;
+- unified research datasets.
 
 ---
 
@@ -249,6 +280,8 @@ What happens?
 ✓ Process harvest reports
 
 ✓ Build research datasets
+
+✓ Train baseline statistical models
 
 ✓ Generate dashboards
 

@@ -33,7 +33,7 @@ WEATHER_INPUT_PATH = (
     / "processed"
     / "monthly_weather"
     / "SP"
-    / "20190101_20260430_monthly.csv"
+    / "20090901_20260430_monthly.csv"
 )
 
 UNICA_HISTORY_PATH = (

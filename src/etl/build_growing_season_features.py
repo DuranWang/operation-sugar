@@ -10,7 +10,6 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.etl.loader import load_yearly_csv_files
 from src.etl.saver import save_dataframe_csv
 from src.etl.summary import summarize_dataframe
 from src.etl.validator import (
@@ -22,6 +21,7 @@ from src.etl.validator import (
 from src.feature_engineering.pipeline import (
     calculate_growing_season_features,
 )
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -45,16 +45,11 @@ OUTPUT_PATH = (
     / "growing_season_features.csv"
 )
 
-INPUT_YEARS = [
-    2019,
-    2020,
-    2021,
-]
 
-OUTPUT_HARVEST_YEARS = [
-    2020,
-    2021,
-]
+
+OUTPUT_HARVEST_YEARS = list(
+    range(2010, 2027)
+)
 
 DAILY_WEATHER_COLUMNS = [
     "Date",
@@ -81,6 +76,52 @@ GROWING_SEASON_COLUMNS = [
     "growing_season_max_consecutive_dry_days",
 ]
 
+
+def load_daily_weather_periods(
+    input_folder: Path,
+) -> pd.DataFrame:
+    """
+    Load every daily weather dataset inside the folder.
+    """
+
+    input_paths = sorted(
+        input_folder.glob("*.csv")
+    )
+
+    if not input_paths:
+        raise FileNotFoundError(
+            f"No daily weather datasets found in {input_folder}"
+        )
+
+    weather_datasets = []
+
+    for input_path in input_paths:
+
+        print(
+            f"Loading {input_path.name}"
+        )
+
+        period_df = pd.read_csv(
+            input_path
+        )
+
+        if period_df.empty:
+            raise ValueError(
+                f"Empty dataset: {input_path}"
+            )
+
+        weather_datasets.append(
+            period_df
+        )
+
+    weather_df = pd.concat(
+        weather_datasets,
+        ignore_index=True,
+    )
+
+    return weather_df
+
+
 def prepare_daily_weather(
     weather_df: pd.DataFrame,
 ) -> pd.DataFrame:
@@ -102,6 +143,13 @@ def prepare_daily_weather(
     prepared_weather_df["month"] = (
         prepared_weather_df["date"].dt.month
     )
+
+    prepared_weather_df = prepared_weather_df.sort_values(
+        [
+            "ibge_code",
+            "date",
+        ]
+    ).reset_index(drop=True)
 
     return prepared_weather_df
 
@@ -127,9 +175,12 @@ def filter_output_harvest_years(
 
 
 def main() -> None:
-    weather_df = load_yearly_csv_files(
+    """
+    Build and save São Paulo growing-season weather features.
+    """
+
+    weather_df = load_daily_weather_periods(
         input_folder=INPUT_FOLDER,
-        years=INPUT_YEARS,
     )
 
     validate_expected_columns(
@@ -206,7 +257,8 @@ def main() -> None:
     )
 
     summarize_dataframe(
-        growing_season_features
+        growing_season_features,
+        name="Growing-Season Weather Features",
     )
 
     save_dataframe_csv(
