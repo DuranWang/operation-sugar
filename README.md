@@ -5,502 +5,199 @@
 ![Version](https://img.shields.io/badge/Version-1.5.1-orange?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
 
-**Open-source research and benchmarking infrastructure for commodity forecasts, beginning with Brazilian sugarcane.**
+**Independent quantitative research into Brazilian sugarcane and sugar markets, built on public data and transparent forecast benchmarks.**
 
----
+Operation Sugar (OS) combines weather observations, agricultural statistics, and harvest reports to investigate commodity supply. Its central research question is: **does additional information improve prediction beyond a relevant public-information benchmark?**
 
-## Background
+The repository contains data pipelines, harvest analytics, and a completed weather–crushing modeling study. Current research is moving toward annual cane yield, expanded weather windows, and agronomically motivated variables. The long-term goal is a reproducible framework for comparing commodity forecasts under consistent targets, information sets, and evaluation rules.
 
-Operation Sugar (OS) began as an independent quantitative research project focused on Brazilian sugarcane.
+## Research Snapshot
 
-The public information required to study sugarcane production and harvest activity is fragmented across institutions, geographic levels, temporal frequencies, and publication schedules. Weather observations, agricultural statistics, and harvest reports therefore require substantial engineering, validation, and alignment before they can be analyzed together.
+| Dimension | Completed research foundation |
+|---|---|
+| Geographic scope | São Paulo, Brazil; weather analytics covering 642 municipalities |
+| Public data | NASA POWER weather, IBGE agricultural statistics, and UNICA harvest reports |
+| Historical modeling sample | 16 completed harvest seasons |
+| Model comparison | Seven harvest-block models across five aggregation scales |
+| Methods | OLS, partially penalized Ridge, nested leave-one-season-out tuning |
+| Diagnostics | Coefficient stability, penalty-boundary selection, effective weather degrees of freedom |
+| Engineering | Modular Python ETL, validation, feature engineering, modeling, reporting, and automated tests |
 
-## Goal
+## Completed Study — Does Weather Improve Crushing Predictions?
 
-The long-term goal of OS is to develop transparent infrastructure for benchmarking commodity forecasts. Rather than treating one forecast as the universal standard, OS aims to compare statistical models, official outlooks, institutional research, and proprietary forecasts against clearly defined reference forecasts.
+### Question and Design
 
-The central question is:
+The v1.5.1 study tests whether September–April rainfall and temperature improve prediction of **harvest-block sugarcane crushing volume** beyond the historical harvest profile.
 
-> How much incremental value does a forecast provide beyond information already available from transparent public sources and alternative public forecasts?
+The reference model, **Block-Only OLS**, uses harvest-block fixed effects. Weather models add aggregate or month-level predictors. All seven models use the same outer leave-one-season-out (LOSO) folds; Ridge penalties are selected with an inner LOSO procedure.
 
-Brazilian sugarcane will serve as the first application. The project will use this domain to develop and test the data, target definitions, historical-vintage controls, and out-of-sample procedures required for fair forecast comparison.
+### Results
 
-## Problem
-
-Commodity forecasts are widely produced, but they are rarely preserved and evaluated under consistent rules.
-
-### Forecast records are incomplete
-
-Forecasts are commonly distributed through emails, spreadsheets, presentations, reports, and internal systems. When a forecast is revised, the original version may be lost.
-
-It may therefore be unclear when a forecast was made, what information was available, and which version should be evaluated. This creates opportunities for hindsight bias and selective reporting.
-
-### Forecasts are not directly comparable
-
-Forecasts may differ in target definition, geographic scope, units, aggregation period, publication date, horizon, and treatment of later revisions.
-
-Comparing them without standardizing these differences can produce misleading conclusions.
-
-### Historical evaluations may contain look-ahead bias
-
-Agricultural and economic data are often revised after publication. A backtest using the latest dataset may therefore include information that was unavailable when the forecast would originally have been made.
-
-Credible evaluation must distinguish among observation, publication, forecast, revision, and realization dates.
-
-### Transparent reference forecasts are often missing
-
-A forecast may appear accurate because it captures seasonality, persistence, partial-season observations, or other patterns already visible in public data.
-
-Without relevant reference forecasts, it is difficult to determine whether the forecast contributes genuine incremental information.
-
-## Proposed Solution
-
-OS proposes an open framework that organizes forecasts around standardized records, multiple reference forecasts, historical data vintages, and consistent evaluation rules.
-
-### 1. Standardized Forecast Records
-
-Each forecast would be stored with a defined target, scope, horizon, publication timestamp, forecast value, information set, and revision history.
-
-Original forecasts would remain preserved, while later updates would be recorded as separate revisions.
-
-### 2. Multiple Reference Forecasts
-
-OS would compare forecasts against several relevant alternatives, which may include:
-
-- historical or seasonal baselines;
-- persistence-based forecasts;
-- reproducible public-information models;
-- official industry or government outlooks;
-- market consensus forecasts.
-
-These references would distinguish basic predictive performance from incremental value beyond existing public information.
-
-### 3. Vintage-Aligned Data
-
-Evaluations would use, where possible, the information available at the time each forecast was produced.
-
-Historical releases and revisions would be preserved or reconstructed. Where true historical vintages are unavailable, the limitation would be documented explicitly.
-
-### 4. Standardized Evaluation
-
-Forecasts would be compared using a common protocol covering:
-
-- accuracy and bias;
-- improvement relative to reference forecasts;
-- stability across horizons and seasons;
-- revision behavior;
-- uncertainty, where available.
-
-### 5. Reproducible Research Infrastructure
-
-The framework would be supported by version-controlled code, documented data sources, transparent model specifications, preserved methodology versions, and reproducible historical results.
-
-Changes to targets, data, models, or evaluation procedures would be recorded explicitly so that external researchers can reproduce and challenge the conclusions.
-
-## Initial Application
-
-Brazilian sugarcane will provide the first complete case study.
-
-The initial implementation will define:
-
-- a specific forecasting target;
-- a historical information timeline;
-- multiple reference forecasts;
-- vintage-aware datasets;
-- a standardized evaluation protocol;
-- reproducible out-of-sample results.
-
-The immediate objective is not to build a universal forecasting platform. It is to demonstrate that forecasts in one economically relevant commodity market can be preserved, aligned, and evaluated more transparently.
-
-Expansion to other markets would be considered only after the methodology has been validated in Brazilian sugarcane.
-
----
-
-## Current Research Foundation
-
-The current repository is the research foundation for this longer-term benchmarking framework.
-
-OS integrates official Brazilian sugarcane production statistics from IBGE, daily weather observations from NASA POWER, and harvest reports from UNICA into reproducible datasets, modular ETL pipelines, historical harvest intelligence, and statistically evaluated modeling workflows.
-
-The project currently emphasizes strong reference models, transparent assumptions, reproducible experiments, and rigorous out-of-sample validation rather than model complexity alone.
-
-### Highlights
-
-- 🌎 Weather analytics across **642 São Paulo sugar-producing municipalities**
-- 🌦️ Integrated **NASA POWER**, **IBGE**, and **UNICA** public datasets
-- 📈 Historical harvest intelligence across **16 completed sugarcane seasons**
-- 📊 **Seven statistical models** evaluated across **five harvest aggregation horizons**
-- 🧠 Month-level rainfall and temperature modeling with **nested leave-one-season-out validation**
-- 📉 Fold-specific feature standardization and **partially penalized Ridge regression**
-- 🔍 Ridge stability and effective weather degrees-of-freedom diagnostics
-- 🧪 **174 automated unit tests**, including **147 dedicated to the UNICA ETL pipeline**
-- 🏗️ Modular ETL, validation, analytics, modeling, visualization, and research architecture
-
----
-
-## Key Version 1.5.1 Findings
-
-Seven statistical models were evaluated using identical leave-one-season-out cross-validation across five harvest aggregation horizons.
-
-| Rank | Model | Relative RMSE vs. Block-Only |
-|-----:|------------------------------|----------------:|
+| Rank | Model | Mean RMSE increase vs. Block-Only |
+|---:|---|---:|
 | 1 | Block-Only OLS | 0.00% |
-| 2 | Temperature Month-Level Ridge | -1.00% |
-| 3 | Aggregate Weather OLS | -2.45% |
-| 4 | Rainfall Month-Level Ridge | -2.75% |
-| 5 | Joint Month-Level Ridge | -11.76% |
-| 6 | Temperature Month-Level OLS | -14.73% |
-| 7 | Rainfall Month-Level OLS | -28.20% |
+| 2 | Temperature Month-Level Ridge | 1.00% |
+| 3 | Aggregate Weather OLS | 2.45% |
+| 4 | Rainfall Month-Level Ridge | 2.75% |
+| 5 | Joint Month-Level Ridge | 11.76% |
+| 6 | Temperature Month-Level OLS | 14.73% |
+| 7 | Rainfall Month-Level OLS | 28.20% |
 
-Negative values indicate worse out-of-sample RMSE than the historical Block-Only benchmark.
+Values are the arithmetic mean of percentage RMSE increases across the five aggregation scales. Positive values indicate worse performance than the benchmark. The RMSE ranking is identical across all five scales.
 
-### Main Findings
+![Seven-model RMSE comparison across harvest aggregation scales](docs/figures/month_level_model_rmse_comparison.png)
 
-- Historical harvest timing remained the strongest predictor across every aggregation horizon.
-- Ridge regression substantially reduced overfitting relative to unregularized month-level models.
-- Month-level temperature contained more stable predictive structure than month-level rainfall.
-- Nested leave-one-season-out validation selected the maximum Ridge penalty in most outer folds, indicating that only a very small amount of weather complexity generalized across seasons.
-- Within the available sixteen-season historical sample, growing-season weather variables did **not** provide stable incremental predictive value beyond the historical harvest profile for harvest-block crushing prediction.
+**The historical harvest-profile benchmark achieved the lowest held-out-season RMSE at every scale.** Ridge substantially reduced the error of unregularized monthly models, but weather features did not deliver stable incremental predictive value in this sample and model family.
 
-This conclusion is intentionally narrow.
+Nested tuning frequently selected the maximum Ridge penalty, and median effective weather degrees of freedom was approximately zero. Fold-level diagnostics also identified seasons associated with unstable penalty selection and retained model complexity.
 
-It does **not** imply that weather has no influence on sugarcane production. Instead, it indicates that the evaluated linear aggregate and month-level weather specifications do not outperform a simple historical harvest-calendar benchmark under rigorous out-of-sample validation.
+These results concern the evaluated linear specifications and crushing-volume target; they do not establish that weather is irrelevant to cane production. OS retains the negative results to guide subsequent experiments and make the limits of the evidence explicit.
 
-This result illustrates the purpose of the broader OS framework: a model should be judged by the incremental value it provides beyond relevant reference forecasts, not by complexity or explanatory plausibility alone.
+See the [full findings](month_level_model_findings.md), [negative-results record](negative_results.md), and [saved comparison outputs](data/processed/modeling/month_level_baseline_results/).
 
----
+## Current Research — From Crushing Volume to Annual Cane Yield
 
-## Research Dashboard
+The next study will test whether weather is more informative for **annual cane yield, measured in tonnes of cane per hectare (TCH)**.
 
-### Weather & Harvest Benchmark
+The motivation is that block-level crushing may combine crop conditions with harvest scheduling and processing activity. Annual yield offers a different target for studying agricultural productivity. This is a research hypothesis: the completed study did not identify the causes of its underperformance, and changing targets does not guarantee better predictions.
 
-<p align="center">
-  <img src="docs/figures/dashboard_season_comparison.png" width="900">
-</p>
+### Planned Experiment Sequence
 
-Compare historical weather conditions and matched-cutoff harvest progress across multiple São Paulo sugarcane seasons.
+| Step | Experiment | Question |
+|---|---|---|
+| 1 | Establish annual cane-yield benchmarks | How well do simple historical references predict TCH? |
+| 2 | Apply the original eight-month rainfall and temperature information set | Does weather add information for the new target? |
+| 3 | Extend to eight growing months plus four maturation months | Does the additional weather window improve prediction? |
+| 4 | Add VPD, soil moisture, and solar radiation separately, then in combination | Which variable groups contribute incremental information? |
 
----
+The proposed eight-plus-four-month division requires explicit calendar alignment and agronomic justification. Comparisons will use matched samples and information cutoffs so that changes in coverage are not mistaken for improvements from new features.
 
-### Historical Harvest Calendar
+### Mechanism-Driven Variable Selection
 
-<p align="center">
-  <img src="docs/figures/harvest_heatmap.png" width="900">
-</p>
+| Candidate variable | Agricultural hypothesis to investigate |
+|---|---|
+| Vapor pressure deficit (VPD) | Atmospheric moisture demand and associated crop water-stress responses |
+| Soil moisture | Water availability and persistence of deficits beyond rainfall totals |
+| Solar radiation | Radiation availability and biomass accumulation |
 
-Visualize how annual sugarcane crushing is distributed across sixteen completed São Paulo harvest seasons.
+These mechanisms will be supported with agronomic literature before model inclusion. Source definitions, soil depth, radiation measures, aggregation windows, and redundancy with existing predictors must be documented. Effects on cane biomass will be distinguished from effects on sugar content and recovery.
 
----
+Small-sample uncertainty is another planned research focus, including Bayesian regression and posterior predictive analysis against regularized reference models. These extensions are **planned work**, not completed capabilities.
 
-### Historical Percentile Benchmark
+## Four-Layer Research Roadmap
 
-<p align="center">
-  <img src="docs/figures/harvest_percentile_bands.png" width="900">
-</p>
+| Layer | Research focus | Status |
+|---|---|---|
+| **1. Agricultural supply** | Weather → annual cane yield; compatible area data → cane production | Initial weather–crushing study completed; yield study is the next priority |
+| **2. Sugar production and energy** | Cane → sugar output; sugar content/recovery, ethanol/sugar mix, and crude-oil–sugar-price relationships | Planned |
+| **3. Currency** | BRL/USD and sugar prices; incremental information beyond agricultural and energy variables | Planned |
+| **4. Supply chains** | Port activity, exports, transport, inventories, and interactions with sugar prices | Planned |
 
-Benchmark the current harvest against the historical distribution of completed seasons.
+These layers define a research agenda, not an established causal chain. Later studies will distinguish association, predictive information, and causal hypotheses. Cane yield, total cane production, sugar output, and sugar prices require separate target definitions and benchmarks.
 
----
+The roadmap also distinguishes raw sugar from refined white sugar. Any ICE No. 11 price study will specify the raw-sugar contract, forecast horizon, and contract-roll convention.
 
-### Harvest-Block Aggregate Weather Baseline
+See [ROADMAP.md](ROADMAP.md) for experiment sequencing, completion criteria, and the retained release history.
 
-<p align="center">
-  <img src="docs/figures/aggregate_baseline_dashboard.png" width="900">
-</p>
+## Methodology and Interpretation
 
-Evaluate whether aggregate growing-season weather improves out-of-sample prediction of harvest-block crushing beyond historical harvest timing.
+- **Season-level evaluation:** complete seasons are held out together, avoiding random splits of blocks from the same season.
+- **Nested tuning:** Ridge penalties are selected using only the outer training seasons.
+- **Training-fold preprocessing:** weather standardization is fitted within each training fold, using one weather observation per season.
+- **Partial regularization:** weather coefficients are penalized; the intercept and harvest-block effects remain unpenalized. The implementation uses residualization and linear-system solves.
+- **Benchmark discipline:** model comparisons use matching targets, samples, and outer folds; unstable and negative results are documented.
 
----
+### Evaluation Boundaries
 
-### Complete-Season Aggregate Weather Baseline
+LOSO evaluates generalization to a held-out season, but its training set can include later seasons. It is **not a chronological, point-in-time forecasting backtest**. Historical-vintage controls and expanding/rolling evaluations remain development goals.
 
-<p align="center">
-  <img src="docs/figures/season_total_baseline_dashboard.png" width="900">
-</p>
+The five aggregation scales combine base harvest periods into different block sizes; they are **not automatically one-to-five-month forecast lead times**. Full-period observed weather also constrains when a prediction could have been issued. Future studies will define forecast dates and publication availability before selecting features.
 
-Compare aggregate weather predictors against a historical mean benchmark for complete-season crushing using leave-one-season-out cross-validation.
+The effective weather sample is small: repeated harvest blocks do not create additional independent seasons. Findings should be interpreted within this sample, target, and specification set.
 
----
+## Reproducibility
 
-### Seven-Model Month-Level Comparison
+### Inspect Existing Results
 
-<p align="center">
-  <img src="docs/figures/month_level_model_rmse_comparison.png" width="900">
-</p>
+The repository includes [model results](data/processed/modeling/), [research figures](docs/figures/), and detailed experiment records. These can be inspected without downloading the raw weather archive.
 
-Compare seven statistical models across five harvest aggregation horizons under identical leave-one-season-out evaluation.
+Additional visualizations include the [weather–harvest comparison](docs/figures/dashboard_season_comparison.png), [harvest calendar](docs/figures/harvest_heatmap.png), [historical percentile bands](docs/figures/harvest_percentile_bands.png), [penalty diagnostics](docs/figures/month_level_ridge_boundary_diagnostics.png), and [effective degrees of freedom](docs/figures/month_level_ridge_effective_degrees_of_freedom.png).
 
----
-
-### Incremental Value Beyond the Historical Harvest Profile
-
-<p align="center">
-  <img src="docs/figures/month_level_model_improvement_vs_block.png" width="900">
-</p>
-
-Measure whether aggregate and month-level weather features provide additional predictive value beyond the historical harvest profile.
-
----
-
-### Ridge Stability Diagnostics
-
-<p align="center">
-  <img src="docs/figures/month_level_ridge_boundary_diagnostics.png" width="900">
-</p>
-
-Visualize how frequently nested cross-validation selects boundary Ridge penalties across seasons and prediction horizons.
-
----
-
-### Effective Weather Degrees of Freedom
-
-<p align="center">
-  <img src="docs/figures/month_level_ridge_effective_degrees_of_freedom.png" width="900">
-</p>
-
-Compare the typical amount of weather information retained by Ridge with the maximum retained in influential validation folds.
-
----
-
-For the harvest methodology, see [`docs/harvest_intelligence.md`](docs/harvest_intelligence.md).
-
-For the stable statistical methodology, see [`docs/modeling_framework.md`](docs/modeling_framework.md). For Version 1.5.1 results and diagnostics, see [`docs/research/month_level_model_findings.md`](docs/research/month_level_model_findings.md).
-
----
-
-## Current Platform Capabilities
-
-### Data Engineering
-
-- Automated NASA POWER weather ingestion
-- Municipality metadata integration
-- UNICA harvest report ETL pipeline
-- Historical harvest database updater
-- Comprehensive schema validation
-
-### Weather Analytics
-
-- Municipality-level monthly weather aggregation
-- Growing-season weather summaries
-- September–April month-level rainfall features
-- September–April month-level temperature features
-- Weather–harvest dataset construction
-
-### Harvest Intelligence
-
-- Historical harvest calendar construction
-- Monthly crushing distribution analysis
-- Historical percentile-band benchmarking
-- Comparable historical harvest snapshots
-- Harvest timing metrics
-- Automated harvest research summaries
-
-### Statistical Modeling
-
-- Block-Only historical benchmark
-- Aggregate Weather OLS
-- Complete-Season Aggregate Weather OLS
-- Rainfall Month-Level OLS
-- Temperature Month-Level OLS
-- Rainfall Month-Level Ridge
-- Temperature Month-Level Ridge
-- Joint Rainfall–Temperature Ridge
-- Seven-model comparison framework
-- Leave-One-Season-Out cross-validation
-- Nested Leave-One-Season-Out Ridge selection
-
-### Research Infrastructure
-
-- Modular project architecture
-- Automated visualization pipeline
-- Publication-style reporting figures
-- Comprehensive validation framework
-- Automated testing
-- Reproducible research documentation
-
----
-
-## Repository Statistics
-
-| Metric | Value |
-|---------|------:|
-| Municipalities | 642 |
-| Historical Weather Archive | September 2009 – April 2026 |
-| Historical Harvest Seasons | 17 (16 completed) |
-| Weather Variables | Rainfall, Temperature, Relative Humidity |
-| Month-Level Weather Features | September–April Rainfall & Temperature |
-| Statistical Models | 7 |
-| Harvest Aggregation Horizons | 5 |
-| Validation Strategy | Leave-One-Season-Out |
-| Ridge Hyperparameter Selection | Nested Leave-One-Season-Out |
-| Automated Tests | 174 |
-| UNICA ETL Tests | 147 |
-| Python | 3.12 |
-
----
-
-## Documentation
-
-Project documentation is organized into platform documentation, research documentation, and project management.
-
-### Platform Documentation
-
-| Document | Description |
-|----------|-------------|
-| [`docs/architecture.md`](docs/architecture.md) | Overall platform architecture and repository organization |
-| [`docs/analytical_framework.md`](docs/analytical_framework.md) | Construction and validation of analytical variables |
-| [`docs/modeling_framework.md`](docs/modeling_framework.md) | Stable statistical modeling and validation methodology |
-| [`docs/seasonal_framework.md`](docs/seasonal_framework.md) | Biological and operational seasonal structure |
-| [`docs/harvest_intelligence.md`](docs/harvest_intelligence.md) | Historical harvest benchmark methodology |
-| [`docs/feature_dictionary.md`](docs/feature_dictionary.md) | Definitions of engineered variables |
-| [`docs/literature_registry.md`](docs/literature_registry.md) | Supporting agronomic literature |
-
-### Research Documentation
-
-| Document | Description |
-|----------|-------------|
-| [`research_decisions.md`](research_decisions.md) | Major engineering and analytical decisions |
-| [`statistical_experiments.md`](statistical_experiments.md) | Statistical experiment specifications and records |
-| [`month_level_model_findings.md`](month_level_model_findings.md) | Version 1.5.1 modeling results and interpretation |
-| [`negative_results.md`](negative_results.md) | Modeling approaches that did not generalize |
-
-### Project Management
-
-| Document | Description |
-|----------|-------------|
-| [`ROADMAP.md`](ROADMAP.md) | Planned future development |
-| [`CHANGELOG.md`](CHANGELOG.md) | Release history |
-
-For readers interested in the complete modeling methodology, validation procedure, and experimental results, these documents provide substantially more detail than this repository overview.
-
----
-
-## Quick Start
-
-Clone the repository.
+### Set Up
 
 ```bash
 git clone https://github.com/DuranWang/operation-sugar.git
-
 cd operation-sugar
+python -m pip install -r requirements.txt
 ```
 
-Install dependencies.
+The project targets Python 3.12. Data ingestion and local preparation are required for a rebuild from source; cloning alone does not provide the raw weather archive.
 
-```bash
-pip install -r requirements.txt
-```
+### Run Analytics from Prepared Inputs
 
-Run the complete research pipeline.
+The analytics runner expects São Paulo daily weather CSVs under `data/raw/nasa_power/daily_weather/SP/`, together with the harvest inputs required by its modules. Consult the [architecture](docs/architecture.md) and module input paths before running.
 
 ```bash
 python -m src.pipelines.run_pipeline
 ```
 
-Execute the automated test suite.
+This runner performs weather aggregation, feature construction, dashboards, and harvest intelligence. Statistical model estimation is a separate workflow.
 
-```bash
-python -m pytest src/tests -v
-```
+When rebuilding model-ready datasets, ensure harvest directory casing matches the code: the supplied snapshot contains `data/processed/unica/Crushing/`, while dataset builders reference `data/processed/unica/crushing/`. These differ on case-sensitive filesystems.
 
----
+### Rerun the v1.5.1 Models
 
-## Reproducing the Version 1.5.1 Study
-
-The complete month-level weather modeling workflow can be reproduced by executing the modeling modules in sequence.
+With the included model-ready CSVs under `data/processed/modeling/aggregate_baseline/` and `data/processed/modeling/month_level_baseline/`, the modeling sequence is:
 
 ```bash
 python -m src.modeling.aggregate_baseline
-
 python -m src.modeling.block_only_baseline
-
 python -m src.modeling.month_level_baseline
-
 python -m src.modeling.rainfall_month_level_ridge
-
 python -m src.modeling.temperature_month_level_ols
-
 python -m src.modeling.temperature_month_level_ridge
-
 python -m src.modeling.joint_month_level_ridge
-
 python -m src.modeling.month_level_model_comparison
-
 python -m src.visualization.month_level_model_reporting
 ```
 
-Primary modeling outputs are written to:
+To rebuild those input tables after preparing upstream weather–harvest data, use `src.modeling.aggregate_baseline_data` and `src.modeling.month_level_baseline_data`. The separate complete-season crushing experiment is implemented in `src.modeling.season_total_baseline`.
 
-```text
-data/processed/modeling/
-```
+Model outputs are written under `data/processed/modeling/`; figures are written under `docs/figures/`.
 
-Research figures are generated under:
-
-```text
-docs/figures/
-```
-
-The complete methodology and interpretation are documented in:
-
-```text
-docs/research/month_level_model_findings.md
-```
-
----
-
-## Testing
-
-Run the complete automated test suite.
+### Run Tests
 
 ```bash
 python -m pytest src/tests -v
 ```
 
-Current status:
+The repository includes automated tests for ETL, validation, harvest processing, and weather feature engineering. Run the suite in the configured environment to determine the current collected-test count and pass status.
 
-- ✅ 174 automated tests
-- ✅ 100% passing
+## Documentation
 
-The test suite covers:
+| Document | Purpose |
+|---|---|
+| [Architecture](docs/architecture.md) | Modules, data flow, and repository organization |
+| [Modeling framework](docs/modeling_framework.md) | Model specifications and evaluation methodology |
+| [Analytical framework](docs/analytical_framework.md) | Construction and validation of analytical variables |
+| [Seasonal framework](docs/seasonal_framework.md) | Biological and operational seasonal definitions |
+| [Harvest intelligence](docs/harvest_intelligence.md) | Historical harvest benchmarks |
+| [Feature dictionary](docs/feature_dictionary.md) | Engineered-variable definitions |
+| [Literature registry](docs/literature_registry.md) | Supporting agronomic literature |
+| [Research decisions](research_decisions.md) | Engineering and analytical decisions |
+| [Statistical experiments](statistical_experiments.md) | Experiment specifications and records |
+| [v1.5.1 findings](month_level_model_findings.md) | Results and diagnostics |
+| [Negative results](negative_results.md) | Specifications that did not generalize |
+| [Roadmap](ROADMAP.md) / [Changelog](CHANGELOG.md) | Planned research and release history |
 
-- ETL pipelines
-- Schema validation
-- Data validation
-- Historical harvest processing
-- Duplicate detection
-- Temporal consistency
-- Statistical modeling utilities
+## Long-Term Benchmarking Goal
 
----
+OS aims to make commodity forecasts easier to preserve, reproduce, and compare. Planned infrastructure includes standardized forecast records, preserved revisions, historical data vintages where available, and evaluation against multiple public reference forecasts. Brazilian sugar is the first application; broader expansion depends on validating the approach in this domain.
 
-## Contributing
+## Contributing and Contact
 
-Suggestions, bug reports, feature requests, and research collaborations are welcome.
+Suggestions, bug reports, and research collaborations are welcome. Contributions should prioritize clear assumptions, reproducibility, appropriate benchmarks, and demonstrable incremental value. Please open an issue before major architectural or modeling changes.
 
-Contributions should prioritize:
+Contact: [Duran Wang on LinkedIn](https://www.linkedin.com/in/duranwang/).
 
-- Reproducibility
-- Transparent assumptions
-- Reliable validation
-- Interpretable statistical analysis
-- Clear documentation
-- Incremental analytical value
-
-Please open an issue before submitting major architectural or modeling changes.
-
----
-
-## License
-
-Released under the MIT License.
-
-For research collaboration, commercial partnerships, or custom development related to Operation Sugar, please contact the author via LinkedIn:
-
-**LinkedIn**
-
-> https://www.linkedin.com/in/duranwang/
-
-or explore the repository discussions and issues on GitHub.
-
----
+Released under the [MIT License](LICENSE).

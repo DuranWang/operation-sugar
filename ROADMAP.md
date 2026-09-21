@@ -1,26 +1,154 @@
 # Operation Sugar Roadmap
 
-This document outlines the long-term research roadmap for Operation Sugar.
+Updated: September 17, 2026
 
-Rather than continuously introducing new variables or increasingly complex models, each release is designed to answer a specific research question while maintaining a transparent, reproducible, and extensible research engineering platform.
+Operation Sugar develops transparent, reproducible commodity research and forecast benchmarks, beginning with Brazilian sugarcane and sugar. Its research agenda connects agricultural supply, production allocation, currency, and supply-chain conditions through four layers.
 
-Model development is governed by one central principle:
+New methods must be evaluated against relevant public-information benchmarks. Negative results remain part of the research record. A layer is complete when its question has been evaluated credibly, including when no stable incremental predictive relationship is found.
 
-> New features and methods must demonstrate incremental research value beyond established historical benchmarks.
+## Status and Priorities
 
-Negative and non-generalizing results are retained because they define the limits of existing specifications and prevent unsupported model expansion.
+| Status | Scope |
+|---|---|
+| Completed | v1.0–v1.5.1 data engineering, harvest analytics, and weather–crushing model comparisons; release details below |
+| Current research direction | Layer 1: transition from harvest-block crushing volume to annual cane yield; design the staged experiments below |
+| Planned within Layer 1 | Expanded weather windows, advanced weather variables, and uncertainty analysis; implementation and results are not claimed here |
+| Long-term planned | Layer 2: sugar/ethanol allocation and energy links; Layer 3: BRL/USD; Layer 4: supply chains |
 
----
+The four layers describe research scope and sequencing, not a completed causal model or a claim of profitable trading performance. Work proceeds from Layer 1 to Layer 4; later layers can interact with earlier ones.
 
-# Version 1.x — Statistical Research Foundations
+## Four-Layer Research Architecture
 
-The Version 1.x series establishes the research infrastructure required for Brazilian sugarcane weather, harvest, and statistical modeling.
+| Layer | Research focus | Main questions and intended outputs |
+|---|---|---|
+| 1. Weather and cane supply | Weather → annual cane yield → cane production | Do weather features add predictive information for annual tonnes of cane per hectare (TCH)? Combine yield with an explicitly defined area measure when estimating production. |
+| 2. Sugar production and energy allocation | Cane → sugar output; ethanol/sugar mix; crude oil and sugar prices | How do cane availability, sugar content/recovery, and allocation between sugar and ethanol relate to sugar output? How are crude oil, ethanol economics, and sugar prices connected? |
+| 3. Currency | Brazilian real versus US dollar and sugar prices | Does the exchange rate add information beyond agricultural and energy variables? Investigate timing, feedback, and possible shared drivers. |
+| 4. Supply chains | Logistics, exports, inventories, and sugar-price interactions | Do supply-chain conditions add information about available supply, delivery timing, and sugar prices beyond the preceding layers? |
 
-Completed releases are listed in reverse chronological order so the latest research update appears first.
+Sugar-output definitions and price instruments must be specified separately. Cane tonnage, recoverable sugar, raw sugar, refined white sugar, and futures prices are not interchangeable targets. For any ICE No. 11 study, explicitly identify the raw-sugar contract and pricing convention; a white-sugar study requires its own target specification.
 
----
+## Layer 1 — Weather, Annual Cane Yield, and Cane Production
 
----
+### Why Change the Target?
+
+The completed study predicts harvest-block crushing tonnes, summarized more broadly as harvest progress. Across the evaluated specifications, weather models did not consistently improve on the historical harvest-block profile.
+
+A working hypothesis is that block-level crushing combines crop conditions with harvest scheduling and processing activity, making growing-season weather an indirect predictor of this target. The existing negative result does not establish which omitted factors caused the underperformance.
+
+The next study therefore asks whether annual cane yield is a more informative target for weather research. A change of target is a new experiment, not a guarantee of improved performance.
+
+### Target and Information Set
+
+- Define annual cane yield as TCH using a documented geographic scope, season convention, source, denominator, and treatment of revisions.
+- Keep cane yield distinct from total cane production. Any production estimate additionally requires a compatible area series and its own uncertainty assessment.
+- Define the forecast issue date and data availability before constructing predictors.
+- Treat full-year observed weather as an ex-post or late-season information set unless it was available at the forecast issue date.
+- Do not compare absolute RMSE across crushing-tonnage and TCH targets as evidence that one task improved; compare each task with its own benchmark.
+
+### Sequential Experiments
+
+| Step | Experiment | Purpose |
+|---|---|---|
+| 1 | Annual cane-yield baselines, starting with training-sample mean and appropriate trend/persistence alternatives | Establish target-specific reference performance |
+| 2 | Original eight-month growing-period rainfall and temperature features → annual cane yield | Evaluate the new target using the original weather information set |
+| 3 | Extend to eight growing months plus four maturation months | Test the incremental information in the additional window |
+| 4 | Add VPD, soil moisture, and solar radiation separately, then assess combinations | Attribute incremental value to each variable group rather than changing everything simultaneously |
+
+Use matched seasons, outer evaluation folds, model families, and information cutoffs for comparisons within the yield study. Record any sample reductions caused by new data coverage and rerun the comparator on the matched sample.
+
+### Weather Windows and Agricultural Mechanisms
+
+The proposed twelve-month design contains eight growing months plus four maturation months. Exact calendar dates, season alignment, and applicability across locations must be justified before implementation. Validate this working division against crop-cycle and harvest evidence rather than assuming every field follows one common schedule.
+
+The following are candidate mechanisms to substantiate with agronomic literature, not findings of Operation Sugar:
+
+| Variable group | Mechanism hypothesis to investigate | Required design work |
+|---|---|---|
+| VPD | Atmospheric moisture demand, crop water stress, and associated growth responses | Verify derivation, units, temporal aggregation, and additional information beyond temperature/humidity |
+| Soil moisture | Water availability and persistence of deficits beyond rainfall totals | Justify depth/root-zone relevance, source limitations, seasonal anomalies, and lag windows |
+| Solar radiation | Radiation availability and biomass accumulation | Distinguish the available radiation product from PAR; justify units and stage-specific exposure measures |
+| Maturation-period weather | Later-stage conditions may affect cane yield and sugar accumulation differently | Separate hypotheses about cane mass from hypotheses about sugar content/recovery; connect the latter to Layer 2 |
+
+Before model inclusion, document coverage, measurement consistency, missingness, spatial aggregation, redundancy with existing features, publication availability, and the supporting mechanism. Supporting papers and decisions belong in the literature registry and research-decision log.
+
+### Model Development and Uncertainty
+
+Start with parsimonious models suitable for the effective number of seasons. Retain the completed regularization experiments as methodological evidence.
+
+Planned Bayesian work should address parameter uncertainty, prior sensitivity, and posterior predictive uncertainty in the small-season sample. Compare Bayesian regression with existing regularized references under the same information set. Bayesian implementation is not yet claimed.
+
+The existing partially penalized Ridge estimator already provides an optimization application. More elaborate nonlinear, threshold, stage-specific, spatial, or structurally constrained models require explicit hypotheses and adequate data.
+
+### Completion Criteria
+
+Produce a reproducible target dataset, documented weather windows, benchmark comparisons, uncertainty/limitations, and a record of successful and unsuccessful specifications. A null result is an acceptable outcome. Later layers must propagate uncertainty rather than treat weather-derived cane forecasts as known quantities.
+
+## Layer 2 — Cane-to-Sugar Conversion, Ethanol/Sugar Mix, and Energy
+
+Status: long-term planned, following the Layer 1 study.
+
+### Research Questions
+
+- How does available cane translate into actual sugar production under clearly defined output units and product categories?
+- What additional information is needed on sugar content, recovery, processing, and allocation between sugar and ethanol?
+- How does the ethanol/sugar production mix vary, and can it be predicted against appropriate historical references?
+- What is the relationship between crude oil and sugar prices, and what role might ethanol economics play?
+
+### Proposed Work
+
+1. Build aligned cane, sugar, ethanol, and production-mix records, with explicit conversion definitions and publication dates.
+2. Evaluate sugar-content/recovery and allocation components before combining them into a sugar-output estimate.
+3. Examine crude-oil, ethanol, and sugar-price relationships using documented instruments and observation frequencies.
+4. Separate accounting relationships, empirical correlations, predictive relationships, and causal hypotheses.
+5. Compare integrated output estimates with simple allocation/conversion baselines and available public outlooks.
+
+Maturation and sugar-quality research, including relevant ATR/CCS measures, belongs at the boundary of Layers 1 and 2. Measures must be defined and checked for compatibility before use. Energy prices alone are not assumed to determine mill allocation.
+
+## Layer 3 — BRL/USD and Sugar Prices
+
+Status: long-term planned, after establishing the agricultural and allocation framework.
+
+Investigate whether Brazilian currency movements add information about sugar prices beyond the preceding layers. Potential channels to evaluate include export incentives, local-currency revenues/costs, and production or selling decisions; these are hypotheses requiring evidence.
+
+Define the exchange-rate quote convention explicitly. Distinguish contemporaneous association from lagged predictive information, test stability across periods, and account for potential shared drivers and feedback. Any price analysis must specify returns versus levels, forecast horizons, and contract-roll treatment where applicable.
+
+Deliverables: an aligned currency/commodity dataset, benchmarked experiments, sensitivity analysis, and documented interpretation limits.
+
+## Layer 4 — Supply Chains and Sugar-Price Interactions
+
+Status: long-term planned, after the preceding research layers.
+
+Evaluate the interaction between physical supply-chain conditions and sugar prices. Candidate evidence includes port activity, vessel lineups, export shipments, congestion, freight, storage/inventories, and shipment destinations, subject to access and historical coverage.
+
+Distinguish sugar produced, sugar available for export, sugar loaded/shipped, and sugar delivered. Test whether these observations improve supply or price estimates at clearly defined lead times. Investigate both directions of interaction: logistics may affect available supply, while prices and incentives may affect shipment decisions.
+
+Deliverables: documented logistics indicators, point-in-time availability checks, and incremental comparisons with the preceding layers. Public-data feasibility must be established before promising individual indicators.
+
+## Cross-Layer Evaluation and Benchmark Infrastructure
+
+The long-term benchmark infrastructure supports every layer:
+
+- Standardized targets, units, geographic scope, forecast issue dates, and horizons.
+- Preserved forecasts and revision histories; observation dates distinguished from publication dates.
+- Historical data vintages where available, with limitations recorded where unavailable.
+- Target-appropriate public reference forecasts and matched evaluation samples.
+- Training-fold preprocessing and nested tuning where needed.
+- Chronological expanding/rolling evaluations for historical forecasting claims.
+- Explicit uncertainty propagation between layers and ablation tests for added inputs.
+- Reporting of negative results, instability, and specification changes.
+
+The completed leave-one-season-out study is a held-out-season evaluation: training can include seasons later than the held-out season. It is not a point-in-time historical trading backtest. Its five aggregation scales describe block sizes, not automatically one-to-five-month forecast lead times.
+
+Later price models must define their own baselines and evaluation protocols. Better supply forecasts do not by themselves establish profitable trading strategies.
+
+## Additional Research Options
+
+ENSO/climate indicators, remote sensing, spatial heterogeneity, production-weighted weather exposure, and interpretable nonlinear models remain optional extensions within the relevant layer. Introduce them only when they address an identified limitation and data/sample size support credible evaluation.
+
+## Completed Research Foundation — Version 1.x
+
+The historical release record below is retained from the repository. Completed findings concern the original targets and validation design, not the planned four-layer system.
 
 ## v1.5.1 ✅
 
@@ -212,218 +340,3 @@ Harvest Stage
 ---
 
 ---
-
-# Research Direction After Version 1.5
-
-The Version 1.5 results change the modeling roadmap.
-
-Operation Sugar will not continue adding unconstrained month-level linear specifications without new information or stronger structure.
-
-Future models should introduce at least one substantive research advancement:
-
-- a new agronomic variable;
-- a biologically defined time window;
-- a different prediction target;
-- a nonlinear response structure;
-- spatial or regional heterogeneity;
-- a larger historical sample;
-- structurally informed regularization.
-
-The purpose of future releases is not to search indefinitely for a model that beats the benchmark.
-
-The purpose is to test whether new data, targets, or structural assumptions capture information absent from the Version 1.5 framework.
-
----
-
-# Version 2.x — Structured Agroclimatic Research
-
-### Research Question
-
-> Do biologically structured weather variables and advanced agroclimatic indicators provide incremental explanatory or predictive value beyond the Version 1.5 benchmarks?
-
-Version 2.x will move beyond unconstrained monthly weather coefficients.
-
-Candidate research areas include:
-
-## Stage-Specific Weather Structure
-
-- Biologically defined growing-stage windows
-- Early-growth versus late-growth weather
-- Sustained warm or cool periods
-- Water-deficit duration
-- Extreme-temperature exposure
-- Rainfall intensity and persistence
-- Stage-specific interactions
-
-## Advanced Agroclimatic Variables
-
-- Soil moisture
-- Vapor Pressure Deficit (VPD)
-- Solar radiation
-- Evapotranspiration (ET)
-
-## Model Structure
-
-- Agronomically constrained regularization
-- Nonlinear response functions
-- Threshold models
-- Interaction terms supported by biological hypotheses
-- Regional or municipality-level heterogeneity
-- Dimension reduction where scientifically interpretable
-
-Before any candidate variable enters a predictive model, it will be evaluated for:
-
-- data coverage;
-- measurement consistency;
-- correlation with existing weather variables;
-- multicollinearity;
-- biological relevance;
-- incremental explanatory value;
-- improvement over Version 1.5 benchmarks.
-
-The objective is feature selection and structural understanding rather than feature accumulation.
-
----
-
-# Version 3.x — Maturation and Sugar-Quality Analytics
-
-### Research Question
-
-> Which environmental conditions govern sucrose accumulation and recoverable sugar before harvest?
-
-Planned work includes:
-
-- maturation-window feature engineering
-- harvest-weighted weather variables
-- pre-harvest temperature and rainfall windows
-- sugar accumulation indicators
-- ATR-related environmental analysis
-- CCS and recoverable-sugar analysis
-- sugar-quality modeling
-- alternative targets beyond crushing volume
-
-This stage extends Operation Sugar from biomass-oriented and harvest-volume research toward sugar-production and sugar-quality analytics.
-
-The historical harvest profile will remain an operational benchmark where relevant, but maturation models may require different target-specific benchmarks.
-
----
-
-# Future Research
-
-Potential longer-term extensions include:
-
-## Climate
-
-- ENSO indices
-- Ocean–atmosphere oscillations
-- Seasonal climate anomalies
-- Climate-regime analysis
-
-## Spatial Modeling
-
-- Municipality-level heterogeneity
-- Regional aggregation
-- Spatially varying weather effects
-- Production-weighted weather exposure
-
-## Remote Sensing
-
-- Satellite-derived vegetation products
-- Surface soil moisture
-- Crop-condition monitoring
-- Spatial crop-stress indicators
-
-## Forecasting
-
-- Cane-yield prediction
-- Sugar-yield prediction
-- Sugar production forecasting
-- Harvest-timing forecasting
-- Commodity-market research
-
-## Explainable Artificial Intelligence
-
-- Feature importance
-- Model interpretation
-- Weather sensitivity analysis
-- Partial dependence and nonlinear response diagnostics
-
-Machine-learning methods will be introduced only when:
-
-- the sample size supports them;
-- leakage-resistant validation remains possible;
-- they are compared against established statistical benchmarks;
-- model complexity serves a clearly defined research question.
-
----
-
-# Model Evaluation Standard
-
-All future predictive models should be evaluated against a benchmark appropriate to the prediction unit.
-
-## Harvest-Block Targets
-
-Primary benchmark:
-
-```text
-Block-Only OLS
-```
-
-Weather or agronomic models must demonstrate incremental value beyond the historical harvest-block profile.
-
-## Complete-Season Targets
-
-Primary benchmark:
-
-```text
-Training-season historical mean
-```
-
-Harvest-block fixed effects are not applicable because complete-season datasets contain one total observation per season.
-
-## Alternative Targets
-
-Future cane-yield, sugar-yield, ATR, CCS, and harvest-timing models will require target-specific benchmarks defined before model development.
-
-All future model evaluations should preserve:
-
-- out-of-sample validation by complete season;
-- fold-specific preprocessing;
-- transparent benchmark comparison;
-- coefficient or complexity diagnostics;
-- documentation of negative and unstable results.
-
----
-
-# Long-Term Vision
-
-Operation Sugar aims to become a reproducible quantitative research platform for Brazilian sugarcane weather, harvest, yield, and sugar-quality analytics.
-
-The project combines:
-
-- heterogeneous public datasets;
-- transparent feature engineering;
-- reproducible statistical modeling;
-- rigorous out-of-sample evaluation;
-- agronomic knowledge;
-- historical harvest intelligence;
-- explicit benchmark design;
-- documented negative results.
-
-Rather than treating sugarcane production as a single growing season, Operation Sugar studies the complete annual production cycle through three complementary analytical stages:
-
-```text
-Growing Stage
-      ↓
-Maturation Stage
-      ↓
-Harvest Stage
-```
-
-Future releases will expand each stage while maintaining:
-
-- transparency;
-- reproducibility;
-- scientific interpretability;
-- incremental research value;
-- disciplined control of model complexity.
