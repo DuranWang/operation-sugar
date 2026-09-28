@@ -222,14 +222,100 @@ def read_cache(path, params):
 
 
 def sample_existing_grids(mapping, grids, step):
-    """Fixed global lattice anchored at (0, 0); retain native cells only."""
+    """Keep all municipalities and map them to sampled ERA5 grid points.
+
+    The sampling step controls the number of weather sampling points,
+    not the number of municipalities included in the research region.
+
+    For each municipality, assign the nearest available sampled grid.
+    Multiple municipalities may share the same weather grid.
+    """
+
     if step not in (0.25, 0.5):
-        raise ValueError('Sampling step must be 0.25 or 0.5 degrees')
-    selected = {key: coord for key, coord in grids.items()
-                if all(abs(value / step - round(value / step)) < 1e-8 for value in coord)}
+        raise ValueError(
+            "Sampling step must be 0.25 or 0.5 degrees"
+        )
+
+    # Select existing native ERA5 grid points on the requested lattice.
+    selected = {
+        grid_id: coord
+        for grid_id, coord in grids.items()
+        if all(
+            abs(value / step - round(value / step)) < 1e-8
+            for value in coord
+        )
+    }
+
     if not selected:
-        raise ValueError('No existing grids intersect the requested fixed lattice')
-    return [r for r in mapping if r['grid_id'] in selected], selected
+        raise ValueError(
+            "No existing grids intersect the requested fixed lattice"
+        )
+
+    # Preserve all original municipalities.
+    remapped = []
+
+    for municipality in mapping:
+
+        latitude = float(municipality["latitude"])
+        longitude = float(municipality["longitude"])
+
+        # Find the nearest available sampled grid.
+        # Longitude distance is adjusted for latitude.
+        def distance_squared(item):
+            grid_id, (grid_lat, grid_lon) = item
+
+            lat_diff = latitude - grid_lat
+
+            lon_diff = (
+                (longitude - grid_lon)
+                * math.cos(math.radians(latitude))
+            )
+
+            return lat_diff**2 + lon_diff**2
+
+        nearest_grid_id, (
+            grid_latitude,
+            grid_longitude
+        ) = min(
+            selected.items(),
+            key=distance_squared
+        )
+
+        remapped.append({
+            **municipality,
+            "grid_id": nearest_grid_id,
+            "grid_latitude": grid_latitude,
+            "grid_longitude": grid_longitude,
+        })
+
+    # Validate municipality coverage.
+    original_codes = {
+        row["ibge_code"] for row in mapping
+    }
+
+    remapped_codes = {
+        row["ibge_code"] for row in remapped
+    }
+
+    if original_codes != remapped_codes:
+        raise ValueError(
+            "Municipality coverage changed during grid sampling"
+        )
+
+    if len(remapped) != len(mapping):
+        raise ValueError(
+            "Municipality count changed during grid sampling"
+        )
+
+    if not all(
+        row["grid_id"] in selected
+        for row in remapped
+    ):
+        raise ValueError(
+            "Municipality assigned to unavailable grid"
+        )
+
+    return remapped, selected
 
 
 def download_weather_for_state_period(
@@ -394,4 +480,3 @@ def main():
 
 if __name__ == '__main__':
     raise SystemExit(main())
-
