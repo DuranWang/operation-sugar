@@ -43,3 +43,21 @@ data/processed/dashboard/
 data/processed/unica/crushing/reports/
 
 github-recovery-codes.txt
+
+# Test/cache artifacts
+.pytest_cache/
+.tmp/
+
+# Backup files
+*.bak
+
+# Generated analysis outputs
+data/processed/analysis/
+
+# Generated weather / ETL datasets
+data/processed/advanced_weather/
+data/processed/combined_weather/
+data/processed/weather/
+data/processed/conab_processed/
+
+data/processed/sp_sugarcane_annual.csv
