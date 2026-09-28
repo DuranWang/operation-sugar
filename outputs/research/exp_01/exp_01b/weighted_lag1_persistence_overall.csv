@@ -1,0 +1,5 @@
+variable,weighted_pearson_r,weighted_pearson_r_observed_n,weighted_pearson_r_positive_weight_n,weighted_pearson_r_zero_weight_n,weighted_pearson_r_weight_sum,weighted_pearson_r_effective_n,weighted_pearson_r_status,weighted_spearman_rho,weighted_spearman_rho_observed_n,weighted_spearman_rho_positive_weight_n,weighted_spearman_rho_zero_weight_n,weighted_spearman_rho_weight_sum,weighted_spearman_rho_effective_n,weighted_spearman_rho_status
+nasa_total_rainfall_mm,0.5525156425704203,259466,198467,60999,431.0,73572.80371692599,defined,0.6169283412804755,259466,198467,60999,431.0,73572.80371692599,defined
+nasa_average_temperature_c,0.7833110190018933,259466,198467,60999,431.0,73572.80371692599,defined,0.7832333403165165,259466,198467,60999,431.0,73572.80371692599,defined
+vpd_mean_kpa,0.6322182555533633,259466,198467,60999,431.0,73572.80371692599,defined,0.6446582347688072,259466,198467,60999,431.0,73572.80371692599,defined
+soil_moisture_0_to_7cm_m3_m3,0.8292973603775261,259466,198467,60999,431.0,73572.80371692599,defined,0.8188647348162255,259466,198467,60999,431.0,73572.80371692599,defined
