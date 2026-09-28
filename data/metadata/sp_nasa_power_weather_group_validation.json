@@ -1,0 +1,103 @@
+{
+  "mapping_type": "empirical_complete_weather_series_group; NOT_official_NASA_POWER_grid",
+  "weather_variables": [
+    "PRECTOTCORR",
+    "T2M",
+    "RH2M"
+  ],
+  "reference": {
+    "filename": "19830101_19831231.csv",
+    "start": "1983-01-01",
+    "end": "1983-12-31",
+    "days": 365,
+    "municipalities": 642,
+    "observed_distinct_complete_weather_series": 87
+  },
+  "validation_periods": [
+    {
+      "filename": "20160101_20161231.csv",
+      "start": "2016-01-01",
+      "end": "2016-12-31",
+      "days": 366,
+      "municipalities": 642,
+      "observed_distinct_complete_weather_series": 87,
+      "same_municipality_partition_as_reference": true,
+      "each_city_series_identical_to_its_representative": true
+    },
+    {
+      "filename": "20170101_20171231.csv",
+      "start": "2017-01-01",
+      "end": "2017-12-31",
+      "days": 365,
+      "municipalities": 642,
+      "observed_distinct_complete_weather_series": 87,
+      "same_municipality_partition_as_reference": true,
+      "each_city_series_identical_to_its_representative": true
+    },
+    {
+      "filename": "20180101_20181231.csv",
+      "start": "2018-01-01",
+      "end": "2018-12-31",
+      "days": 365,
+      "municipalities": 642,
+      "observed_distinct_complete_weather_series": 87,
+      "same_municipality_partition_as_reference": true,
+      "each_city_series_identical_to_its_representative": true
+    },
+    {
+      "filename": "20220101_20221231.csv",
+      "start": "2022-01-01",
+      "end": "2022-12-31",
+      "days": 365,
+      "municipalities": 642,
+      "observed_distinct_complete_weather_series": 87,
+      "same_municipality_partition_as_reference": true,
+      "each_city_series_identical_to_its_representative": true
+    },
+    {
+      "filename": "20230101_20231231.csv",
+      "start": "2023-01-01",
+      "end": "2023-12-31",
+      "days": 365,
+      "municipalities": 642,
+      "observed_distinct_complete_weather_series": 87,
+      "same_municipality_partition_as_reference": true,
+      "each_city_series_identical_to_its_representative": true
+    },
+    {
+      "filename": "20240101_20240831.csv",
+      "start": "2024-01-01",
+      "end": "2024-08-31",
+      "days": 244,
+      "municipalities": 642,
+      "observed_distinct_complete_weather_series": 87,
+      "same_municipality_partition_as_reference": true,
+      "each_city_series_identical_to_its_representative": true
+    },
+    {
+      "filename": "20240901_20241231.csv",
+      "start": "2024-09-01",
+      "end": "2024-12-31",
+      "days": 122,
+      "municipalities": 642,
+      "observed_distinct_complete_weather_series": 87,
+      "same_municipality_partition_as_reference": true,
+      "each_city_series_identical_to_its_representative": true
+    },
+    {
+      "filename": "20250101_20251231.csv",
+      "start": "2025-01-01",
+      "end": "2025-12-31",
+      "days": 365,
+      "municipalities": 642,
+      "observed_distinct_complete_weather_series": 87,
+      "same_municipality_partition_as_reference": true,
+      "each_city_series_identical_to_its_representative": true
+    }
+  ],
+  "mapping_municipalities": 642,
+  "mapping_groups": 87,
+  "min_group_size": 1,
+  "max_group_size": 23,
+  "caveat": "Groups are inferred from equality of already-downloaded municipal weather series, not from provider grid IDs. Validation is limited to supplied periods. Before changing downloader requests, verify representative-only requests on an independent period and retain a fallback for boundary/sampling changes."
+}

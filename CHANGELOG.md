@@ -5,6 +5,57 @@ All notable changes to Operation Sugar are documented in this file.
 This project follows **Semantic Versioning** and the general structure proposed by **Keep a Changelog**.
 
 ---
+
+## [1.6.0] - 2026-09-27
+
+### Weather Feature Structure, Spatial Weighting, and Annual-Yield Research Framework
+
+Operation Sugar v1.6.0 completes the EXP-01 weather-structure research program and transitions the active research focus from harvest-block crushing prediction to annual agricultural sugarcane yield in São Paulo.
+
+### Added
+
+- Added combined NASA POWER and Open-Meteo / ERA5 monthly weather processing.
+- Added municipality-level weather analysis covering 642 São Paulo municipalities from 1990 through 2025.
+- Added EXP-01S harvested-area weight stability and observed-weight construction.
+- Added EXP-01A municipality-level weather correlation and temporal-persistence analysis.
+- Added EXP-01B harvested-area-weighted weather correlation analysis.
+- Added EXP-01C matched-support sensitivity analysis separating support effects from harvested-area weighting effects.
+- Added curated EXP-01 research outputs under `outputs/research/exp_01/`.
+- Added finalized EXP-01S implementation and reproducibility tests.
+- Added analysis tests for the EXP-01 research framework.
+- Added the EXP-02A / EXP-02B / EXP-02C robustness sequence for annual-yield research.
+
+### Changed
+
+- Rebuilt and modularized parts of the weather and sugarcane ETL pipeline.
+- Updated the primary research target from harvest-block crushing volume to annual agricultural sugarcane yield measured in tonnes of cane per hectare.
+- Updated the README around the four-layer research framework and current annual-yield research program.
+- Updated the roadmap to distinguish detrending uncertainty, spatial-composition sensitivity, and weather-relationship robustness.
+- Separated generated working outputs from curated research artifacts committed to the repository.
+
+### Research Findings
+
+- Weather relationships are strongly dependent on calendar month.
+- Pooled weather correlations can differ materially from within-calendar-month relationships.
+- Surface soil moisture is substantially more persistent across months than precipitation.
+- Harvested-area weighting changes the magnitude and persistence of core weather relationships more than matched-support exclusion does in the EXP-01 comparisons.
+- São Paulo harvested-area shares are highly persistent from year to year but exhibit meaningful cumulative spatial change over longer horizons.
+- EXP-01 establishes weather-feature structure and weighting sensitivity; it does not by itself determine which variables should enter the final annual-yield model.
+
+### Validation
+
+- `src/tests/analysis/`: 52 tests passing at the v1.6.0 release milestone.
+- Focused combined-weather ETL tests passed before release.
+- Curated EXP-01 outputs include research summaries, validation tables, and figures for EXP-01S, EXP-01A, EXP-01B, and EXP-01C.
+
+### Notes
+
+Version 1.6.0 marks the transition from the original harvest-block weather benchmark program to the annual-yield research program.
+
+The next research step is EXP-02A, which tests whether annual yield anomalies remain stable across reasonable long-run trend specifications.
+
+---
+
 ## [1.5.1] - 2026-07-26
 
 ### Month-Level Weather Modeling
