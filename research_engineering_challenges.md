@@ -1,313 +1,421 @@
 # Research Engineering Challenges
 
-Building a predictive model is often viewed as the most difficult part of a data science project.
+Building a predictive model is often treated as the most difficult part of a quantitative research project.
 
-Throughout the development of Operation Sugar, I discovered the opposite.
+Operation Sugar has repeatedly demonstrated the opposite.
 
-The majority of the work was not spent training statistical models, but rather on designing reliable research infrastructure capable of collecting, validating, integrating, and transforming heterogeneous datasets into reproducible analytical workflows.
+Most of the work has been spent defining valid research targets, reconciling heterogeneous public datasets, preserving source semantics, constructing defensible analytical transformations, and validating whether the resulting statistical objects mean what they are supposed to mean.
 
-This document summarizes the major engineering and research challenges encountered during the development of Operation Sugar, together with the design decisions made to address them.
+This document focuses on the research-engineering problems encountered during development.
+
+Detailed methodological decisions are documented in `research_decisions.md`.
+
+Experiment design, formulas, diagnostics, and numerical results are documented in `statistical_experiments.md` and under `outputs/research/`.
 
 ---
 
-## Challenge 1 — Reconciling Heterogeneous Data Sources
+# Challenge 1 — Reconciling Heterogeneous Public Data
 
-### Problem
+## Problem
 
-Operation Sugar integrates multiple independent data sources:
+Operation Sugar combines data from sources created for very different purposes, including:
 
-- NASA POWER (daily weather observations)
-- IBGE (municipality-level annual sugarcane production)
-- UNICA (biweekly harvest progress)
-- Academic literature (feature engineering)
+- NASA POWER weather data;
+- ERA5-based weather data accessed through Open-Meteo;
+- IBGE municipality-level sugarcane production and harvested area;
+- UNICA crushing and harvest-progress data;
+- agronomic and statistical literature.
 
-Each dataset was produced independently for different purposes.
+These sources differ in spatial resolution, temporal resolution, geographic identifiers, historical coverage, file formats, and missing-data conventions.
 
-Consequently, they differ in:
+A dataset can therefore look structurally clean while still containing incompatible definitions.
 
-- spatial resolution
-- temporal resolution
-- naming conventions
-- file formats
-- update frequency
-- data quality
+## Why This Matters
 
-Simply joining these datasets together would produce unreliable analytical results.
+Errors introduced during integration can later appear as statistical findings.
 
-### Why This Matters
+Examples include:
 
-Unlike traditional machine learning datasets, agricultural research rarely begins with a clean, unified table.
+- mismatched municipalities;
+- misaligned years or crop seasons;
+- unavailable values treated as zeros;
+- production weights calculated from invalid support;
+- weather and agricultural outcomes assigned to inconsistent spatial units.
 
-Before any statistical analysis can be performed, the underlying datasets must first become internally consistent.
+## Solution
 
-Otherwise,
+Operation Sugar uses a modular ETL architecture in which each source is ingested, validated, and standardized before cross-source integration.
 
-- municipalities may be mismatched,
-- timestamps become misaligned,
-- duplicated observations appear,
-- and downstream analyses become unreliable.
+Source-specific meaning is preserved until the data have passed the checks required for the intended analysis.
 
-For this reason, data integration became one of the primary engineering challenges of this project.
+## Lesson Learned
 
-### Solution
-
-Operation Sugar adopts a modular ETL architecture where every data source is processed independently before integration.
-
-Each dataset passes through dedicated ingestion, validation, and transformation stages before entering the analytical pipeline.
-
-This design makes the platform reproducible, extensible, and significantly easier to maintain as new data sources are introduced.
-
-## Challenge 2 — Collecting Weather Data at Scale
-
-### Problem
-
-NASA POWER provides weather observations through a REST API.
-
-Although downloading data for a single municipality is straightforward, collecting weather observations for hundreds of Brazilian municipalities across multiple years introduces additional engineering challenges.
-
-These include:
-
-- intermittent network failures
-- incomplete downloads
-- API timeouts
-- long-running collection processes
-
-A single failed request should not invalidate an entire multi-hour download.
-
-### Why This Matters
-
-Large-scale public data collection is rarely as simple as sending HTTP requests.
-
-Research pipelines must remain robust against unreliable network conditions and incomplete downloads while ensuring that every observation can be traced and validated.
-
-Without these safeguards, downstream analyses become difficult to reproduce and trust.
-
-### Solution
-
-The weather collection pipeline was designed with reliability as a primary objective.
-
-Key design decisions include:
-
-- automated retry mechanisms
-- progress logging
-- state-by-state downloads
-- validation after ingestion
-- modular download scripts
-
-These safeguards allow large-scale data collection to be resumed safely while ensuring dataset completeness.
-
-## Challenge 3 — Constructing Biologically Meaningful Seasonal Frameworks
-
-### Problem
-
-Operation Sugar integrates datasets collected at fundamentally different temporal resolutions:
-
-NASA POWER: daily weather observations
-UNICA: biweekly harvest progress
-IBGE: annual municipality-level production statistics
-
-These datasets cannot simply be aligned using calendar years because they represent different stages of the sugarcane production cycle.
-
-More importantly, sugarcane development is governed by biological and operational processes rather than by the calendar.
-
-The weather conditions that influence vegetative growth are not necessarily the same conditions that determine sucrose accumulation or harvest timing.
-
-Treating an entire production cycle as a single "season" therefore ignores important differences between these processes.
-
-### Why This Matters
-
-MMeaningful agricultural research requires distinguishing what is being studied, rather than merely when observations were recorded.
-
-Operation Sugar separates the sugarcane production cycle into three analytical stages:
-
-Growing Stage, representing biomass accumulation;
-Maturation Stage, representing sucrose accumulation;
-Harvest Stage, representing observed crushing activity.
-
-Each stage answers a different scientific question and therefore requires a different analytical definition.
-
-Using a single calendar-year aggregation would blur these distinctions and potentially obscure weather–production relationships.
-
-### Solution
-
-Operation Sugar adopts a stage-specific seasonal framework.
-
-Growing Stage:
-
-The growing stage is defined using published agronomic literature and regional crop-calendar assumptions.
-
-This analytical window represents the period during which weather conditions primarily influence vegetative development and biomass accumulation.
-
-Rather than being inferred from observations, it is a literature-informed biological definition.
-
-Maturation Stage:
-
-The maturation stage represents the transition from vegetative growth toward sucrose accumulation.
-
-Although this stage is not yet fully implemented, future versions of Operation Sugar will construct maturation windows using published agronomic evidence to study pre-harvest weather effects.
-
-Harvest Stage:
-
-Unlike the previous two stages, the harvest stage is defined empirically.
-
-Historical UNICA crushing reports are aggregated into season-relative months, allowing Operation Sugar to construct historical harvest calendars directly from observed harvest activity.
-
-Harvest start, harvest end, and harvest duration are then estimated using cumulative crushing thresholds.
-
-This produces a data-driven harvest-stage definition rather than relying on a predefined crop calendar.
-
-### Lessons Learned
-
-A biologically meaningful seasonal framework cannot be defined using a single calendar-based rule.
-
-Different stages of crop development represent different biological and operational processes, and therefore require different sources of evidence.
-
-Literature informs the growing and maturation stages, while observed harvest data define the harvest stage.
-
-Distinguishing these stages provides a more transparent foundation for future weather–harvest relationship analysis.
+Data integration is part of the statistical methodology, not merely a preprocessing step.
 
 ---
 
-## Challenge 4 — Translating Scientific Literature into Quantitative Features
+# Challenge 2 — Preserving Source Semantics
 
-### Problem
+## Problem
 
-Many agronomic studies describe weather effects qualitatively.
+Agricultural source files may encode different economic meanings using superficially similar missing-value markers.
 
-For example,
+For example, the IBGE source distinguishes reported numeric observations, explicit zeros, and unavailable values.
 
-- prolonged drought,
-- excessive rainfall,
-- favorable maturation conditions,
-- water deficit,
-- or consecutive dry periods.
+A generic parser can easily collapse these cases into one missing-data category.
 
-However, statistical models require numerical variables rather than qualitative descriptions.
+## Why This Matters
 
-A direct implementation of these concepts rarely exists.
+For agricultural yield and harvested-area weighting, an explicit zero and an unavailable observation are not interchangeable.
 
-### Why This Matters
+Treating unavailable information as zero can create false crop failures, false production support, or invalid weights.
 
-Feature engineering represents the bridge between scientific knowledge and quantitative analysis.
+## Solution
 
-Poorly designed features may fail to capture the mechanisms discussed in the literature, even when high-quality data are available.
+Operation Sugar preserves source status separately from the analytical numeric value.
 
-Consequently, model performance depends not only on algorithms but also on whether domain knowledge has been translated into meaningful quantitative variables.
+Support is audited before yield calculation, municipality eligibility filtering, spatial weighting, and aggregation.
 
-### Solution
+Undefined agricultural observations remain undefined rather than being converted into synthetic zeros.
 
-Each feature implemented in Operation Sugar begins with a literature review.
+## Lesson Learned
 
-Academic publications are first analyzed to identify plausible weather-production relationships.
+Missingness has domain meaning.
 
-These qualitative hypotheses are then converted into measurable statistical variables, including:
-
-- cumulative rainfall
-- rainy day count
-- dry day count
-- maximum consecutive dry days
-- growing season rainfall
-- maturation window temperature
-
-This process establishes a transparent connection between published research and computational implementation.
-
-### Lessons Learned
-
-Feature engineering is fundamentally a research activity rather than a programming exercise.
-
-Programming begins only after the scientific hypothesis has been clearly defined.
+A correct data type is not enough; the research pipeline must preserve the meaning of the source observation.
 
 ---
 
-## Challenge 5 — Ensuring Data Quality Through Automated Validation
+# Challenge 3 — Collecting Historical Weather Data at Scale
 
-### Problem
+## Problem
 
-Public datasets frequently contain inconsistencies that cannot be assumed away.
+Downloading weather data for one location is straightforward.
 
-Potential issues include:
+Building a multi-decade archive across hundreds of municipalities and weather grids introduces API quotas, intermittent failures, incomplete responses, timeouts, partially completed years, and inconsistent coverage across sources.
 
-- missing observations
-- duplicated records
-- unexpected columns
-- invalid values
-- incomplete downloads
-- inconsistent schemas
+A single failed request should not invalidate an entire long-running collection job.
 
-If these problems remain undetected, downstream analyses may produce misleading conclusions.
+## Why This Matters
 
-### Why This Matters
+Missing weather coverage can alter downstream spatial support, weighting, correlations, and model samples.
 
-Research reproducibility depends on data reliability.
+Download reliability therefore affects statistical validity.
 
-Statistical models cannot compensate for flawed input data, making validation a necessary component of any research pipeline.
+## Solution
 
-### Solution
+Weather collection is separated from downstream analysis.
 
-Operation Sugar incorporates automated validation throughout the ETL workflow.
+The ingestion system uses resumable, batch-based workflows with progress logging, deterministic output locations, and explicit post-download validation.
 
-Validation modules perform checks such as:
+Research code operates on stored historical data rather than depending on live API calls.
 
-- expected schema verification
-- duplicate detection
-- missing value detection
-- non-negative constraints
-- temporal coverage verification
-- dataset summary reporting
+## Lesson Learned
 
-More than 160 automated tests verify that core processing modules behave consistently as the platform evolves.
-
-### Lessons Learned
-
-Reliable research begins with reliable data.
-
-Validation should be treated as part of the research methodology rather than an optional software engineering practice.
+Large-scale public-data collection should be treated as infrastructure, not as a one-off script.
 
 ---
 
-## Challenge 6 — Designing for Reproducibility and Extensibility
+# Challenge 4 — Defining the Correct Research Target
 
-### Problem
+## Problem
 
-Research code often evolves into large notebooks or scripts that become increasingly difficult to understand, reproduce, or extend.
+Operation Sugar originally focused on harvest progress and biweekly crushing volumes.
 
-As projects grow, adding new datasets or analytical methods frequently requires substantial restructuring.
+Those targets were useful for building the first analytical pipelines, but they combine agricultural productivity with mill operations, harvest scheduling, logistics, and industrial capacity.
 
-### Why This Matters
+That makes the biological relationship between weather and crop productivity difficult to isolate.
 
-Scientific software should remain maintainable beyond the initial implementation.
+## Why This Matters
 
-A research platform that cannot be reproduced or extended has limited long-term value regardless of the quality of its statistical analyses.
+A sophisticated model cannot compensate for a poorly defined response variable.
 
-### Solution
+If the research question concerns weather-driven agricultural productivity, operational crushing is an indirect target.
 
-Operation Sugar was designed as a modular research platform rather than a collection of independent scripts.
+## Solution
 
-The project separates responsibilities across dedicated modules for:
+The primary v1.x research target was changed to annual agricultural sugarcane yield.
 
-- data ingestion
-- validation
-- feature engineering
-- visualization
-- schemas
-- testing
+Earlier harvest-progress work remains part of the project history, but it no longer defines the main research architecture.
 
-Comprehensive documentation, automated testing, and standardized project organization ensure that new datasets and analytical components can be incorporated with minimal modification to the existing architecture.
+## Lesson Learned
 
-### Lessons Learned
+Choosing the correct target can matter more than choosing the statistical model.
 
-Building reproducible research infrastructure requires treating software engineering as an integral part of the scientific process.
+Changing the model is easy.
 
-A well-designed research platform should make future research easier rather than making future maintenance harder.
+Changing the object being modeled can redesign the entire project.
+
+---
+
+# Challenge 5 — Constructing a Defensible Adjusted-Yield Signal
+
+## Problem
+
+Historical sugarcane yield contains both long-run structural change and shorter-run variation.
+
+Long-run change may reflect technology, cultivars, management, mechanization, and other non-weather factors.
+
+Removing too little trend risks attributing structural productivity growth to weather.
+
+Removing too much trend risks deleting genuine multi-year climate signal.
+
+Municipality histories are also irregular, with different start dates, end dates, and internal missing periods.
+
+## Why This Matters
+
+Detrending is not a neutral preprocessing step.
+
+The trend definition determines what later counts as a yield anomaly.
+
+Missing observations create an additional problem: the trend process may remain continuous even though observed yield does not.
+
+## Solution
+
+EXP-02 estimates long-run yield trends separately by municipality and evaluates multiple conservative and aggressive detrending specifications.
+
+The final historical design uses a conservative smoother as the primary specification and retains nearby alternatives as robustness checks.
+
+The latent trend may span internal missing years, but residuals are created only where valid yield was actually observed.
+
+Eligibility rules and gap or endpoint diagnostics are handled explicitly rather than hidden inside the smoother.
+
+Exact formulas, parameterization, eligibility thresholds, and cross-specification results are documented in `statistical_experiments.md`.
+
+## Lesson Learned
+
+A historical transformation must distinguish between an estimated latent process, an observed agricultural outcome, and an analytical residual derived from that observation.
+
+Those objects are not interchangeable.
+
+---
+
+# Challenge 6 — Aligning Agricultural Outcomes with Weather Geography
+
+## Problem
+
+Agricultural outcomes are reported by municipality, while ERA5 weather is represented on a regular grid.
+
+Multiple municipalities can occupy the same weather grid and can differ greatly in agricultural importance.
+
+A simple municipality average would therefore give equal influence to very different production footprints.
+
+## Why This Matters
+
+Subsequent weather–yield analysis requires weather and adjusted yield to refer to a common spatial unit.
+
+The aggregation rule determines what the resulting grid-level agricultural observation represents.
+
+## Solution
+
+Eligible municipalities are mapped to ERA5 0.5° grids.
+
+Grid-level adjusted yield is constructed using annual harvested-area weights so that larger production footprints contribute more strongly to the aggregate anomaly.
+
+The exact weighting equations and spatial diagnostics are documented in `statistical_experiments.md`.
+
+## Lesson Learned
+
+Spatial aggregation is not merely a geographic conversion.
+
+The weighting rule is part of the estimand.
+
+---
+
+# Challenge 7 — Discovering That the Counterfactual Was Wrong
+
+## Problem
+
+EXP-02B required a fixed-composition counterfactual to separate changes in municipality residuals from changes in production weights.
+
+The first candidate method averaged each municipality's historical production share over its own available history.
+
+An audit showed that the resulting reference weights could be incoherent because municipalities did not necessarily share the same historical observation window.
+
+The code ran.
+
+The statistical object was still wrong.
+
+## Why This Matters
+
+A counterfactual intended to isolate composition effects cannot itself contain composition inconsistencies.
+
+Otherwise, the measured effect can be created by support mismatch rather than by actual changes in production geography.
+
+## Solution
+
+The initial fixed-weight design was rejected rather than patched.
+
+It was replaced by a common-support construction in which reference composition is estimated from shared historical support, with matched-support handling when required.
+
+The full estimator and diagnostics are documented in `statistical_experiments.md`.
+
+## Lesson Learned
+
+A failed audit can reveal a problem with the estimand rather than the implementation.
+
+The correct response is to redefine the statistical object, not to normalize away the symptom.
+
+---
+
+# Challenge 8 — Translating Literature into Testable Hypotheses
+
+## Problem
+
+Agronomic research often describes mechanisms qualitatively, such as drought stress, atmospheric dryness, heat stress, soil-moisture limitation, developmental timing, and maturation conditions.
+
+Statistical analysis requires those concepts to become explicit variables, temporal windows, and comparison structures.
+
+## Why This Matters
+
+Feature engineering is the bridge between domain knowledge and quantitative research.
+
+A high-quality weather dataset is not useful if the feature definition does not represent the mechanism being studied.
+
+## Solution
+
+Operation Sugar separates literature review from implementation.
+
+The workflow is:
+
+> literature → biological hypothesis → statistical definition → experiment design → implementation
+
+Candidate information includes precipitation, temperature, humidity, vapor-pressure deficit, solar radiation, soil moisture, and persistence measures.
+
+EXP-01 also showed that weather relationships can vary materially by month, so later experiments preserve temporal structure rather than relying only on pooled annual summaries.
+
+## Lesson Learned
+
+Feature engineering is a research activity before it is a programming activity.
+
+---
+
+# Challenge 9 — Validating the Research Logic, Not Only the Code
+
+## Problem
+
+Unit tests can confirm that software behaves as written while still allowing a statistically invalid research pipeline to execute successfully.
+
+A pipeline may pass ordinary software tests while weights do not represent a valid composition, missing values have the wrong meaning, supports are mismatched, a decomposition fails to reconcile, or an extreme result is caused by a data artifact.
+
+## Why This Matters
+
+Computational correctness is not the same as scientific validity.
+
+Unexpected results should be investigated before they are interpreted.
+
+## Solution
+
+Operation Sugar combines automated software tests with research-specific audits.
+
+These include support checks, source-status reconciliation, key uniqueness, weight validation, matched-support checks, cross-specification comparisons, and algebraic decomposition of unusual events.
+
+The EXP-02B top-tail audit is a representative example: large composition effects were decomposed back to municipality-level contributions and checked against alternative explanations before being accepted as real sensitivity.
+
+## Lesson Learned
+
+Research validation should test identities, assumptions, and interpretation—not merely whether a function returns a value.
+
+---
+
+# Challenge 10 — Preventing Leakage Before Model Fitting
+
+## Problem
+
+Future information can enter a backtest through preprocessing long before the final predictive model is estimated.
+
+Potential leakage points include detrending, spatial reference weights, standardization, feature selection, and hyperparameter selection.
+
+A transformation that is valid for full-sample historical analysis is not automatically valid inside a historical forecasting simulation.
+
+## Why This Matters
+
+A forecast for year \(t\) should not depend on observations from years after \(t\), even indirectly through a preprocessing step.
+
+Otherwise, apparent out-of-sample performance becomes optimistic.
+
+## Solution
+
+Operation Sugar distinguishes between historical research transformations used to understand the system and forecast-time transformations used in out-of-sample evaluation.
+
+When explicit forecasting begins, estimated preprocessing steps must be reconstructed using the training information available at each forecast origin.
+
+## Lesson Learned
+
+The forecast information set applies to the entire pipeline, not just to the final regression.
+
+---
+
+# Challenge 11 — Building Infrastructure That Can Survive Better Questions
+
+## Problem
+
+Operation Sugar has already changed substantially.
+
+The project moved from harvest-progress modeling to annual agricultural yield and is developing toward a broader Brazilian sugarcane supply system.
+
+A codebase tightly coupled to the first research question would require major reconstruction every time a better question emerged.
+
+## Why This Matters
+
+Long-lived research projects evolve.
+
+New data sources appear, targets change, experiments fail, and earlier assumptions are replaced by better definitions.
+
+The research infrastructure must survive those changes without erasing previous work.
+
+## Solution
+
+Operation Sugar is organized as a modular research platform with separate components for ingestion, processing, validation, analysis, testing, reporting, and experiment outputs.
+
+Earlier harvest-progress work remains available as project history while newer annual-yield research develops on top of the same broader platform.
+
+The same architecture is intended to support future expansion beyond São Paulo.
+
+## Lesson Learned
+
+A good research architecture should make it cheap to change your mind.
+
+That is not wasted engineering.
+
+It is a requirement for exploratory quantitative research.
+
+---
 
 # Final Reflection
 
-Operation Sugar began as an attempt to understand Brazilian sugarcane production through weather-driven quantitative research.
+Operation Sugar began as an attempt to understand whether weather could help explain Brazilian sugarcane harvest progress.
 
-Operation Sugar evolved into a research engineering platform for Brazilian sugarcane analytics, combining agronomic knowledge with observed harvest data to construct reproducible seasonal analytics for commodity research.
+The early system was useful because it created a concrete object that could be tested.
 
-The greatest challenge was never selecting a statistical model. It was designing a system capable of transforming heterogeneous public datasets into trustworthy analytical workflows.
+Its limitations then changed the research question.
 
-This experience fundamentally changed my perspective on data science, and the evolution of Operation Sugar from a seasonal analytics project to a historical benchmarking platform further reinforced this perspective.
+The project moved from:
 
-Reliable research starts long before model training. It begins with research engineering, transparent seasonal definitions, and a deep understanding of the biological system being studied.
+\[
+\text{weather}
+\rightarrow
+\text{harvest progress}
+\]
+
+toward:
+
+\[
+\text{weather}
+\rightarrow
+\text{agricultural yield}.
+\]
+
+That transition required new agricultural data, source-aware processing, municipality-level detrending, spatial alignment, production weighting, and explicit robustness checks.
+
+The most important development was therefore not a more complicated predictive model.
+
+It was a more precise definition of what should be measured.
+
+As of Version 1.6.1, Operation Sugar has established a historical adjusted-yield representation that can support the next stage of weather–yield research.
+
+The central research-engineering lesson remains:
+
+> Reliable quantitative research starts long before model training.
+
+It begins with defining the correct question, preserving the meaning of the source data, constructing defensible analytical objects, and building enough validation that unexpected results can be investigated rather than merely trusted.

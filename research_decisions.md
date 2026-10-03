@@ -1,313 +1,410 @@
 # Research Decisions
 
-This document records the major analytical, statistical, and engineering decisions made during the development of Operation Sugar.
+This document records the major analytical and statistical decisions that define the current Operation Sugar research architecture.
 
-Rather than describing implementation details, it explains why specific research and modeling choices were adopted and which alternatives were considered.
+It answers one question:
+
+> **What did the project choose, and why?**
+
+Detailed experiment design, formulas, diagnostics, and numerical results are documented in `statistical_experiments.md`.
+
+Research-engineering problems and implementation lessons are documented in `research_engineering_challenges.md`.
 
 ---
 
 # Decision Principles
 
-Each decision records:
+Operation Sugar follows a research-first workflow:
 
-- the decision;
-- the rationale;
-- the principal alternatives considered.
+> Research questions determine statistical design, and statistical design determines engineering implementation.
 
-This structure improves transparency and documents the reasoning behind the project's analytical and statistical design.
+Each decision below records the adopted choice, the rationale, and important alternatives where relevant.
 
 ---
 
-# Section 1 — Research Decisions
+# Section 1 — Research Architecture
 
-## Decision 01 — Research Philosophy
-
-### Decision
-
-Research questions determine engineering implementation.
-
-### Reason
-
-Engineering should support scientific inquiry rather than define it.
-
----
-
-## Decision 02 — Evidence Registry
+## Decision 01 — Agricultural Yield Is the Primary v1.x Research Target
 
 ### Decision
 
-Assign a unique Paper ID to every major reference.
+Use annual sugarcane yield in tonnes per hectare as the primary agricultural target.
 
 ### Reason
 
-Paper IDs improve traceability across documentation and reduce repetitive citations.
+Harvest progress and crushing volumes contain substantial operational variation from mill scheduling, logistics, industrial capacity, and harvest timing.
 
----
-
-# Section 2 — Seasonal Decisions
-
-## Decision 03 — Growing Stage Definition
-
-### Decision
-
-Treat vegetative development as a single analytical growing stage.
-
-### Reason
-
-Municipality-level phenological information is generally unavailable, making finer subdivisions difficult to support consistently.
+Annual agricultural yield provides a cleaner target for studying weather-driven crop productivity.
 
 ### Alternatives Considered
 
-- Separate developmental stages
-- Calendar-year aggregation
+- biweekly crushing volume;
+- harvest progress;
+- total sugarcane production;
+- sugar production.
+
+### Scope
+
+Earlier harvest-progress models remain part of the project history but no longer define the main research line.
 
 ---
 
-## Decision 04 — Harvest Timing Definition
+## Decision 02 — Major Research Choices Must Remain Traceable
 
 ### Decision
 
-Infer harvest timing directly from historical UNICA observations.
+Major methodological choices should be traceable to source data, experiment outputs, literature, or explicit statistical reasoning.
 
 ### Reason
 
-Observed industrial activity provides a reproducible empirical definition of harvest timing.
+Operation Sugar is intended to function as a reproducible research system rather than a collection of isolated models.
+
+---
+
+# Section 2 — Source Data and Support
+
+## Decision 03 — Preserve IBGE Source Semantics
+
+### Decision
+
+Preserve the distinction between reported numeric values, explicit zeros, and unavailable observations in the IBGE source data.
+
+Unavailable observations must not be converted to zero.
+
+### Reason
+
+Collapsing these categories can create false production, false harvested-area support, and invalid yield observations.
+
+---
+
+## Decision 04 — Define Yield Only from Valid Production and Harvested Area
+
+### Decision
+
+Municipality-year yield is defined only when the underlying production and harvested-area values produce a valid agricultural observation.
+
+Undefined cases such as zero production divided by zero harvested area remain missing.
+
+### Reason
+
+An undefined observation is not equivalent to a true yield of zero.
+
+---
+
+# Section 3 — Municipality-Level Detrending
+
+## Decision 05 — Detrend Before Spatial Aggregation
+
+### Decision
+
+Remove long-run yield trends separately for each municipality before aggregating yield anomalies to weather grids.
+
+### Reason
+
+Long-run productivity growth is not spatially uniform.
+
+Municipalities differ in production history, technology adoption, cultivars, management, and structural development.
+
+Detrending only after aggregation would mix those differences with short-run yield variation.
 
 ### Alternatives Considered
 
-- Fixed crop calendars
-- Literature-defined harvest periods
+- statewide detrending;
+- grid-level detrending;
+- no detrending;
+- one common linear trend.
 
 ---
 
-# Section 3 — Weather Feature Decisions
-
-## Decision 05 — Dry Day Definition
+## Decision 06 — Use a Smooth Long-Run Trend Rather Than Hard Structural Breaks
 
 ### Decision
 
-Adopt the ETCCDI dry-day definition.
+Estimate municipality trends with a second-difference penalized smoother.
 
 ### Reason
 
-It is internationally recognized and widely used in climate research.
+The smoother allows productivity trends to evolve gradually without imposing arbitrary statewide break dates.
+
+The available evidence did not justify treating deregulation, geographic expansion, or mechanization as one common yield break across São Paulo.
 
 ### Alternatives Considered
 
-- 0 mm
-- 0.1 mm
-- 2 mm
+- linear trend;
+- manually specified structural breaks;
+- piecewise trends;
+- short-window rolling means.
 
 ---
 
-## Decision 06 — Maximum Consecutive Dry Days
+## Decision 07 — Use P50 = 10 as the Primary Historical Detrending Specification
 
 ### Decision
 
-Use CDD as the primary drought indicator.
+Use `P50 = 10` as the primary historical detrending specification.
 
 ### Reason
 
-Persistence better represents drought conditions than simple frequency.
+It provides a conservative compromise between allowing long-run productivity change and preserving shorter-horizon variation that may contain weather signal.
+
+Nearby conservative specifications produce very similar adjusted-yield signals, supporting the stability of this choice.
 
 ### Alternatives Considered
 
-- Dry-day count
+- Linear — rigid benchmark;
+- `P50 = 6` — aggressive sensitivity;
+- `P50 = 12` — primary conservative robustness check.
+
+### Scope
+
+Detailed parameterization and cross-specification results are documented in `statistical_experiments.md`.
 
 ---
 
-## Decision 07 — Growing-Stage CDD
+# Section 4 — Municipality Eligibility and Missing Histories
+
+## Decision 08 — Require Sufficient History and Calendar Span
 
 ### Decision
 
-Calculate CDD over the growing stage rather than the calendar year.
+Retain municipalities with:
+
+- at least 15 valid yield observations;
+- at least a 20-year calendar span.
 
 ### Reason
 
-Weather outside the biological growing period is less relevant to biomass accumulation.
+Trend estimation requires both enough observed yield values and enough time span to distinguish long-run movement from short-run variation.
+
+---
+
+## Decision 09 — Do Not Apply a Hard Internal-Gap Exclusion
+
+### Decision
+
+Treat internal missing-yield gaps as diagnostics rather than as automatic exclusion criteria.
+
+### Reason
+
+Hard gap restrictions remove meaningful production coverage while providing limited improvement in detrending stability.
 
 ### Alternatives Considered
 
-- Annual CDD
-- Ripening-stage CDD
+- maximum five-year internal gap;
+- maximum ten-year internal gap;
+- complete-history requirement.
 
 ---
 
-## Decision 08 — Feature Selection Strategy
+## Decision 10 — Do Not Invent Residuals for Missing Yield Years
 
 ### Decision
 
-Prioritize biologically meaningful variables.
+Allow the latent trend to remain defined across internal missing periods, but calculate yield residuals only where valid yield was actually observed.
 
 ### Reason
 
-Variables should represent known biological or operational processes rather than arbitrary mathematical transformations.
+A continuous estimated trend does not imply that an agricultural observation exists in a missing year.
 
 ---
 
-## Decision 09 — Temperature Variable Selection
+## Decision 11 — Treat Endpoint and Gap Proximity as Sensitivity Flags
 
 ### Decision
 
-Use average temperature as the primary thermal variable in Aggregate Baseline models.
+Retain endpoint proximity and internal-gap proximity as diagnostic information rather than primary exclusion rules.
 
 ### Reason
 
-Sugarcane physiological responses are primarily driven by sustained thermal conditions rather than isolated daily temperature extremes.
+Trend estimates are less constrained near series boundaries and around sparse histories, but this does not imply that those observations are automatically invalid.
 
-Period-average temperature therefore provides a more biologically meaningful representation of the thermal environment than maximum or minimum temperature.
+---
+
+# Section 5 — Spatial Alignment and Weighting
+
+## Decision 12 — Align Adjusted Yield to ERA5 0.5° Grids
+
+### Decision
+
+Map municipality-level adjusted yield to the ERA5 0.5° grid structure used by the weather data.
+
+### Reason
+
+Subsequent weather–yield analysis requires weather exposure and agricultural outcomes to share a common spatial unit.
+
+---
+
+## Decision 13 — Use Annual Harvested-Area Weights for the Primary Grid-Level Yield Anomaly
+
+### Decision
+
+Aggregate municipality yield residuals within each ERA5 grid using contemporaneous harvested-area weights.
+
+### Reason
+
+Municipalities contributing more sugarcane area should contribute more strongly to the grid-level agricultural anomaly.
+
+Annual weights also preserve real historical changes in production geography.
 
 ### Alternatives Considered
 
-- Maximum temperature
-- Minimum temperature
-- Growing Degree Days (reserved for future agronomic models)
-- Rolling mean temperature (reserved for future agronomic models)
-
-### Notes
-
-This decision applies only to the Aggregate Baseline models.
-
-More biologically specialized thermal metrics—including Growing Degree Days, sustained warm or cool spell duration, rolling mean temperature, and stage-specific thermal accumulation—remain candidates for future agronomic feature engineering.
+- equal municipality weights;
+- fixed harvested-area weights;
+- statewide aggregation before weather alignment.
 
 ---
 
-# Section 4 — Statistical Modeling Decisions
-
-## Decision 10 — Aggregate Weather Before Month-Level Weather
+## Decision 14 — Evaluate Spatial Composition on Matched Support
 
 ### Decision
 
-Evaluate aggregate growing-season weather before introducing month-level weather predictors.
+Compare actual annual composition with a fixed-composition counterfactual using the same municipality-year residual support.
 
 ### Reason
 
-Aggregate weather provides the simplest representation of climatic conditions during the growing season.
-
-Establishing its predictive performance creates a statistical baseline against which more detailed temporal weather representations can be evaluated.
-
-### Alternatives Considered
-
-- Develop month-level models immediately
-- Introduce all weather features simultaneously
+Differences between the two series should reflect weighting changes rather than missing-data differences.
 
 ---
 
-## Decision 11 — Incremental Modeling Strategy
+## Decision 15 — Build Fixed Composition from Common Historical Support
 
 ### Decision
 
-Introduce one major source of predictive information at a time.
+Construct fixed reference weights from years in which the full municipality set within a grid has valid harvested-area support.
+
+When a grid-year contains only a subset of those municipalities with valid residuals, restrict and renormalize the approved reference vector over that same matched support.
 
 ### Reason
 
-Adding multiple new predictors simultaneously makes it difficult to determine which variables contribute to any observed improvement in predictive performance.
+A previous candidate method averaged municipality shares over different historical windows and produced incoherent reference compositions.
 
-An incremental strategy allows each experiment to isolate the value of a single methodological advancement.
+Common support ensures that the fixed-weight counterfactual represents a valid grid composition.
 
-### Alternatives Considered
+### Rejected Alternative
 
-- Simultaneous addition of multiple weather representations
-- Comprehensive feature engineering before baseline evaluation
+Municipality-specific historical-average shares calculated over differential observation histories.
 
 ---
 
-## Decision 12 — Out-of-Sample Evaluation
+## Decision 16 — Use Actual Composition as Primary and Fixed Composition as Robustness
 
 ### Decision
 
-Evaluate predictive performance exclusively using out-of-sample validation.
+Use annually changing harvested-area composition for the primary historical adjusted-yield series.
+
+Use the common-support fixed-composition series as a robustness counterfactual.
 
 ### Reason
 
-Models may exhibit strong in-sample relationships that fail to generalize to unseen harvest seasons.
+EXP-02B showed that changing within-grid production composition can matter, but the effect is generally limited enough that observed annual composition remains the more faithful primary historical representation.
 
-Out-of-sample evaluation provides a more reliable assessment of predictive value.
-
-### Alternatives Considered
-
-- In-sample goodness-of-fit only
-- Random train-test splits
+Detailed diagnostics and effect sizes are documented in `statistical_experiments.md`.
 
 ---
 
-## Decision 13 — Historical Harvest Profile as the Primary Benchmark
+# Section 6 — Final Historical Adjusted-Yield Representation
+
+## Decision 17 — Primary Historical Adjusted-Yield Representation
 
 ### Decision
 
-Use the historical harvest-block profile (Block-Only OLS) as the primary benchmark for evaluating weather-based prediction models.
+Subsequent historical weather–yield analysis will use:
+
+> **P50 = 10 detrended municipality yield residuals, aggregated annually to ERA5 0.5° grids using observed harvested-area weights.**
 
 ### Reason
 
-Historical harvest timing explains a substantial proportion of predictable variation in block-level crushing volumes.
+This representation removes municipality-specific long-run productivity change while preserving short-run yield variation and aligning the result with the weather grid.
 
-Any weather representation should therefore be evaluated based on its incremental predictive value beyond the historical harvest profile rather than against a weather-free mean benchmark.
+### Primary Robustness Checks
 
-Using Block-Only OLS establishes a stronger and more operationally meaningful baseline for future model development.
-
-### Alternatives Considered
-
-- Training-season historical mean
-- Aggregate weather baseline only
+- P50 = 12 detrending;
+- common-support fixed composition;
+- endpoint sensitivity;
+- internal-gap proximity sensitivity.
 
 ---
 
-## Decision 14 — Nested Ridge Regularization
+## Decision 18 — Forecasting Transformations Must Be Reconstructed Training-Only
 
 ### Decision
 
-Use nested Leave-One-Season-Out cross-validation to select Ridge regularization strength.
+Any detrending, weighting, scaling, feature selection, or other estimated transformation used in future out-of-sample forecasting must be reconstructed using the training information available at each forecast origin.
 
 ### Reason
 
-Selecting the Ridge penalty on the same held-out season used for model evaluation would introduce optimistic bias.
+The current EXP-02 transformations define a historical research representation.
 
-Nested cross-validation separates hyperparameter selection from final model evaluation, providing an unbiased estimate of out-of-sample performance.
-
-Weather predictors are standardized independently within each outer training fold to prevent information leakage.
-
-### Alternatives Considered
-
-- Fixed Ridge penalty
-- Ordinary cross-validation
-- Non-nested hyperparameter tuning
+Using full-history transformations inside a backtest would leak future information.
 
 ---
 
-## Decision 15 — Exclusion of Joint Month-Level OLS
+# Section 7 — Weather Research Decisions from EXP-01
+
+## Decision 19 — Preserve Month-Level Weather Structure
 
 ### Decision
 
-Do not estimate an unregularized joint month-level rainfall–temperature OLS model.
+Evaluate weather relationships by month rather than relying only on pooled correlations.
 
 ### Reason
 
-Each outer Leave-One-Season-Out training fold contains only 15 harvest seasons.
+EXP-01 showed that relationships among weather variables can vary materially across the annual cycle.
 
-After centering the weather predictors, the maximum identifiable weather rank is therefore 14.
+Pooling months can obscure or reverse temporally specific relationships.
 
-The joint month-level specification contains 16 monthly weather predictors, making the unregularized system non-identifiable within the training folds.
+---
 
-Ridge regularization produces a unique solution and therefore serves as the appropriate estimator for the joint specification.
+## Decision 20 — Separate Support Effects from Production-Weighting Effects
 
-### Alternatives Considered
+### Decision
 
-- Joint Month-Level OLS
-- Dimension reduction before OLS
-- Principal component regression
+Treat observational support and harvested-area weighting as distinct analytical issues.
+
+### Reason
+
+EXP-01 showed that changing weights and changing support can affect estimated weather relationships differently.
+
+The two effects should therefore be diagnosed separately.
+
+---
+
+# Section 8 — Legacy Harvest-Progress Decisions
+
+The following decisions belong to the earlier harvest-progress modeling architecture.
+
+They are retained for historical continuity but do not define the current annual-yield research line.
+
+## Legacy Decision A — Historical Harvest Profile Benchmark
+
+Historical harvest-block profiles were used as the primary benchmark for weather-based crushing-volume models because recurring harvest timing explained substantial predictable variation.
+
+## Legacy Decision B — Nested Leave-One-Season-Out Ridge Validation
+
+Earlier month-level harvest-progress models used nested Leave-One-Season-Out validation to select Ridge regularization strength without tuning on the final held-out season.
+
+## Legacy Decision C — Exclusion of Joint Month-Level OLS
+
+Unregularized joint month-level rainfall-temperature OLS was excluded because the training folds did not provide enough identifiable rank for the full predictor set.
+
+Ridge regularization was used instead.
+
+---
 
 # Summary
 
-Operation Sugar records research, engineering, and statistical modeling decisions to make analytical assumptions explicit, reproducible, and transparent.
+Operation Sugar's current historical agricultural-yield architecture is based on five core choices:
 
-Each decision documents:
+1. annual agricultural yield is the primary v1.x target;
+2. long-run productivity trends are removed at the municipality level;
+3. `P50 = 10` is the primary historical detrending specification;
+4. adjusted yield is aligned to ERA5 grids using annual harvested-area weights;
+5. fixed-composition and nearby detrending specifications are retained as robustness checks.
 
-- what was chosen;
-- why it was chosen;
-- which alternatives were considered.
+The resulting historical representation is:
 
-These decisions define the methodological foundation of the project and guide future feature engineering, statistical modeling, and experimental design.
+> **P50 = 10 detrended municipality yield residuals aggregated annually to ERA5 0.5° grids using observed harvested-area weights.**
 
-The decisions documented here are implemented through the statistical modeling framework described in **modeling_framework.md**.
+EXP-02 establishes this representation.
 
-Their effectiveness is subsequently evaluated through the statistical experiments documented in **statistical_experiments.md**.
+Subsequent experiments use it to study weather–yield relationships.
