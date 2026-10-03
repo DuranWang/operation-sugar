@@ -1,0 +1,11 @@
+rank_absolute_delta_p50_10,grid_id,year,matched_support_municipalities,any_first_valid_yield_year,any_last_valid_yield_year,any_within_one_year_of_endpoint,any_immediately_adjacent_to_internal_missing_gap,any_long_internal_gap_history_gt10,any_top_5pct_within_municipality_abs_residual,any_unusual_harvested_area_source_status,fixed_weight_renormalized,endpoint_flagged_municipalities,gap_adjacent_municipalities,long_gap_history_municipalities,top_5pct_residual_municipalities,unusual_area_status_municipalities
+1,era5_-20.50_-50.00,1981,2,True,False,True,False,False,True,False,True,1,0,0,2,0
+2,era5_-23.00_-49.00,1982,3,False,False,False,True,False,True,False,True,0,1,0,1,0
+3,era5_-20.50_-51.00,1980,2,False,False,True,True,False,True,False,True,1,1,0,2,0
+4,era5_-21.00_-49.50,1977,5,False,False,False,False,True,True,False,True,0,0,1,1,0
+5,era5_-23.50_-47.00,2018,2,False,False,False,False,False,False,False,True,0,0,0,0,0
+6,era5_-21.50_-49.50,2006,3,False,False,False,False,False,True,False,True,0,0,0,1,0
+7,era5_-23.00_-49.00,1979,2,False,False,False,False,False,True,False,True,0,0,0,1,0
+8,era5_-23.50_-45.50,2001,2,False,False,False,True,False,False,False,True,0,2,0,0,0
+9,era5_-21.50_-49.50,2007,4,False,False,False,True,False,True,False,False,0,1,0,1,0
+10,era5_-21.00_-49.50,1978,5,False,False,False,True,True,False,False,True,0,1,1,0,0

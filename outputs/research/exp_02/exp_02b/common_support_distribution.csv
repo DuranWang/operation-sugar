@@ -1,0 +1,5 @@
+support_group,grids,mean_common_reference_years,minimum_common_reference_years,maximum_common_reference_years,share_of_statewide_observed_area
+<10,0,,,,0.0
+10-14,0,,,,0.0
+15-19,1,18.0,18.0,18.0,0.0022728230431225778
+>=20,73,40.726027397260275,20.0,52.0,0.9974674802973872
