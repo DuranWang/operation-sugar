@@ -9,6 +9,7 @@ from src.etl.weather.build_combined_monthly_weather import (
     build_combined_monthly,
     compare_dataframes,
     discover_nasa_files,
+    parse_nasa_dates,
 )
 
 
@@ -86,6 +87,15 @@ def test_discover_nasa_files_supports_segmented_periods(monkeypatch) -> None:
     assert [path.name for path in discover_nasa_files(folder, 1981)] == [
         "19801215_19810630.csv",
         "19810701_19811231.csv",
+    ]
+
+
+def test_nasa_parser_accepts_mixed_iso_date_renderings() -> None:
+    parsed = parse_nasa_dates(pd.Series([
+        "1982-01-01", "1982-01-02 00:00:00"
+    ]))
+    assert parsed.tolist() == [
+        pd.Timestamp("1982-01-01"), pd.Timestamp("1982-01-02")
     ]
 
 
