@@ -127,8 +127,14 @@ def load_and_validate(input_dir: Path, expected_years: Iterable[int] = EXPECTED_
     unexpected: list[str] = []
     for path in paths:
         suffix = path.stem.rsplit("_", 1)[-1]
-        if suffix.isdigit() and int(suffix) in path_by_year:
-            path_by_year[int(suffix)].append(path)
+        if suffix.isdigit():
+            year = int(suffix)
+            if year in path_by_year:
+                path_by_year[year].append(path)
+            # Valid canonical annual files outside the requested validation
+            # period are deliberately ignored.  This lets EXP-01 retain its
+            # approved 1990–2025 scope while later analyses validate a longer
+            # historical range from the same canonical directory.
         else:
             unexpected.append(path.name)
 

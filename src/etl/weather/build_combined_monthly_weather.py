@@ -94,6 +94,12 @@ ERA5_VALUE_COLUMNS = OUTPUT_COLUMNS[10:]
 PERIOD_FILENAME = re.compile(r"^(\d{8})_(\d{8})\.csv$")
 
 
+def parse_nasa_dates(values: pd.Series) -> pd.Series:
+    """Parse the two valid ISO renderings present in historical NASA files."""
+
+    return pd.to_datetime(values, format="mixed", errors="raise")
+
+
 def _require_columns(
     dataframe: pd.DataFrame,
     required: list[str],
@@ -181,7 +187,10 @@ def load_nasa_daily(paths: list[Path], year: int) -> pd.DataFrame:
         _require_columns(frame, NASA_COLUMNS, f"NASA file {path.name}")
         frame = frame[NASA_COLUMNS].copy()
         frame["ibge_code"] = _clean_ibge(frame["ibge_code"], path.name)
-        frame["Date"] = pd.to_datetime(frame["Date"], errors="raise")
+        # Historical NASA files contain the same ISO calendar dates rendered
+        # both as YYYY-MM-DD and YYYY-MM-DD HH:MM:SS.  Parse the mixed ISO
+        # representations explicitly; date validation below remains strict.
+        frame["Date"] = parse_nasa_dates(frame["Date"])
         outside_filename_period = ~frame["Date"].between(start, end)
         if outside_filename_period.any():
             raise ValueError(f"NASA dates fall outside the filename period: {path.name}")
