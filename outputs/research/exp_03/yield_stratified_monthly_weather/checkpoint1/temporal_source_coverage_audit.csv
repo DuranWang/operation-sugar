@@ -1,0 +1,12 @@
+weather_variable,source,earliest_available_month,latest_available_month,missing_calendar_months,n_missing_calendar_months,missing_municipality_month_rows,mapped_municipalities,complete_from_1981_01,sufficient_for_complete_1982_window
+nasa_total_rainfall_mm,NASA POWER,1981-01,2025-12,,0,0,642,True,True
+nasa_average_temperature_c,NASA POWER,1981-01,2025-12,,0,0,642,True,True
+nasa_average_relative_humidity_pct,NASA POWER,1981-01,2025-12,,0,0,642,True,True
+vpd_mean_kpa,ERA5,1981-01,2025-12,,0,0,642,True,True
+vpd_mean_daily_max_kpa,ERA5,1981-01,2025-12,,0,0,642,True,True
+soil_moisture_0_to_7cm_m3_m3,ERA5,1981-01,2025-12,,0,0,642,True,True
+soil_moisture_7_to_28cm_m3_m3,ERA5,1981-01,2025-12,,0,0,642,True,True
+soil_moisture_28_to_100cm_m3_m3,ERA5,1981-01,2025-12,,0,0,642,True,True
+soil_moisture_100_to_255cm_m3_m3,ERA5,1981-01,2025-12,,0,0,642,True,True
+solar_radiation_total_mj_m2,ERA5,1981-01,2025-12,,0,0,642,True,True
+solar_radiation_mean_daily_mj_m2,ERA5,1981-01,2025-12,,0,0,642,True,True

@@ -1,0 +1,618 @@
+{
+  "aggregation_run_date": "2026-10-05",
+  "product": "SoilGrids 2.0",
+  "prediction_statistic": "mean",
+  "access_method": "Official ISRIC SoilGrids WCS bounded GetCoverage",
+  "service_version": "1.0.0",
+  "service_base": "https://maps.isric.org/mapserv",
+  "license": "CC BY 4.0",
+  "license_url": "https://docs.isric.org/globaldata/soilgrids/SoilGrids_faqs_02.html",
+  "product_documentation": "https://docs.isric.org/globaldata/soilgrids/",
+  "layer_documentation": "https://docs.isric.org/globaldata/soilgrids/SoilGrids_faqs_01.html",
+  "source_native_crs": "EPSG:152160 (Interrupted Goode Homolosine)",
+  "source_native_resolution": "250 m",
+  "download_crs": "EPSG:4326",
+  "download_pixel_size_degrees": 0.0025,
+  "download_width": 3400,
+  "download_height": 2000,
+  "request_bbox_west_south_east_north": [
+    -53.25,
+    -24.75,
+    -44.75,
+    -19.75
+  ],
+  "nodata": -32768,
+  "depths": [
+    {
+      "top_cm": 0,
+      "bottom_cm": 5,
+      "label": "0-5cm"
+    },
+    {
+      "top_cm": 5,
+      "bottom_cm": 15,
+      "label": "5-15cm"
+    },
+    {
+      "top_cm": 15,
+      "bottom_cm": 30,
+      "label": "15-30cm"
+    },
+    {
+      "top_cm": 30,
+      "bottom_cm": 60,
+      "label": "30-60cm"
+    },
+    {
+      "top_cm": 60,
+      "bottom_cm": 100,
+      "label": "60-100cm"
+    },
+    {
+      "top_cm": 100,
+      "bottom_cm": 200,
+      "label": "100-200cm"
+    }
+  ],
+  "variables": {
+    "clay": {
+      "official_service_name": "clay",
+      "definition": "Clay content",
+      "source_raw_unit": "g kg-1",
+      "output_unit": "percent_mass",
+      "scale_divisor": 10.0,
+      "validation_range_output_units": [
+        0.0,
+        100.0
+      ]
+    },
+    "sand": {
+      "official_service_name": "sand",
+      "definition": "Sand content",
+      "source_raw_unit": "g kg-1",
+      "output_unit": "percent_mass",
+      "scale_divisor": 10.0,
+      "validation_range_output_units": [
+        0.0,
+        100.0
+      ]
+    },
+    "silt": {
+      "official_service_name": "silt",
+      "definition": "Silt content",
+      "source_raw_unit": "g kg-1",
+      "output_unit": "percent_mass",
+      "scale_divisor": 10.0,
+      "validation_range_output_units": [
+        0.0,
+        100.0
+      ]
+    },
+    "bdod": {
+      "official_service_name": "bdod",
+      "definition": "Bulk density of the fine earth fraction",
+      "source_raw_unit": "cg cm-3",
+      "output_unit": "kg dm-3",
+      "scale_divisor": 100.0,
+      "validation_range_output_units": [
+        0.0,
+        3.0
+      ]
+    },
+    "cfvo": {
+      "official_service_name": "cfvo",
+      "definition": "Volumetric fraction of coarse fragments",
+      "source_raw_unit": "cm3 dm-3",
+      "output_unit": "percent_volume",
+      "scale_divisor": 10.0,
+      "validation_range_output_units": [
+        0.0,
+        100.0
+      ]
+    },
+    "wv0033": {
+      "official_service_name": "wv0033",
+      "definition": "Volumetric water content at 33 kPa",
+      "source_raw_unit": "10^-3 cm3 cm-3",
+      "output_unit": "percent_volume",
+      "scale_divisor": 10.0,
+      "validation_range_output_units": [
+        0.0,
+        100.0
+      ]
+    },
+    "wv1500": {
+      "official_service_name": "wv1500",
+      "definition": "Volumetric water content at 1500 kPa",
+      "source_raw_unit": "10^-3 cm3 cm-3",
+      "output_unit": "percent_volume",
+      "scale_divisor": 10.0,
+      "validation_range_output_units": [
+        0.0,
+        100.0
+      ]
+    }
+  },
+  "derived_variable": {
+    "name": "awc_33_minus_1500",
+    "formula": "scaled wv0033 - scaled wv1500",
+    "unit": "percentage_points_volumetric",
+    "interpretation": "difference in modeled volumetric water retention; not a measured agronomic capacity"
+  },
+  "aggregation": {
+    "method": "spherical area-weighted mean of EPSG:4326 WCS pixels",
+    "target_geometry": "existing ERA5 0.5-degree cells centered on canonical EXP-03 grid coordinates",
+    "production_weights_used": false
+  },
+  "limitations": [
+    "SoilGrids values are modeled global predictions, not observations at every pixel.",
+    "WCS reprojection to EPSG:4326 uses approximately 250 m samples over the São Paulo extent.",
+    "SoilGrids ends at 200 cm; no values are fabricated for ERA5's 200-255 cm portion.",
+    "Only central mean predictions were acquired; uncertainty quantiles remain available but were not downloaded."
+  ],
+  "retrieval_date": "2026-10-05",
+  "downloads": [
+    {
+      "soil_variable": "bdod",
+      "source_depth_label": "0-5cm",
+      "coverage_id": "bdod_0-5cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fbdod.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=bdod_0-5cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\bdod\\bdod_0-5cm_mean.tif",
+      "bytes": 3849410,
+      "sha256": "1dc1da46dc0cef0e490004c5082b7f38057ef2d5d7c769ff831f8b42005ede49",
+      "retrieved_at_utc": "2026-10-05T17:41:21.889601+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "bdod",
+      "source_depth_label": "100-200cm",
+      "coverage_id": "bdod_100-200cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fbdod.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=bdod_100-200cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\bdod\\bdod_100-200cm_mean.tif",
+      "bytes": 3427499,
+      "sha256": "4ffee2af483a3404485b8019b0b8dfa658ab2d23fc33ba1b7d677a1fbfad5fcd",
+      "retrieved_at_utc": "2026-10-05T17:41:38.149788+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "bdod",
+      "source_depth_label": "15-30cm",
+      "coverage_id": "bdod_15-30cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fbdod.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=bdod_15-30cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\bdod\\bdod_15-30cm_mean.tif",
+      "bytes": 3673530,
+      "sha256": "0f45b9341ff3a8f99c611db53de28f6931b262d7d96f3b1196b755220292df63",
+      "retrieved_at_utc": "2026-10-05T17:41:30.295037+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "bdod",
+      "source_depth_label": "30-60cm",
+      "coverage_id": "bdod_30-60cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fbdod.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=bdod_30-60cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\bdod\\bdod_30-60cm_mean.tif",
+      "bytes": 3484659,
+      "sha256": "7d1b6fa1708827fe848fe01d1c53a08db03a8bc8da8eed175447b3a9637304d8",
+      "retrieved_at_utc": "2026-10-05T17:41:30.228725+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "bdod",
+      "source_depth_label": "5-15cm",
+      "coverage_id": "bdod_5-15cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fbdod.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=bdod_5-15cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\bdod\\bdod_5-15cm_mean.tif",
+      "bytes": 3723174,
+      "sha256": "d91f922a8df24fe71a4aedb2bf9c9962831eb4068d05424e48f34736efbd35e8",
+      "retrieved_at_utc": "2026-10-05T17:41:22.321758+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "bdod",
+      "source_depth_label": "60-100cm",
+      "coverage_id": "bdod_60-100cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fbdod.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=bdod_60-100cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\bdod\\bdod_60-100cm_mean.tif",
+      "bytes": 3447556,
+      "sha256": "dc0490d4481eaefa5d877b8c580322798b39b4bfb2558de633e239589636d126",
+      "retrieved_at_utc": "2026-10-05T17:41:38.077777+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "cfvo",
+      "source_depth_label": "0-5cm",
+      "coverage_id": "cfvo_0-5cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fcfvo.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=cfvo_0-5cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\cfvo\\cfvo_0-5cm_mean.tif",
+      "bytes": 5892030,
+      "sha256": "c9ae5b5a5026df2b18277d8850fb6ff52c11740c609a3959710720ce56a498c9",
+      "retrieved_at_utc": "2026-10-05T17:41:50.779975+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "cfvo",
+      "source_depth_label": "100-200cm",
+      "coverage_id": "cfvo_100-200cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fcfvo.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=cfvo_100-200cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\cfvo\\cfvo_100-200cm_mean.tif",
+      "bytes": 6208293,
+      "sha256": "350c7be43a4139309d632cc8ed1e2c9fb94e2f7fcd1951e22d048b0773c9683d",
+      "retrieved_at_utc": "2026-10-05T17:42:17.659352+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "cfvo",
+      "source_depth_label": "15-30cm",
+      "coverage_id": "cfvo_15-30cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fcfvo.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=cfvo_15-30cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\cfvo\\cfvo_15-30cm_mean.tif",
+      "bytes": 5950959,
+      "sha256": "6a146ba0bc8a25488e7051a02e4eb33b6a0a0909558171ffb1249d632521faa8",
+      "retrieved_at_utc": "2026-10-05T17:42:03.569214+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "cfvo",
+      "source_depth_label": "30-60cm",
+      "coverage_id": "cfvo_30-60cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fcfvo.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=cfvo_30-60cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\cfvo\\cfvo_30-60cm_mean.tif",
+      "bytes": 6092190,
+      "sha256": "6a89cbdcaa6455e75c71d4b5f51109b95d1a95f7381819bed42f59533cdaa80c",
+      "retrieved_at_utc": "2026-10-05T17:42:04.150281+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "cfvo",
+      "source_depth_label": "5-15cm",
+      "coverage_id": "cfvo_5-15cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fcfvo.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=cfvo_5-15cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\cfvo\\cfvo_5-15cm_mean.tif",
+      "bytes": 5920278,
+      "sha256": "e2efd5e5190b453dcb88a5c82ee068fd03208fbc40824b9e7df504921649bf6a",
+      "retrieved_at_utc": "2026-10-05T17:41:51.074964+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "cfvo",
+      "source_depth_label": "60-100cm",
+      "coverage_id": "cfvo_60-100cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fcfvo.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=cfvo_60-100cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\cfvo\\cfvo_60-100cm_mean.tif",
+      "bytes": 6124092,
+      "sha256": "8a1fdfb3212cd5c73646dc0e8500dde944d03a4e482dfb35763395c170439a31",
+      "retrieved_at_utc": "2026-10-05T17:42:16.923004+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "clay",
+      "source_depth_label": "0-5cm",
+      "coverage_id": "clay_0-5cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fclay.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=clay_0-5cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\clay\\clay_0-5cm_mean.tif",
+      "bytes": 6163814,
+      "sha256": "558cd391699e2c0c3b712006052241d5cc0f3ec0137a42737e9f3903719a3240",
+      "retrieved_at_utc": "2026-10-05T17:39:24.981858+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "clay",
+      "source_depth_label": "100-200cm",
+      "coverage_id": "clay_100-200cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fclay.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=clay_100-200cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\clay\\clay_100-200cm_mean.tif",
+      "bytes": 6301858,
+      "sha256": "ee8f3b7c2b1faf107a56ee1a1fc7a83bece4587c4f8d121a57bf70f9108ca14e",
+      "retrieved_at_utc": "2026-10-05T17:39:52.493905+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "clay",
+      "source_depth_label": "15-30cm",
+      "coverage_id": "clay_15-30cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fclay.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=clay_15-30cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\clay\\clay_15-30cm_mean.tif",
+      "bytes": 6190083,
+      "sha256": "91492b7cf4317a50f328c2cab25506227408f759f1e4e15309f7622f624dd706",
+      "retrieved_at_utc": "2026-10-05T17:39:38.506675+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "clay",
+      "source_depth_label": "30-60cm",
+      "coverage_id": "clay_30-60cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fclay.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=clay_30-60cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\clay\\clay_30-60cm_mean.tif",
+      "bytes": 6302289,
+      "sha256": "2a23e7d6f659989a80b62840f270f3172a64338f36e7b3a48c3a2ac3bbcc94af",
+      "retrieved_at_utc": "2026-10-05T17:39:38.597108+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "clay",
+      "source_depth_label": "5-15cm",
+      "coverage_id": "clay_5-15cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fclay.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=clay_5-15cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\clay\\clay_5-15cm_mean.tif",
+      "bytes": 6205988,
+      "sha256": "c3a6c4efe511e677d0f2a36596854e7946f66d2addb40d9f6eb3528598a53845",
+      "retrieved_at_utc": "2026-10-05T17:39:24.981858+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "clay",
+      "source_depth_label": "60-100cm",
+      "coverage_id": "clay_60-100cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fclay.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=clay_60-100cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\clay\\clay_60-100cm_mean.tif",
+      "bytes": 6324438,
+      "sha256": "db1f6ead1c3ddf8126a5d4394d969ed3a65d5b934ad6461e0a5fc20ee41bd5e8",
+      "retrieved_at_utc": "2026-10-05T17:39:52.231100+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "sand",
+      "source_depth_label": "0-5cm",
+      "coverage_id": "sand_0-5cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fsand.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=sand_0-5cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\sand\\sand_0-5cm_mean.tif",
+      "bytes": 6192838,
+      "sha256": "83494d475415d500fc993ff4c8c2c6de6d8a486bb037a6a4771f960a27d6a7af",
+      "retrieved_at_utc": "2026-10-05T17:40:05.407883+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "sand",
+      "source_depth_label": "100-200cm",
+      "coverage_id": "sand_100-200cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fsand.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=sand_100-200cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\sand\\sand_100-200cm_mean.tif",
+      "bytes": 6156801,
+      "sha256": "b9f50cdfa96a3afbdf372afe02e5a74dcdbbcd39df1c38d10a743f76d9bb1bfe",
+      "retrieved_at_utc": "2026-10-05T17:40:35.948838+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "sand",
+      "source_depth_label": "15-30cm",
+      "coverage_id": "sand_15-30cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fsand.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=sand_15-30cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\sand\\sand_15-30cm_mean.tif",
+      "bytes": 6147342,
+      "sha256": "6fe4ebf2371fff06aebac0c83de2cd6194c33312c752c3fe74b4aa18594573c0",
+      "retrieved_at_utc": "2026-10-05T17:40:18.860113+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "sand",
+      "source_depth_label": "30-60cm",
+      "coverage_id": "sand_30-60cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fsand.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=sand_30-60cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\sand\\sand_30-60cm_mean.tif",
+      "bytes": 6158228,
+      "sha256": "a463abde48b30891da3092cfd225e4a180c4329647ea73a49197a50c9b4a5439",
+      "retrieved_at_utc": "2026-10-05T17:40:22.488095+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "sand",
+      "source_depth_label": "5-15cm",
+      "coverage_id": "sand_5-15cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fsand.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=sand_5-15cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\sand\\sand_5-15cm_mean.tif",
+      "bytes": 6216138,
+      "sha256": "ec53b2985b0167496c1ae8879ccfa5b9254c8fdc1ad8ab5aff03e715feeb8b5c",
+      "retrieved_at_utc": "2026-10-05T17:40:05.885957+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "sand",
+      "source_depth_label": "60-100cm",
+      "coverage_id": "sand_60-100cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fsand.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=sand_60-100cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\sand\\sand_60-100cm_mean.tif",
+      "bytes": 6165053,
+      "sha256": "4546acafbc8583b5ee982fbd5d645df613329c913d8dc826ed95a62359bd75fd",
+      "retrieved_at_utc": "2026-10-05T17:40:34.104603+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "silt",
+      "source_depth_label": "0-5cm",
+      "coverage_id": "silt_0-5cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fsilt.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=silt_0-5cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\silt\\silt_0-5cm_mean.tif",
+      "bytes": 5897946,
+      "sha256": "315b4390b5ce2cd23dc57b1a3f7bb8247da0ca4bdb765b72889af444679cdf15",
+      "retrieved_at_utc": "2026-10-05T17:40:47.825592+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "silt",
+      "source_depth_label": "100-200cm",
+      "coverage_id": "silt_100-200cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fsilt.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=silt_100-200cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\silt\\silt_100-200cm_mean.tif",
+      "bytes": 5853238,
+      "sha256": "37506011afaa985b56b5053c5e7dbee920eb1e6808afc07ebc12ebf02d3a4e58",
+      "retrieved_at_utc": "2026-10-05T17:41:13.956114+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "silt",
+      "source_depth_label": "15-30cm",
+      "coverage_id": "silt_15-30cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fsilt.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=silt_15-30cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\silt\\silt_15-30cm_mean.tif",
+      "bytes": 5882470,
+      "sha256": "d59282f10bde54de21cf3c304f28cdac8ebf6462512867955f67d792bb4df7c6",
+      "retrieved_at_utc": "2026-10-05T17:41:00.487267+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "silt",
+      "source_depth_label": "30-60cm",
+      "coverage_id": "silt_30-60cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fsilt.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=silt_30-60cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\silt\\silt_30-60cm_mean.tif",
+      "bytes": 5828652,
+      "sha256": "509f9e2e5d4c569cc2a2c9cfe0302752566725850b0378ff2000d13b32071097",
+      "retrieved_at_utc": "2026-10-05T17:41:01.173810+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "silt",
+      "source_depth_label": "5-15cm",
+      "coverage_id": "silt_5-15cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fsilt.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=silt_5-15cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\silt\\silt_5-15cm_mean.tif",
+      "bytes": 5898548,
+      "sha256": "8f1f5d355c3541e99652ee707c8cf8da7539220da3a95b2e25532dc18e5874c2",
+      "retrieved_at_utc": "2026-10-05T17:40:48.671270+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "silt",
+      "source_depth_label": "60-100cm",
+      "coverage_id": "silt_60-100cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fsilt.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=silt_60-100cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\silt\\silt_60-100cm_mean.tif",
+      "bytes": 5831840,
+      "sha256": "d6e0145f4966ddcc53a82de4a722439ce6ed455e7f5f74060c68f50776deedda",
+      "retrieved_at_utc": "2026-10-05T17:41:13.252028+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "wv0033",
+      "source_depth_label": "0-5cm",
+      "coverage_id": "wv0033_0-5cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fwv0033.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=wv0033_0-5cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\wv0033\\wv0033_0-5cm_mean.tif",
+      "bytes": 4917857,
+      "sha256": "7da3d5292900f0f9f497a80a33bedc093283d8c3d43aecca663ed89e1efa87e0",
+      "retrieved_at_utc": "2026-10-05T17:42:27.707131+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "wv0033",
+      "source_depth_label": "100-200cm",
+      "coverage_id": "wv0033_100-200cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fwv0033.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=wv0033_100-200cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\wv0033\\wv0033_100-200cm_mean.tif",
+      "bytes": 4717455,
+      "sha256": "98e9be2e0789a63143790e79f8a939098e9fb1d30cb3ca6fb16870187ef38ee1",
+      "retrieved_at_utc": "2026-10-05T17:42:50.066853+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "wv0033",
+      "source_depth_label": "15-30cm",
+      "coverage_id": "wv0033_15-30cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fwv0033.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=wv0033_15-30cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\wv0033\\wv0033_15-30cm_mean.tif",
+      "bytes": 4916401,
+      "sha256": "771941c5676c726c4d494d0fd901a033d4b03315e6ca2ad4f56f558128fbe5ca",
+      "retrieved_at_utc": "2026-10-05T17:42:38.592936+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "wv0033",
+      "source_depth_label": "30-60cm",
+      "coverage_id": "wv0033_30-60cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fwv0033.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=wv0033_30-60cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\wv0033\\wv0033_30-60cm_mean.tif",
+      "bytes": 4840468,
+      "sha256": "53c2b634f9df4012103f91d320d271eb3070f8679e491a3f4a3fd1ecf991c02c",
+      "retrieved_at_utc": "2026-10-05T17:42:39.493045+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "wv0033",
+      "source_depth_label": "5-15cm",
+      "coverage_id": "wv0033_5-15cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fwv0033.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=wv0033_5-15cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\wv0033\\wv0033_5-15cm_mean.tif",
+      "bytes": 4951695,
+      "sha256": "e076a01ca472b13eacdf39d24b42e046b3f57913d27fc4ee7b3c4fc90fe7c9da",
+      "retrieved_at_utc": "2026-10-05T17:42:28.736187+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "wv0033",
+      "source_depth_label": "60-100cm",
+      "coverage_id": "wv0033_60-100cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fwv0033.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=wv0033_60-100cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\wv0033\\wv0033_60-100cm_mean.tif",
+      "bytes": 4802475,
+      "sha256": "b76fe23f250157c0a5ac1a315ef31519b4df89c0d1b0da11587610ae23ee094e",
+      "retrieved_at_utc": "2026-10-05T17:42:49.410859+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "wv1500",
+      "source_depth_label": "0-5cm",
+      "coverage_id": "wv1500_0-5cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fwv1500.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=wv1500_0-5cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\wv1500\\wv1500_0-5cm_mean.tif",
+      "bytes": 5022921,
+      "sha256": "c8afe3b1a7029d8f2362212b8f54146b6d12c180336fe0afec305c6b4e17dbdb",
+      "retrieved_at_utc": "2026-10-05T17:43:00.612964+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "wv1500",
+      "source_depth_label": "100-200cm",
+      "coverage_id": "wv1500_100-200cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fwv1500.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=wv1500_100-200cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\wv1500\\wv1500_100-200cm_mean.tif",
+      "bytes": 5062099,
+      "sha256": "01638a928f6160457632cf61a95b116238b06fd299c44a8dd0de6a94f0576f4c",
+      "retrieved_at_utc": "2026-10-05T17:43:23.905612+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "wv1500",
+      "source_depth_label": "15-30cm",
+      "coverage_id": "wv1500_15-30cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fwv1500.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=wv1500_15-30cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\wv1500\\wv1500_15-30cm_mean.tif",
+      "bytes": 5051382,
+      "sha256": "0f3041aac7aba278592be22043ec87d23ae968461dbcc94677a4eccc91d53af3",
+      "retrieved_at_utc": "2026-10-05T17:43:11.935902+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "wv1500",
+      "source_depth_label": "30-60cm",
+      "coverage_id": "wv1500_30-60cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fwv1500.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=wv1500_30-60cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\wv1500\\wv1500_30-60cm_mean.tif",
+      "bytes": 5039660,
+      "sha256": "16b2fb948efed447d7598ce205ad3363d744820e9e36dc1c405dbbf1b619e942",
+      "retrieved_at_utc": "2026-10-05T17:43:12.576509+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "wv1500",
+      "source_depth_label": "5-15cm",
+      "coverage_id": "wv1500_5-15cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fwv1500.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=wv1500_5-15cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\wv1500\\wv1500_5-15cm_mean.tif",
+      "bytes": 5044951,
+      "sha256": "18d4db0211b8fbac8d89b5306893eb3ba423485a6f4ba7e3698a1d235617af86",
+      "retrieved_at_utc": "2026-10-05T17:43:01.280001+00:00",
+      "cache_reused": true
+    },
+    {
+      "soil_variable": "wv1500",
+      "source_depth_label": "60-100cm",
+      "coverage_id": "wv1500_60-100cm_mean",
+      "url": "https://maps.isric.org/mapserv?map=%2Fmap%2Fwv1500.map&SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=wv1500_60-100cm_mean&CRS=EPSG%3A4326&BBOX=-53.25%2C-24.75%2C-44.75%2C-19.75&WIDTH=3400&HEIGHT=2000&FORMAT=GEOTIFF_INT16",
+      "cache_path": "D:\\Desktop\\Operation Sugar\\data\\raw\\soil\\soilgrids_2_0\\sp_exp03_era5_extent\\wv1500\\wv1500_60-100cm_mean.tif",
+      "bytes": 5089661,
+      "sha256": "d70f78665916c2d8373cb5c57d8bbea7d9c902e6a8c3a14f2d7e00cdcfb96cbe",
+      "retrieved_at_utc": "2026-10-05T17:43:23.228935+00:00",
+      "cache_reused": true
+    }
+  ]
+}

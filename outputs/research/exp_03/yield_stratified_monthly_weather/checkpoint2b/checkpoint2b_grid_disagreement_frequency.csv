@@ -1,0 +1,71 @@
+era5_grid_id,problematic_cells_disagreed,distinct_variables_affected,distinct_late_months_affected,mean_absolute_grid_rho,maximum_disagreement_strength,grid_latitude,grid_longitude,n_eligible_municipalities_in_grid,municipality_names,coordinate_region
+era5_-23.00_-47.00,11,7,2,0.08696264975334737,0.1757575757575757,-23.0,-47.0,8,Campinas; Hortolândia; Indaiatuba; Itatiba; Itupeva; Jundiaí; Louveira; Paulínia,south-east
+era5_-23.00_-49.00,10,7,2,0.06669485553206479,0.1854827343199436,-23.0,-49.0,5,Arandu; Avaré; Cerqueira César; Iaras; Águas de Santa Bárbara,south-east
+era5_-24.50_-48.50,10,7,2,0.2258461538461538,0.353076923076923,-24.5,-48.5,1,Iporanga,south-east
+era5_-21.00_-49.00,10,6,2,0.09527836504580685,0.1646229739252994,-21.0,-49.0,16,Ariranha; Cajobi; Catanduva; Catiguá; Elisiário; Embaúba; Guapiaçu; Ibirá; Novais; Palmares Paulista; Paraíso; Pindorama; Santa Adélia; Severínia; Tabapuã; Uchoa,north-east
+era5_-22.50_-50.50,10,6,2,0.11525126237327735,0.2403100775193798,-22.5,-50.5,10,Assis; Borá; Cruzália; Cândido Mota; Florínia; Lutécia; Maracaí; Paraguaçu Paulista; Pedrinhas Paulista; Tarumã,south-west
+era5_-23.00_-46.50,10,6,2,0.16842847075405207,0.3131782945736434,-23.0,-46.5,8,Atibaia; Bom Jesus dos Perdões; Bragança Paulista; Jarinu; Joanópolis; Nazaré Paulista; Pedra Bela; Piracaia,south-east
+era5_-21.00_-48.00,9,7,2,0.042048492976582544,0.1240310077519379,-21.0,-48.0,8,Barrinha; Dumont; Jardinópolis; Pitangueiras; Pontal; Ribeirão Preto; Sales Oliveira; Sertãozinho,north-east
+era5_-21.50_-49.00,9,7,2,0.10162085976039462,0.15630725863284,-21.5,-49.0,5,Borborema; Itajobi; Itápolis; Marapoama; Novo Horizonte,north-east
+era5_-22.50_-51.50,9,7,2,0.0874481246574269,0.1489781536293164,-22.5,-51.5,9,Anhumas; Estrela do Norte; Iepê; Nantes; Narandiba; Pirapozinho; Sandovalina; Taciba; Tarabai,south-west
+era5_-23.50_-49.00,9,7,2,0.06991670342942259,0.1408033826638478,-23.5,-49.0,2,Itaí; Taquarituba,south-east
+era5_-22.00_-50.50,9,6,2,0.08203002709079418,0.1424947145877378,-22.0,-50.5,7,Arco-Íris; Bastos; Herculândia; Iacri; Quatá; Quintana; Tupã,north-west
+era5_-22.00_-51.50,9,6,2,0.0935870331219168,0.1730796335447498,-22.0,-51.5,10,Emilianópolis; Indiana; Piquerobi; Presidente Bernardes; Presidente Prudente; Regente Feijó; Ribeirão dos Índios; Santo Anastácio; Santo Expedito; Álvares Machado,north-west
+era5_-23.00_-45.50,8,7,2,0.05623678646934455,0.107399577167019,-23.0,-45.5,5,Caçapava; Monteiro Lobato; Pindamonhangaba; São Luiz do Paraitinga; Taubaté,south-east
+era5_-24.50_-48.00,8,7,2,0.1912932669511616,0.2714556661925082,-24.5,-48.0,3,Jacupiranga; Pariquera-Açu; Registro,south-east
+era5_-21.50_-48.50,8,6,2,0.07949260042283292,0.15799859055673,-21.5,-48.5,9,Cândido Rodrigues; Dobrada; Fernando Prestes; Jaboticabal; Matão; Monte Alto; Santa Ernestina; Tabatinga; Taquaritinga,north-east
+era5_-21.50_-49.50,8,6,2,0.12158210007047213,0.1844961240310077,-21.5,-49.5,4,Irapuã; Pongaí; Sabino; Sales,north-west
+era5_-23.00_-45.00,8,6,2,0.08350427350427347,0.1439316239316239,-23.0,-45.0,2,Guaratinguetá; Lagoinha,south-east
+era5_-20.00_-50.50,8,5,2,0.07251585623678643,0.1643410852713178,-20.0,-50.5,9,Guarani d'Oeste; Indiaporã; Ouroeste; Paranapuã; Populina; Santa Albertina; Turmalina; Urânia; Vitória Brasil,north-west
+era5_-21.00_-51.50,7,6,2,0.049813752139333485,0.1260042283298097,-21.0,-51.5,8,Andradina; Castilho; Guaraçaí; Itapura; Lavínia; Mirandópolis; Murutinga do Sul; Nova Independência,north-west
+era5_-22.00_-47.00,7,6,2,0.053317225410248595,0.0937279774489076,-22.0,-47.0,7,Aguaí; Casa Branca; Espírito Santo do Pinhal; Santa Cruz das Palmeiras; Santo Antônio do Jardim; São João da Boa Vista; Vargem Grande do Sul,north-east
+era5_-23.00_-48.50,7,6,2,0.11098359005335745,0.2046511627906976,-23.0,-48.5,4,Botucatu; Itatinga; Pardinho; Pratânia,south-east
+era5_-20.00_-49.50,6,6,1,0.17268029128494242,0.2169133192389006,-20.0,-49.5,4,Orindiúva; Paulo de Faria; Pontes Gestal; Riolândia,north-west
+era5_-20.50_-48.00,6,6,2,0.05997181113460178,0.1403805496828752,-20.5,-48.0,7,Guará; Ipuã; Ituverava; Miguelópolis; Morro Agudo; Orlândia; São Joaquim da Barra,north-east
+era5_-20.50_-51.00,6,6,2,0.07808315715292453,0.1244538407329104,-20.5,-51.0,6,Aparecida d'Oeste; Ilha Solteira; Palmeira d'Oeste; Pereira Barreto; Sud Mennucci; Suzanápolis,north-west
+era5_-21.00_-49.50,6,6,1,0.13913554146112278,0.1999999999999999,-21.0,-49.5,14,Adolfo; Bady Bassitt; Cedral; Jaci; José Bonifácio; Mendonça; Mirassol; Monte Aprazível; Neves Paulista; Nova Aliança; Potirendaba; São José do Rio Preto; Ubarana; Urupês,north-west
+era5_-21.50_-50.50,6,6,1,0.09194268264035703,0.1337561663143058,-21.5,-50.5,14,Bento de Abreu; Bilac; Birigui; Braúna; Clementina; Coroados; Gabriel Monteiro; Guararapes; Luiziânia; Piacatu; Rinópolis; Rubiácea; Salmourão; Santópolis do Aguapeí,north-west
+era5_-22.00_-48.00,6,6,2,0.13753817242189328,0.1843551797040169,-22.0,-48.0,4,Araraquara; Ibaté; Ribeirão Bonito; São Carlos,north-east
+era5_-22.50_-50.00,6,6,1,0.21664455127658758,0.276814658210007,-22.5,-50.0,4,Campos Novos Paulista; Echaporã; Ocauçu; Platina,south-west
+era5_-24.00_-49.00,6,6,1,0.11877076411960126,0.1771368166717004,-24.0,-49.0,2,Itapeva; Itararé,south-east
+era5_-20.50_-50.00,6,5,2,0.08649283533004459,0.1829457364341085,-20.5,-50.0,11,Cosmorama; Fernandópolis; Floreal; Magda; Meridiano; Nhandeara; Parisi; Sebastianópolis do Sul; Valentim Gentil; Votuporanga; Álvares Florence,north-west
+era5_-21.00_-48.50,6,5,2,0.07610993657505281,0.1540521494009866,-21.0,-48.5,9,Bebedouro; Monte Azul Paulista; Pirangi; Taiaçu; Taiúva; Taquaral; Terra Roxa; Viradouro; Vista Alegre do Alto,north-east
+era5_-21.50_-50.00,6,5,2,0.0243598778482499,0.0587737843551797,-21.5,-50.0,8,Alto Alegre; Avanhandava; Barbosa; Glicério; Guaiçara; Lins; Penápolis; Promissão,north-west
+era5_-22.00_-48.50,6,5,2,0.06105238430819821,0.1200845665961945,-22.0,-48.5,8,Bariri; Boa Esperança do Sul; Bocaina; Dourado; Gavião Peixoto; Itapuí; Nova Europa; Trabiju,north-east
+era5_-23.50_-49.50,6,5,2,0.20097150911104397,0.2967381455753549,-23.5,-49.5,7,Coronel Macedo; Fartura; Itaporanga; Riversul; Sarutaiá; Taguaí; Tejupá,south-west
+era5_-23.50_-46.00,6,4,2,0.052671312427409966,0.1522648083623693,-23.5,-46.0,6,Guararema; Igaratá; Jacareí; Santa Branca; Santa Isabel; São José dos Campos,south-east
+era5_-20.00_-47.50,5,5,1,0.13482734319943618,0.1899929527836504,-20.0,-47.5,4,Aramina; Buritizal; Igarapava; Rifaina,north-east
+era5_-20.50_-47.50,5,5,2,0.019450317124735682,0.0338266384778012,-20.5,-47.5,9,Cristais Paulista; Franca; Jeriquara; Nuporanga; Patrocínio Paulista; Pedregulho; Restinga; Ribeirão Corrente; São José da Bela Vista,north-east
+era5_-20.50_-48.50,5,5,1,0.16933051444679345,0.2131078224101479,-20.5,-48.5,5,Barretos; Colina; Colômbia; Guaíra; Jaborandi,north-east
+era5_-20.50_-49.00,5,5,2,0.06359408033826634,0.1179704016913319,-20.5,-49.0,4,Altair; Guaraci; Icém; Olímpia,north-east
+era5_-22.50_-47.50,5,5,1,0.03534883720930228,0.068076109936575,-22.5,-47.5,9,Americana; Araras; Cordeirópolis; Ipeúna; Iracemápolis; Limeira; Piracicaba; Rio Claro; Santa Gertrudes,south-east
+era5_-23.50_-45.50,5,5,1,0.2906831812650309,0.468466898954704,-23.5,-45.5,3,Natividade da Serra; Paraibuna; Redenção da Serra,south-east
+era5_-23.50_-47.00,5,5,1,0.16121212121212117,0.2207188160676532,-23.5,-47.0,3,Cabreúva; Pirapora do Bom Jesus; São Roque,south-east
+era5_-23.50_-48.00,5,5,2,0.01364341085271314,0.0352360817477096,-23.5,-48.0,4,Guareí; Itapetininga; Quadra; Tatuí,south-east
+era5_-21.50_-48.00,5,4,2,0.09525017618040868,0.1378435517970401,-21.5,-48.0,8,Américo Brasiliense; Guariba; Guatapará; Luís Antônio; Motuca; Pradópolis; Rincão; Santa Lúcia,north-east
+era5_-21.00_-47.50,4,4,1,0.08488372093023253,0.1478505990133897,-21.0,-47.5,5,Altinópolis; Batatais; Brodowski; Santo Antônio da Alegria; Serrana,north-east
+era5_-22.00_-47.50,4,4,1,0.03276955602536995,0.0649753347427766,-22.0,-47.5,7,Analândia; Corumbataí; Descalvado; Leme; Pirassununga; Porto Ferreira; Santa Cruz da Conceição,north-east
+era5_-22.50_-48.00,4,4,1,0.07986350741237878,0.1053595969504314,-22.5,-48.0,6,Brotas; Charqueada; Itirapina; Santa Maria da Serra; São Pedro; Torrinha,south-east
+era5_-23.00_-48.00,4,4,2,0.029140338937122524,0.0463706835799859,-23.0,-48.0,7,Anhembi; Cesário Lange; Conchas; Jumirim; Laranjal Paulista; Pereiras; Porangaba,south-east
+era5_-24.50_-49.00,4,4,1,0.11625615763546793,0.1886699507389162,-24.5,-49.0,2,Itapirapuã Paulista; Ribeira,south-east
+era5_-20.00_-50.00,4,3,2,0.05549682875264265,0.0814658210007047,-20.0,-50.0,2,Macedônia; Pedranópolis,north-west
+era5_-22.50_-48.50,4,3,2,0.05887949260042277,0.140521494009866,-22.5,-48.5,8,Areiópolis; Barra Bonita; Dois Córregos; Igaraçu do Tietê; Jaú; Macatuba; Mineiros do Tietê; São Manuel,south-east
+era5_-22.50_-53.00,4,3,2,0.014398644833427376,0.0333145115753811,-22.5,-53.0,1,Rosana,south-west
+era5_-21.50_-47.50,3,3,1,0.057458303969931825,0.1131782945736434,-21.5,-47.5,8,Cajuru; Cravinhos; Santa Cruz da Esperança; Santa Rita do Passa Quatro; Santa Rosa de Viterbo; Serra Azul; São Simão; Tambaú,north-east
+era5_-22.00_-49.00,3,3,1,0.11289640591966167,0.1367159971811134,-22.0,-49.0,6,Arealva; Boracéia; Iacanga; Ibitinga; Itaju; Reginópolis,north-east
+era5_-22.00_-51.00,3,3,2,0.04754521963824287,0.1224806201550387,-22.0,-51.0,12,Adamantina; Caiabu; Inúbia Paulista; João Ramalho; Lucélia; Mariápolis; Martinópolis; Osvaldo Cruz; Parapuã; Pracinha; Rancharia; Sagres,north-west
+era5_-22.50_-46.50,3,3,1,0.14822645055203193,0.2018322762508809,-22.5,-46.5,5,Lindóia; Monte Alegre do Sul; Serra Negra; Socorro; Águas de Lindóia,south-east
+era5_-22.50_-49.00,3,3,1,0.07808315715292453,0.133615221987315,-22.5,-49.0,6,Agudos; Bauru; Borebi; Lençóis Paulista; Pederneiras; Piratininga,south-east
+era5_-23.00_-50.00,3,3,1,0.10505050505050502,0.1543340380549683,-23.0,-50.0,6,Canitar; Ibirarema; Ourinhos; Palmital; Ribeirão do Sul; Salto Grande,south-west
+era5_-23.50_-47.50,3,3,2,0.04383368569415077,0.0993657505285412,-23.5,-47.5,8,Alumínio; Araçoiaba da Serra; Boituva; Capela do Alto; Iperó; Itu; Salto de Pirapora; Sorocaba,south-east
+era5_-21.50_-47.00,2,2,1,0.1302325581395348,0.1302325581395348,-21.5,-47.0,7,Caconde; Cássia dos Coqueiros; Itobi; Mococa; São José do Rio Pardo; São Sebastião da Grama; Tapiratiba,north-east
+era5_-23.00_-49.50,2,2,1,0.0105708245243128,0.0105708245243128,-23.0,-49.5,8,Bernardino de Campos; Chavantes; Ipaussu; Manduri; Piraju; Santa Cruz do Rio Pardo; Timburi; Óleo,south-west
+era5_-20.00_-51.00,1,1,1,0.015126050420168,0.015126050420168,-20.0,-51.0,2,Santa Fé do Sul; Três Fronteiras,north-west
+era5_-20.50_-49.50,1,1,1,0.0124031007751937,0.0124031007751937,-20.5,-49.5,7,Bálsamo; Ipiguá; Mirassolândia; Nova Granada; Onda Verde; Palestina; Tanabi,north-west
+era5_-21.00_-50.00,1,1,1,0.0232558139534883,0.0232558139534883,-21.0,-50.0,12,Brejo Alegre; Buritama; Gastão Vidigal; Lourdes; Macaubal; Monções; Nipoã; Planalto; Poloni; Turiúba; União Paulista; Zacarias,north-west
+era5_-22.00_-49.50,1,1,1,0.1298097251585623,0.1298097251585623,-22.0,-49.5,7,Avaí; Balbinos; Cafelândia; Guarantã; Pirajuí; Presidente Alves; Uru,north-west
+era5_-22.00_-52.00,1,1,1,0.2004228329809725,0.2004228329809725,-22.0,-52.0,5,Caiuá; Marabá Paulista; Mirante do Paranapanema; Presidente Epitácio; Presidente Venceslau,north-west
+era5_-22.50_-45.00,1,1,1,0.132647273316587,0.132647273316587,-22.5,-45.0,8,Arapeí; Areias; Bananal; Cachoeira Paulista; Cruzeiro; Queluz; Silveiras; São José do Barreiro,south-east
+era5_-22.50_-49.50,1,1,1,0.1619450317124735,0.1619450317124735,-22.5,-49.5,6,Cabrália Paulista; Duartina; Espírito Santo do Turvo; Lucianópolis; Paulistânia; São Pedro do Turvo,south-west
+era5_-22.50_-52.50,1,1,1,0.1605355884425651,0.1605355884425651,-22.5,-52.5,2,Euclides da Cunha Paulista; Teodoro Sampaio,south-west
+era5_-23.50_-48.50,1,1,1,0.2039542986791994,0.2039542986791994,-23.5,-48.5,2,Angatuba; Paranapanema,south-east

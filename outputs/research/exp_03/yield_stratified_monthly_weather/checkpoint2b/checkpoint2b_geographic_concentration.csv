@@ -1,0 +1,5 @@
+coordinate_region,distinct_disagreeing_grids,disagreement_occurrences,distinct_variables,distinct_late_months,minimum_latitude,maximum_latitude,minimum_longitude,maximum_longitude
+south-east,24,140,7,2,-24.5,-22.5,-49.0,-45.0
+north-east,19,108,7,2,-22.0,-20.0,-49.0,-47.0
+north-west,18,89,7,2,-22.0,-20.0,-52.0,-49.5
+south-west,9,42,7,2,-23.5,-22.5,-53.0,-49.5

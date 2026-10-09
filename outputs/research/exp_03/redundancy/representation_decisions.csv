@@ -1,0 +1,4 @@
+conceptual_family,canonical_variable,archived_robustness_variable,decision_basis
+solar_energy,solar_radiation_mean_daily_mj_m2,solar_radiation_total_mj_m2,representation duplicate; mean-daily avoids month-length scaling
+vpd,vpd_mean_kpa,vpd_mean_daily_max_kpa,near-duplicate predictor and yield behavior; not a temperature-VPD decision
+upper_soil_moisture,soil_moisture_0_to_7cm_m3_m3,soil_moisture_7_to_28cm_m3_m3,one upper-state family; 0-7 cm preserves EXP-01 and March-audit continuity

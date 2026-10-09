@@ -1,0 +1,12 @@
+column_name,feature_family,basic_or_advanced,unit,aggregation_definition,source,included_in_exp01a,notes
+nasa_total_rainfall_mm,precipitation,basic,mm,monthly sum of daily PRECTOTCORR,NASA POWER,True,Daily rows require all NASA variables valid
+nasa_average_temperature_c,temperature,basic,degrees C,monthly mean of daily T2M,NASA POWER,True,Near-surface air temperature
+nasa_average_relative_humidity_pct,relative humidity,basic,percent,monthly mean of daily RH2M,NASA POWER,True,Near-surface relative humidity
+vpd_mean_kpa,VPD,advanced,kPa,monthly mean of daily mean hourly VPD,Open-Meteo ERA5,True,"Hourly VPD averaged to day, then month"
+vpd_mean_daily_max_kpa,VPD,advanced,kPa,monthly mean of daily maximum hourly VPD,Open-Meteo ERA5,True,Distinct from monthly mean VPD
+soil_moisture_0_to_7cm_m3_m3,soil moisture 0-7 cm,advanced,m3/m3,monthly mean of daily mean hourly soil moisture,Open-Meteo ERA5,True,Volumetric soil water layer retained separately
+soil_moisture_7_to_28cm_m3_m3,soil moisture 7-28 cm,advanced,m3/m3,monthly mean of daily mean hourly soil moisture,Open-Meteo ERA5,True,Volumetric soil water layer retained separately
+soil_moisture_28_to_100cm_m3_m3,soil moisture 28-100 cm,advanced,m3/m3,monthly mean of daily mean hourly soil moisture,Open-Meteo ERA5,True,Volumetric soil water layer retained separately
+soil_moisture_100_to_255cm_m3_m3,soil moisture 100-255 cm,advanced,m3/m3,monthly mean of daily mean hourly soil moisture,Open-Meteo ERA5,True,Volumetric soil water layer retained separately
+solar_radiation_total_mj_m2,solar radiation,advanced,MJ/m2,monthly sum of daily shortwave-radiation sum,Open-Meteo ERA5,True,Monthly total retained as its verified definition
+solar_radiation_mean_daily_mj_m2,solar radiation,advanced,MJ/m2/day,monthly mean of daily shortwave-radiation sum,Open-Meteo ERA5,True,Mean daily radiation retained separately

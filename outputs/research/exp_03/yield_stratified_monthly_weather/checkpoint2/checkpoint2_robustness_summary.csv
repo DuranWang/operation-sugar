@@ -1,0 +1,5 @@
+specification,sample_definition,effect_correlation_vs_primary,primary_window_correlation,late_window_correlation,sign_agreement_rate,sign_reversals,late_window_sign_agreement_rate,late_window_sign_reversals,maximum_absolute_effect_change,late_season_pattern
+primary_within_grid_25_50_25,1974-2025 within-grid ranks; intersect complete 1982-2025 weather,1.0,1.0,1.0,1.0,0,1.0,0,0.0,baseline
+within_grid_20_60_20,1974-2025 within-grid 20/60/20; complete weather,0.9835599511785239,0.9910338594154517,0.9947823638686121,0.9318181818181818,12,1.0,0,0.1037177895867647,broadly preserved
+within_grid_zscore_pooled_25_50_25,1974-2025 within-grid z-score; pooled quartiles,0.9928477706160335,0.9962555618607319,0.9972507912668916,0.9715909090909091,5,1.0,0,0.05659705751392308,broadly preserved
+within_grid_25_50_25_rank_1982_2025_only,1982-2025 within-grid 25/50/25 ranks,0.9971215651801651,0.9975121605754066,0.9980047487195819,0.9886363636363636,2,1.0,0,0.04382090968283525,broadly preserved

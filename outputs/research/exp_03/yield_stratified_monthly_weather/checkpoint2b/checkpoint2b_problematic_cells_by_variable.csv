@@ -1,0 +1,8 @@
+weather_variable,problematic_cells,distinct_late_months,minimum_pct_grids_agreeing
+nasa_total_rainfall_mm,2,2,0.47368421052631576
+solar_radiation_mean_daily_mj_m2,2,2,0.5526315789473685
+solar_radiation_total_mj_m2,2,2,0.5526315789473685
+vpd_mean_kpa,2,2,0.4868421052631579
+nasa_average_temperature_c,1,1,0.5394736842105263
+soil_moisture_0_to_7cm_m3_m3,1,1,0.5789473684210527
+vpd_mean_daily_max_kpa,1,1,0.5263157894736842

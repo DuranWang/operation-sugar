@@ -1,0 +1,18 @@
+check,passed,detail
+expected_grid_count,True,76 of 76
+expected_variable_set,True,awc_33_minus_1500;bdod;cfvo;clay;sand;silt;wv0033;wv1500
+expected_depth_set,True,0-5cm;100-200cm;15-30cm;30-60cm;5-15cm;60-100cm
+unique_grid_variable_depth,True,duplicates=0
+canonical_grid_ids,True,invalid=[]
+no_missing_values,True,missing=0
+range_clay,True,"min=22.552148;max=50.025832;expected=[0.0,100.0]"
+range_sand,True,"min=29.878263;max=63.591835;expected=[0.0,100.0]"
+range_silt,True,"min=11.386470;max=24.535973;expected=[0.0,100.0]"
+range_bdod,True,"min=1.002302;max=1.373500;expected=[0.0,3.0]"
+range_cfvo,True,"min=2.554605;max=14.536163;expected=[0.0,100.0]"
+range_wv0033,True,"min=25.806569;max=37.374930;expected=[0.0,100.0]"
+range_wv1500,True,"min=10.796904;max=22.584885;expected=[0.0,100.0]"
+texture_closure_within_0.2_percentage_points,True,max_abs_error=0.000711;mean_abs_error=0.000201
+theta33_ge_theta1500,True,violations=0
+nonnegative_awc,True,negative=0;min=8.408901;max=20.472208
+positive_source_coverage,True,min=0.806518;median=0.966568
