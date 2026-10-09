@@ -6,6 +6,64 @@ This project follows **Semantic Versioning** and the general structure proposed 
 
 ---
 
+## [1.7.0] - 2026-10-09
+
+### Annual-Yield Target, Weather–Yield Discovery, and EXP-03 Reproducibility
+
+Operation Sugar v1.7.0 closes EXP-02 and EXP-03, establishing a reproducible adjusted-yield target and a compact downstream weather candidate universe for São Paulo annual sugarcane yield research.
+
+### Added
+
+- Completed municipality-first annual yield detrending with P50=10 as the primary historical specification and P50=12 as conservative robustness.
+- Added annual harvested-area-weighted aggregation of municipality residuals to ERA5 0.5° grids.
+- Added fixed common-support spatial-composition robustness.
+- Added EXP-03 yield-stratified monthly weather analysis over the complete all-variable history.
+- Added categorical, continuous, grouping, ranking-history, and spatial-heterogeneity robustness.
+- Added March soil-moisture depth / regime reconstruction.
+- Added bounded SoilGrids explanatory synthesis using native 0–200 cm source depths.
+- Added EXP-03 representation and adjacent-month redundancy synthesis.
+- Added a reproducible 38-representation downstream candidate universe.
+- Added curated EXP-03 reports, summaries, and selected figures under `outputs/research/exp_03/`.
+- Added dedicated EXP-03 analysis and validation modules.
+- Added generated-data ignore rules for large reproducible EXP-03 intermediates and processed soil data.
+
+### Changed
+
+- Expanded the canonical all-variable weather history back to January 1981 while preserving EXP-01's approved 1990–2025 validation scope.
+- Updated mixed historical NASA date parsing to support valid ISO date renderings.
+- Reframed the active research sequence to run EXP-05 before EXP-04.
+- Reduced clear representation duplication:
+  - mean-daily solar is canonical over monthly total solar;
+  - mean VPD is canonical over daily-max VPD;
+  - 0–7 cm is canonical for the upper-soil-moisture family.
+- Deferred dynamic Bayesian weather updating to a later Weather 2.0 phase.
+
+### Research Findings
+
+- The clearest late-weather relationship structure is Dec_(t-1) through Apr_t.
+- Dec–Jan is strongest and most spatially broad.
+- Feb–Mar contains materially greater cross-grid heterogeneity.
+- April partially reconverges spatially.
+- Relative humidity and deeper soil moisture are among the most spatially stable late-window signals.
+- March soil-moisture response changes materially with depth, producing 42 positive-positive, 19 depth-recovery, 13 persistent-negative, and 2 reverse grids across the 76 usable grid-specific histories.
+- SoilGrids differences across March depth regimes are suggestive but strongly entangled with latitude and production-support structure, so static soil remains explanatory-only.
+- Only Dec–Jan relative humidity and Dec–Jan 28–100 cm soil moisture are promoted as multi-month candidate summaries.
+- Temperature/VPD and rainfall/upper/deep-moisture conditional-information questions remain intentionally unresolved rather than collapsed by predictor correlation.
+
+### Validation
+
+- Focused analysis / weather-ETL / soil-ETL suite: **137 tests passing**.
+- EXP-03 reproducibility closure reconstructs the frozen March regime counts and the 38-candidate downstream universe from data rather than hard-coded outputs.
+- Large reconstructable intermediate tables remain local / ignored; curated reports and summaries are versioned.
+
+### Next
+
+The immediate next experiment is **EXP-05 — Conditional Temperature–VPD Yield Response**.
+
+EXP-04 follows after EXP-05 and will focus on continuous relationship shape, magnitude, uncertainty, and target robustness without repeating the correlation screen already completed in EXP-03.
+
+---
+
 ## [1.6.0] - 2026-09-27
 
 ### Weather Feature Structure, Spatial Weighting, and Annual-Yield Research Framework

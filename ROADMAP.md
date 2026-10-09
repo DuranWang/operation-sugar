@@ -1,708 +1,306 @@
 # Operation Sugar Roadmap
 
-Updated: September 27, 2026
+Updated: October 9, 2026
 
-Operation Sugar develops transparent, reproducible commodity research and forecast benchmarks, beginning with Brazilian sugarcane and sugar.
+Operation Sugar develops transparent, reproducible commodity-research and forecast benchmarks, beginning with Brazilian sugarcane and sugar.
 
-The current research target is **annual agricultural sugarcane yield (t/ha) in São Paulo**. The immediate priority is not to maximize model complexity; it is to establish a defensible adjusted-yield target and determine whether weather relationships survive reasonable changes in detrending and spatial aggregation.
+The current Layer-1 target is **annual agricultural sugarcane yield (t/ha) in São Paulo**.
 
-Negative results remain part of the research record. An experiment is complete when its question has been evaluated credibly, including when no stable incremental relationship is found.
+The immediate objective is not to maximize model complexity. It is to identify which weather relationships remain distinct, robust, interpretable, and eventually useful out of sample.
 
-## Status and Priorities
+## Current Status
 
 | Status | Scope |
 |---|---|
-| **Completed** | v1.0–v1.6.0 research foundation; EXP-01S, EXP-01A, EXP-01B, EXP-01C |
-| **Next** | EXP-02A — long-run trend specification and residual robustness |
-| **After EXP-02A** | EXP-02B — spatial-composition sensitivity, subject to municipality-yield data gate |
-| **After EXP-02A / 02B gate** | EXP-02C — weather-relationship robustness across retained anomaly definitions |
-| **Later Layer 1** | EXP-03 through EXP-09: adjusted-yield exploration, growth-stage structure, incremental predictive value, spatial heterogeneity, dynamic probabilistic forecasting |
-| **Long-term** | Layer 2: sugar / ethanol allocation and recovery; Layer 3: BRL/USD; Layer 4: supply chains |
+| **Completed** | EXP-01 — weather feature structure |
+| **Completed** | EXP-02 — yield detrending and spatial composition |
+| **Completed** | EXP-03 — weather–yield discovery, robustness, spatial heterogeneity, and redundancy synthesis |
+| **Next** | **EXP-05 — conditional temperature–VPD yield response** |
+| **After EXP-05** | EXP-04 — focused continuous adjusted-yield characterization |
+| **Later / separately approved** | Hydrological conditional-information follow-up |
+| **Later Layer 1** | EXP-06, EXP-07, EXP-08 |
+| **Deferred** | Dynamic Bayesian weather updating → Weather 2.0 |
+
+Experiment numbers are historical identifiers. Execution order is intentionally **EXP-05 before EXP-04** because EXP-05 resolves the largest remaining atmospheric-demand redundancy question before the broader continuous-characterization stage.
+
+---
 
 ## Four-Layer Research Architecture
 
-| Layer | Research focus | Main questions |
-|---|---|---|
-| **1. Agricultural supply** | Weather → annual cane yield → cane production | Which weather variables contain stable explanatory and predictive information for TCH, and how should area be incorporated when moving from yield to production? |
-| **2. Sugar production and energy** | Cane → sugar output; recovery / ATR; ethanol–sugar mix; energy links | How does available cane translate into sugar output, and how does allocation between sugar and ethanol vary? |
-| **3. Currency** | BRL/USD and sugar prices | Does the exchange rate add information beyond agricultural and energy variables? |
-| **4. Supply chains** | Ports, exports, inventories, transport, and physical availability | Do logistics and physical-flow indicators add information beyond the preceding layers? |
+| Layer | Research focus | Main question | Status |
+|---|---|---|---|
+| **1. Agricultural supply** | Weather → cane yield → cane production | Which weather information is robust and predictively useful for annual TCH? | Active |
+| **2. Sugar production and energy** | Cane → sugar / ethanol | How does available cane translate into sugar output? | Planned |
+| **3. Currency** | BRL/USD and sugar | Does currency add information beyond supply and energy? | Planned |
+| **4. Supply chains** | Ports / exports / inventories | Do physical-flow indicators add information beyond upstream layers? | Planned |
 
-Cane yield, cane production, recoverable sugar, raw sugar, refined white sugar, and futures prices are distinct targets. They must not be treated as interchangeable.
-
----
-
-## Layer 1 — Current Experiment Sequence
-
-### EXP-01 — Basic vs Advanced Weather Feature Correlation
-
-**Status: COMPLETED**
-
-**Question**
-
-How much information overlap exists between basic and advanced weather variables, and does that structure change when municipality observations are weighted by reported sugarcane harvested area?
-
-#### EXP-01S — Harvested-Area Weight Stability
-
-**Status: COMPLETED**
-
-Measures year-to-year and long-horizon stability of municipality harvested-area shares under explicit IBGE missing-value semantics:
-
-- numeric values are reported observations;
-- `-` is explicit zero;
-- `...` remains unavailable;
-- unavailable values are not silently imputed as zero.
-
-Main conclusion:
-
-> São Paulo reported sugarcane harvested-area shares show strong year-to-year persistence but meaningful cumulative spatial change over multi-year horizons.
-
-The result supports contemporaneous annual observed-only weights for historical descriptive sensitivity analysis, while leaving forecast-time weighting unresolved.
-
-#### EXP-01A — Municipality-Level Weather Correlation
-
-**Status: COMPLETED**
-
-Validated panel:
-
-- 1990–2025;
-- 642 municipalities;
-- 36 years;
-- 12 months;
-- 277,344 municipality-month observations;
-- 11 verified weather variables;
-- no missing weather observations in the validated panel.
-
-Main conclusions:
-
-- same-month weather relationships are strongly calendar-month dependent;
-- temperature and VPD overlap substantially but not uniformly;
-- surface soil moisture is much more temporally persistent than precipitation;
-- pooled correlations can be materially misleading and can reverse sign relative to within-calendar-month relationships;
-- variable-specific temporal aggregation is more defensible than imposing one common window on every weather feature.
-
-#### EXP-01B — Harvested-Area-Weighted Weather Correlation
-
-**Status: COMPLETED**
-
-Repeats the EXP-01A structure while preserving municipality-level observations and weighting municipality-years by contemporaneous observed-only reported harvested-area share.
-
-Main conclusion:
-
-> The broad qualitative weather-correlation structure survives crop-area weighting, but correlation magnitude and temporal persistence are not invariant to the production footprint.
-
-#### EXP-01C — Matched-Support Weighting-Sensitivity Comparison
-
-**Status: COMPLETED**
-
-Introduces:
-
-```text
-A   = original equal-weight support
-A*  = equal-weight matched harvested-area-observed support
-B   = matched support with harvested-area weights
-```
-
-This decomposes:
-
-\[
-\Delta_{support}=A^*-A
-\]
-
-\[
-\Delta_{weight}=B-A^*
-\]
-
-\[
-\Delta_{total}=B-A
-\]
-
-Across the 60 core pair × month comparisons:
-
-- mean absolute Pearson support effect: 0.0066;
-- mean absolute Pearson weighting effect: 0.0673;
-- mean absolute Spearman support effect: 0.0086;
-- mean absolute Spearman weighting effect: 0.0740.
-
-Main conclusion:
-
-> EXP-01A → EXP-01B differences are driven primarily by harvested-area weighting rather than by exclusion of the unavailable-area municipality-years.
-
-The five pre-specified same-month relationship directions remain stable across A, A*, and B.
+Cane yield, cane production, recoverable sugar, sugar output, exports, and futures prices are distinct targets.
 
 ---
 
-### EXP-02 — Non-Weather Baseline & Yield Detrending
+## Layer 1 — Experiment Sequence
 
-**Status: APPROVED; EXP-02A NEXT**
+### EXP-01 — Weather Feature Structure
 
-**Overall question**
+**Status: COMPLETED**
 
-How robustly can OS define annual São Paulo yield anomalies before interpreting weather–yield relationships, given uncertainty about the true long-run non-weather process and possible changes in production geography?
+Question:
 
-EXP-02 does **not** attempt to model every determinant of sugarcane yield or to prove that a detrended residual is the weather component.
+> How much information overlap exists among weather variables, how does that overlap vary by month, and how does production-footprint weighting affect the estimated structure?
 
-It treats the unknown long-run component as nuisance structure:
+Established:
 
-\[
-Y_t = m(t) + u_t
-\]
+- strong calendar-month dependence;
+- pooled-correlation failure modes;
+- high soil-moisture persistence;
+- transient rainfall behavior;
+- substantial but incomplete temperature–VPD overlap;
+- meaningful harvested-area weighting effects.
 
-and asks whether substantive conclusions survive reasonable alternative treatments of \(m(t)\) and spatial composition.
+EXP-01 does not select final yield-model features.
 
-#### EXP-02A — Long-Run Trend Specification & Residual Robustness
+---
 
-**Status: NEXT**
+### EXP-02 — Yield Detrending and Spatial Composition
 
-Compare:
+**Status: COMPLETED**
 
-1. linear trend;
-2. limited smooth nonlinear trend, such as LOESS or spline;
-3. piecewise / structural-break specification.
+Question:
 
-For each specification:
+> How should long-run productivity growth and changing production geography be separated from short-run annual yield variation before weather relationships are interpreted?
 
-\[
-r_t^{(k)} = Y_t - \hat m_k(t)
-\]
+Approved historical representation:
 
-Primary diagnostics:
+§§§text
+municipality annual yield
+→ municipality-specific P50=10 detrending
+→ municipality residual
+→ annual ERA5-grid aggregation with observed harvested-area weights
+§§§
 
-- raw yield with fitted trends;
-- residual series;
-- residual correlation matrix;
-- residual standard deviation / scale;
-- sign agreement by year;
-- ranking of large positive / negative anomaly years;
-- remaining low-frequency structure;
-- periods of material divergence.
+Robustness:
 
-Decision logic:
+- P50=12;
+- common-support fixed composition;
+- endpoint sensitivity;
+- internal-gap proximity.
 
-- **Case A:** residuals are highly similar → detrending uncertainty is small;
-- **Case B:** disagreement is concentrated in a historical period → perform limited structural-break diagnosis;
-- **Case C:** residuals are fundamentally different → retain multiple plausible anomaly definitions and treat the target as specification-sensitive.
-
-Do not select a trend merely because it fits the historical sample best. Over-flexible trends can over-detrend; rigid trends can under-detrend.
-
-#### EXP-02B — Spatial-Composition Sensitivity
-
-**Status: APPROVED / AFTER EXP-02A**
-
-**Data gate:** municipality-level annual yield and harvested area must be jointly usable.
-
-Compare:
-
-\[
-Y_t^{annual}=\sum_i w_{i,t}Y_{i,t}
-\]
-
-with:
-
-\[
-Y_t^{fixed}=\sum_i \bar w_iY_{i,t}
-\]
-
-and inspect:
-
-\[
-\Delta r_t=r_t^{annual}-r_t^{fixed}
-\]
-
-This tests whether changing production geography materially changes the annual anomaly definition.
-
-If municipality-level yield data do not pass validation, this experiment is reported as not executable rather than approximated by copying state yield across municipalities.
-
-#### EXP-02C — Weather-Relationship Robustness
-
-**Status: APPROVED / AFTER EXP-02A AND EXP-02B GATE**
-
-Re-estimate the same pre-specified weather relationship across retained anomaly definitions and, if necessary, spatial-composition treatments.
-
-Compare:
-
-- sign;
-- effect magnitude / standardized effect size;
-- sensitive months or windows;
-- uncertainty;
-- later, time-respecting out-of-sample performance.
-
-A weather relationship that appears only under one detrending choice is not sufficient evidence for a stable relationship.
-
-#### EXP-02 Stop Rule
-
-Do **not** automatically expand EXP-02 into separate historical models for fertilizer, varietal adoption, ratoon age, mechanization, capital investment, or every other non-weather driver.
-
-If reasonable detrending and spatial-composition specifications produce stable conclusions, EXP-02 is complete.
-
-Open a separate experiment for a structural factor only when there is concrete evidence that it materially destabilizes the anomaly definition or confounds the weather relationship.
+Any future forecasting system must reconstruct estimated transformations using training-period information only.
 
 ---
 
 ### EXP-03 — Yield-Stratified Weather Analysis
 
-**Status: PROPOSED**
-
-Dependency: EXP-02 anomaly definition.
+**Status: COMPLETED**
 
 Question:
 
-> How do weather conditions differ across historically high-, middle-, and low-adjusted-yield seasons?
+> Which monthly weather conditions differ across historically high-, middle-, and low-adjusted-yield outcomes, and how spatially stable are those relationships?
 
-This is exploratory grouping, not a causal estimate and not a detrending procedure.
+Main conclusions:
 
-### EXP-04 — Weather Features vs Annual Sugarcane Yield
+- primary late-weather structure: **Dec_(t-1) → Apr_t**;
+- Dec–Jan: strongest and most spatially broad;
+- Feb–Mar: materially more heterogeneous;
+- Apr: partial spatial reconvergence;
+- humidity and deeper soil moisture are among the most spatially stable late-window signals;
+- March soil-moisture response varies with depth;
+- static SoilGrids differences are suggestive but geography-confounded and remain explanatory-only.
 
-**Status: PROPOSED**
+Step-5 redundancy closure:
 
-Question:
+- mean-daily solar retained over monthly total solar;
+- mean VPD retained over daily-max VPD;
+- 0–7 cm retained as canonical upper-soil moisture;
+- only Dec–Jan RH and Dec–Jan 28–100 cm soil moisture are promoted as temporal aggregation candidates;
+- downstream universe: **38 candidate representations**.
 
-> Which weather variables are associated with continuous adjusted annual yield in different months or candidate windows?
+Protected conditional questions:
 
-Required outputs include month × feature relationship maps, relationship curves, comparison with EXP-03 patterns, and candidate sensitive windows for later validation.
+- temperature ↔ VPD;
+- rainfall ↔ upper moisture;
+- rainfall/history ↔ deep moisture;
+- upper ↔ deep moisture.
+
+---
 
 ### EXP-05 — Conditional Temperature–VPD Yield Response
 
-**Status: PROPOSED**
+**Status: NEXT**
 
 Question:
 
 > Does VPD contain additional yield information after temperature is known, and does temperature contain additional information after VPD is known?
 
-Conditional regression relationships are not automatically causal effects.
+Primary empirical focus:
 
-### EXP-06 — Growth-Stage Weather Feature Aggregation
+- February_t, where EXP-03 found relatively strong categorical atmospheric-demand contrasts but weaker pooled monotonic association and more spatial heterogeneity.
+
+Initial design should remain transparent:
+
+- inspect temperature–VPD overlap on matched support;
+- evaluate yield–VPD relationships conditional on temperature;
+- evaluate yield–temperature relationships conditional on VPD;
+- assess whether conditioning improves spatial consistency.
+
+Only if the simple conditional analysis supports it should parsimonious nonlinear or interaction terms be considered.
+
+EXP-05 is a conditional-information experiment, not final feature selection.
+
+---
+
+### EXP-04 — Continuous Adjusted-Yield Characterization
+
+**Status: PROPOSED — AFTER EXP-05**
+
+Question:
+
+> What are the magnitude and shape of the retained continuous weather–yield relationships, and which findings survive the approved target robustness specifications?
+
+EXP-04 must not simply rerun the pooled-rank and grid-Spearman screen already completed in EXP-03.
+
+It should focus on:
+
+- relationship shape;
+- effect magnitude;
+- uncertainty;
+- statewide-common versus heterogeneous structure;
+- P50=12 robustness;
+- fixed-composition robustness;
+- fair comparison of the two approved Dec–Jan summaries against their constituent months.
+
+The 38 Step-5 representations are a candidate universe, not a 38-variable regression.
+
+EXP-05 may alter only the temperature/VPD portion before EXP-04.
+
+---
+
+### Hydrological Conditional-Information Follow-up
+
+**Status: JUSTIFIED IN PRINCIPLE / UNNUMBERED**
+
+Potential questions:
+
+- does upper-soil moisture retain information after rainfall is known?
+- what rainfall-history summary is appropriate for deep moisture?
+- does deep moisture retain information after upper moisture is known?
+- should the two deep layers remain separate?
+
+This should be one coherent hydrological conditional design rather than several disconnected pairwise experiments.
+
+It is not automatically next after EXP-05.
+
+---
+
+### EXP-06 — Growth-Stage Weather Aggregation
 
 **Status: PROPOSED**
 
 Compare:
 
 - month-level features;
-- growth-stage aggregated features;
+- biologically meaningful stage aggregates;
 - hybrid representations.
 
-All comparisons must use the same historical samples, forecast information set, and time-aware validation design.
+Stage definitions must be supported by sugarcane agronomy and the empirical monthly evidence. They must not be outcome-optimized on the full historical sample.
 
-### EXP-07 — Incremental Predictive Value of Advanced Weather Features
+---
+
+### EXP-07 — Incremental Predictive Value
 
 **Status: PROPOSED**
 
-Candidate model ladder:
+Question:
 
-| Model | Feature set |
-|---|---|
-| M0 | Non-weather reference baseline |
-| M1 | Basic weather |
-| M2 | Basic + VPD |
-| M3 | Basic + soil moisture |
-| M4 | Basic + solar radiation |
-| M5 | Basic + selected advanced features |
+> Do retained advanced weather variables improve annual yield prediction beyond simpler weather benchmarks?
 
-Feature selection and regularization tuning must occur inside each training sample.
+Use transparent model ladders first and chronological evaluation.
+
+Feature selection, tuning, scaling, detrending, and other estimated transformations must be reconstructed inside training folds.
+
+Candidate metrics include:
+
+- RMSE;
+- MAE;
+- out-of-sample R²;
+- held-out-season errors;
+- stability across validation years.
+
+---
 
 ### EXP-08 — Spatial Weather-Response Heterogeneity
 
-**Status: PROPOSED / DATA-DEPENDENT**
+**Status: LATER / CONDITIONAL**
 
-Proceed only if yield resolution supports spatial analysis. State yield must not be copied across municipalities and treated as independent observations.
+EXP-03 already established real spatial heterogeneity.
 
-### EXP-09 — Bayesian Dynamic Yield Forecasting
+Any future EXP-08 should build on that result rather than restart the question from scratch.
 
-**Status: CONCEPT**
+Possible extensions:
 
-Potential objective:
+- long-run climate regimes;
+- parsimonious response modifiers;
+- regional interactions.
 
-> Represent annual yield as a predictive distribution that updates through the crop season as new observed weather becomes available.
-
-No prior, likelihood, dynamic architecture, or implementation has yet been selected.
+Correlated regional attributes must not be presented as causal without an identification design.
 
 ---
 
-## Layer 1 Completion Criteria
+## Layer-1 Completion Criteria
 
 Layer 1 requires:
 
-- a reproducible annual-yield target;
-- documented crop-season alignment;
-- robust anomaly definition;
-- explicit handling of spatial composition;
-- benchmarked weather experiments;
-- time-aware evaluation for predictive claims;
+- a reproducible adjusted-yield target;
+- explicit spatial weighting;
+- documented temporal alignment;
+- robust weather–yield relationships;
+- transparent feature-reduction logic;
+- time-respecting predictive validation;
 - uncertainty and limitation reporting;
-- preserved successful and unsuccessful specifications.
+- preserved negative results and specification sensitivity.
 
-A null result is acceptable.
-
----
-
-## Layer 2 — Cane-to-Sugar Conversion, Ethanol/Sugar Mix, and Energy
-
-**Status: LONG-TERM PLANNED**
-
-Key questions:
-
-- How does available cane translate into actual sugar production?
-- What information is needed on sugar content, recovery, ATR / CCS, and processing?
-- How does allocation between sugar and ethanol vary?
-- What role do crude oil and ethanol economics play?
-
-Accounting relationships, correlations, predictive relationships, and causal hypotheses must be distinguished.
+A null predictive result is acceptable.
 
 ---
 
-## Layer 3 — BRL/USD and Sugar Prices
+## Deferred to Weather 2.0
 
-**Status: LONG-TERM PLANNED**
+Dynamic or sequential Bayesian yield updating is **not** part of the current v1.x experiment sequence.
 
-Investigate whether currency adds information beyond agricultural and energy variables.
-
-Any price study must define:
-
-- quote convention;
-- levels versus returns;
-- forecast horizon;
-- contemporaneous versus lagged information;
-- contract-roll treatment where applicable.
+It will be reconsidered only after the current weather-information problem is materially better resolved.
 
 ---
 
-## Layer 4 — Supply Chains and Sugar-Price Interactions
+## Longer-Term Layers
 
-**Status: LONG-TERM PLANNED**
+### Layer 2 — Cane-to-Sugar Conversion and Energy
 
-Candidate evidence:
+Questions include:
 
-- port activity;
-- vessel lineups;
-- export shipments;
-- congestion;
-- freight;
-- storage / inventories;
-- shipment destinations.
+- recoverable sugar / ATR;
+- processing recovery;
+- sugar versus ethanol allocation;
+- energy-market interactions.
 
-Distinguish sugar produced, available for export, loaded / shipped, and delivered.
+### Layer 3 — BRL/USD
 
----
+Any currency study must define quote convention, horizon, lag structure, and matched information sets.
 
-## Cross-Layer Evaluation Principles
+### Layer 4 — Supply Chains
 
-- Standardized targets, units, geographic scope, forecast issue dates, and horizons.
-- Preserved forecasts and revision histories.
-- Observation date separated from publication date.
-- Historical data vintages where available.
-- Target-appropriate public benchmarks.
-- Matched evaluation samples.
-- Training-fold preprocessing and nested tuning.
-- Chronological expanding / rolling evaluation for historical forecasting claims.
-- Explicit uncertainty propagation between layers.
-- Reporting of negative results, instability, and specification changes.
+Candidate evidence includes ports, vessel lineups, exports, freight, congestion, storage, and inventories.
 
-The completed v1.5.1 leave-one-season-out study is a held-out-season evaluation, not a point-in-time historical trading backtest.
-
-Better supply forecasts do not by themselves establish profitable trading strategies.
+Distinguish sugar produced, available for export, loaded, shipped, and delivered.
 
 ---
 
-## Additional Research Options
-
-ENSO / climate indicators, remote sensing, additional spatial heterogeneity, alternative forecast-safe weighting schemes, and interpretable nonlinear models remain optional extensions.
-
-Introduce them only when they address a specific limitation and the available sample supports credible evaluation.
-
----
-
-## v1.6.0 ✅
-
-### Weather Feature Structure, Spatial Weighting, and Yield-Robustness Framework
-
-#### Research Scope
-
-Version 1.6.0 closes the EXP-01 research program and establishes the methodological starting point for annual-yield research.
-
-#### Major Additions
-
-- Rebuilt and modularized weather and sugarcane ETL components.
-- Added combined NASA POWER and Open-Meteo / ERA5 monthly weather processing.
-- Added validated municipality-level weather analysis across 642 São Paulo municipalities and 1990–2025.
-- Completed EXP-01S harvested-area weight stability and observed-weight construction.
-- Completed EXP-01A municipality-level weather correlation and temporal-persistence analysis.
-- Completed EXP-01B harvested-area-weighted weather correlation analysis.
-- Completed EXP-01C matched-support attribution separating support effects from weighting effects.
-- Added curated research outputs under `outputs/research/exp_01/`.
-- Added reproducible EXP-01 analysis tests; the analysis suite passes 52 tests at this release milestone.
-- Defined EXP-02A / EXP-02B / EXP-02C as the next annual-yield robustness sequence.
-
-#### Research Findings
-
-- Weather relationships are strongly calendar-month dependent.
-- Pooled correlations can materially differ from within-calendar-month relationships.
-- Surface soil moisture is substantially more persistent than precipitation under fixed-calendar comparisons.
-- Harvested-area weighting changes correlation magnitude and persistence more than matched-support exclusion does in the core EXP-01 comparisons.
-- São Paulo harvested-area shares are locally persistent but exhibit meaningful long-horizon spatial change.
-- EXP-01 does not select final yield-model features; it establishes predictor structure and weighting sensitivity before yield-based inference.
-
-#### Result
-
-Version 1.6.0 marks Operation Sugar's transition from the earlier harvest-block crushing benchmark program to a formal annual-yield research framework.
-
-The immediate next step is EXP-02A: compare reasonable long-run yield trend specifications and test whether the resulting annual yield anomalies are robust to detrending choice.
-
----
-
-## Completed Research Foundation — Version 1.x**
-
-The retained release record below documents the development path through v1.6.0. Earlier v1.0–v1.5.1 findings concern the original harvest and crushing targets; v1.6.0 closes EXP-01 and transitions the project into the annual-yield research program.
-
-## v1.5.1 ✅**
-
-### Month-Level Weather Models**
-
-#### Research Question**
-
-> Does preserving September–April monthly weather structure improve harvest-block crushing prediction beyond the historical harvest profile?
-
-#### Major Additions**
-
-- September–April monthly rainfall features
-
-- September–April monthly temperature features
-
-- Rainfall Month-Level OLS
-
-- Rainfall Month-Level Ridge
-
-- Temperature Month-Level OLS
-
-- Temperature Month-Level Ridge
-
-- Joint Month-Level Ridge
-
-- Nested leave-one-season-out alpha selection
-
-- Fold-specific weather standardization
-
-- Partially penalized Ridge regression
-
-- Effective weather degrees-of-freedom diagnostics
-
-- Alpha-grid boundary diagnostics
-
-- Influential-season analysis
-
-- Unified seven-model comparison
-
-- Publication-style reporting figures
-
-- Formal research findings and negative-results documentation
-
-#### Model Comparison**
-
-Seven harvest-block models were evaluated across five aggregation horizons:
-
-1. Block-Only OLS
-
-2. Temperature Month-Level Ridge
-
-3. Aggregate Weather OLS
-
-4. Rainfall Month-Level Ridge
-
-5. Joint Month-Level Ridge
-
-6. Temperature Month-Level OLS
-
-7. Rainfall Month-Level OLS
-
-The ranking was identical across all five horizons.
-
-#### Research Findings**
-
-- Block-Only OLS achieved the lowest LOSO RMSE at every horizon.
-
-- Temperature Month-Level Ridge was the strongest weather-based model.
-
-- Temperature Ridge remained approximately 0.56% to 1.49% worse than Block-Only.
-
-- Rainfall Ridge remained approximately 1.37% to 5.26% worse than Block-Only.
-
-- Ridge substantially reduced the overfitting of unregularized monthly models.
-
-- Nested LOSO selected the maximum alpha in 75% to 81.25% of outer folds.
-
-- Median effective weather degrees of freedom was approximately zero for every Ridge model and horizon.
-
-- Joint Month-Level Ridge introduced penalty-selection instability rather than stable complementary information.
-
-- Temperature Ridge was especially sensitive to the `21-22` season.
-
-- Joint Ridge was especially sensitive to the `23-24` season.
-
-#### Result**
-
-Version 1.5.1 completed the first month-level weather modeling study in Operation Sugar.
-
-Within the available 16-season sample and evaluated linear specifications, aggregate and month-level growing-season weather did not provide stable incremental out-of-sample predictive value for harvest-block crushing beyond the historical harvest-block profile.
-
-The result does not imply that weather is unimportant to sugarcane production. It establishes that the current target, variables, sample, and model structures are insufficient to improve this specific prediction task.
-
----
-
----
-
-## v1.5.0 ✅**
-
-### Aggregate Weather Baselines**
-
-#### Research Question**
-
-> Do aggregate growing-season weather variables improve prediction of historical sugarcane crushing?
-
-#### Major Additions**
-
-- Weather–harvest modeling datasets
-
-- Harvest-block baseline models
-
-- Complete-season baseline models
-
-- Leave-one-season-out cross-validation
-
-- Fold-specific predictor standardization
-
-- Aggregate weather dashboards
-
-#### Research Findings**
-
-At the harvest-block level:
-
-- aggregate rainfall and temperature did not improve out-of-sample prediction;
-
-- historical harvest-block position explained most of the predictable variation;
-
-- Aggregate Weather OLS underperformed Block-Only OLS across all five aggregation horizons.
-
-At the complete-season level:
-
-- aggregate rainfall and temperature did not outperform the training-season historical mean;
-
-- positive complete-sample coefficients did not generalize to held-out seasons.
-
-#### Result**
-
-Version 1.5.0 established the statistical benchmarks for future weather models and demonstrated the limitations of compressing the complete growing season into one rainfall total and one average temperature.
-
----
-
----
-
-## v1.4.0 ✅**
-
-### Harvest Intelligence**
-
-#### Research Question**
-
-> How does the current harvest compare with historical harvest behavior?
-
-#### Major Additions**
-
-- Historical percentile-band benchmarking
-
-- Comparable harvest snapshots
-
-- Harvest pace rankings
-
-- Automated harvest research summaries
-
-- Historical harvest dashboards
-
-#### Result**
-
-Version 1.4 established a quantitative historical benchmark for evaluating harvest progress using standardized UNICA reporting periods.
-
----
-
----
-
-## v1.3.0 ✅**
-
-### Harvest Calendar Analytics**
-
-- Historical harvest calendar
-
-- Harvest calendar heatmap
-
-- Harvest timing metrics
-
-- Data-driven harvest-stage inference
-
-- Three-stage seasonal research framework
-
-```text
-
-Growing Stage
-
-      ↓
-
-Maturation Stage
-
-      ↓
-
-Harvest Stage
-
-```
-
----
-
----
-
-## v1.2.0 ✅**
-
-### Historical Weather Intelligence**
-
-- Historical weather archive
-
-- Multi-season benchmark dashboards
-
-- Literature-informed growing-season framework
-
-- Historical weather benchmarking
-
----
-
----
-
-## v1.1.0 ✅**
-
-### Harvest Infrastructure**
-
-- UNICA harvest ETL
-
-- Historical harvest database
-
-- Automated validation framework
-
-- Static analytical dashboards
-
-- Automated testing
-
----
-
----
-
-## v1.0.0 ✅**
-
-### Research Infrastructure**
-
-- NASA POWER weather ETL
-
-- Municipality metadata validation
-
-- Monthly weather aggregation
-
-- Growing-season feature engineering
-
-- Modular project architecture
-
----
-
----
+## Cross-Layer Principles
+
+- Standardize targets, issue dates, horizons, and information sets.
+- Preserve forecast revisions and historical vintages where possible.
+- Use matched evaluation samples.
+- Keep training-fold preprocessing inside training folds.
+- Prefer chronological expanding / rolling evaluation for historical forecast claims.
+- Separate association, predictive information, and causal interpretation.
+- Preserve failed specifications and negative results.
+- Better supply forecasts do not by themselves establish profitable trading strategies.

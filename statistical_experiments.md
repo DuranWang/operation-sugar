@@ -2,33 +2,33 @@
 
 This document records the major statistical experiments conducted in Operation Sugar.
 
-It answers three questions:
+It answers:
 
 1. What was tested?
 2. How was it tested?
 3. What did the experiment show?
 
-Major methodological choices are documented in `research_decisions.md`.
+Major methodological choices are summarized in [`research_decisions.md`](research_decisions.md).
 
-Research-engineering problems and implementation lessons are documented in `research_engineering_challenges.md`.
-
-Detailed tables, figures, execution reports, and diagnostics are stored under `outputs/research/`.
+Detailed curated reports, tables, figures, and execution records are stored under `outputs/research/`.
 
 ---
 
-# Current Experiment Registry
+## Current Experiment Registry
 
-| Experiment | Research Question | Status |
+| Experiment | Research question | Status |
 |---|---|---|
 | EXP-01 | How should the weather feature space be characterized before yield modeling? | Completed |
 | EXP-02 | How should long-run yield trends and changing production geography be separated from short-run yield anomalies? | Completed |
-| EXP-03 | How do weather conditions differ across high-, medium-, and low-yield anomaly years? | Next |
-| EXP-04 | What continuous relationships exist between weather variables and adjusted yield anomalies? | Proposed |
-| EXP-05 | Does temperature response depend on atmospheric dryness such as VPD? | Proposed |
+| EXP-03 | How do weather conditions differ across adjusted-yield outcomes, and how spatially stable are those relationships? | Completed |
+| EXP-05 | Does temperature or VPD retain yield information after conditioning on the other? | **Next** |
+| EXP-04 | What continuous relationships remain among the post-EXP-05 candidate weather representations and adjusted yield? | After EXP-05 |
+| Hydrological follow-up | How should rainfall, upper moisture, and deep moisture be separated conditionally? | Unnumbered / later |
 | EXP-06 | Can weather information be organized into biologically meaningful sugarcane growth stages? | Proposed |
-| EXP-07 | Do weather features provide incremental predictive value out of sample? | Proposed |
-| EXP-08 | How heterogeneous are weather–yield relationships across space? | Future |
-| EXP-09 | Can yield forecasts be updated dynamically as weather information arrives? | Future |
+| EXP-07 | Do retained weather features provide incremental predictive value out of sample? | Proposed |
+| EXP-08 | How heterogeneous are weather–yield responses across space? | Later / conditional |
+
+Dynamic Bayesian updating has been removed from the current v1.x numbering and deferred to Weather 2.0.
 
 ---
 
@@ -36,101 +36,51 @@ Detailed tables, figures, execution reports, and diagnostics are stored under `o
 
 ## Status
 
-Completed in Version 1.6.0.
+Completed.
 
 ## Research Question
 
 > How should Operation Sugar characterize relationships among weather variables before deciding which features should enter agricultural yield models?
 
-## Data
+## Primary Data
 
-The primary São Paulo weather panel contains:
+Validated municipality weather panel:
 
-- 642 municipalities;
+- 642 São Paulo municipalities;
+- 1990–2025;
 - 36 years;
-- 12 calendar months;
+- 12 months;
 - 277,344 municipality-month observations;
-- 11 weather variables.
+- 11 verified monthly weather variables.
 
-## EXP-01S — Harvested-Area Support Audit
+## Design
 
-### Purpose
+EXP-01 included:
 
-Establish source semantics and harvested-area support before production weighting.
+- harvested-area support and missing-value semantics;
+- unweighted month-specific weather correlation;
+- harvested-area-weighted weather correlation;
+- matched-support decomposition;
+- adjacent-month persistence diagnostics.
 
-The agricultural source distinguishes:
+## Findings
 
-- numeric reported observations;
-- explicit zero values;
-- unavailable observations.
+- Weather relationships are strongly month dependent.
+- Pooled correlations can obscure or reverse month-specific relationships.
+- Soil moisture is highly persistent relative to rainfall.
+- Rainfall behaves as a comparatively transient input.
+- Temperature and VPD overlap strongly but not uniformly.
+- Production-footprint weighting changes relationship magnitudes more than matched-support exclusion in the core comparisons.
 
-Unavailable observations are not treated as zero.
+Qualitative persistence ordering:
 
-This audit ensures that weighting does not create false geographic support.
+> soil moisture > temperature > VPD > solar radiation > rainfall
 
----
+## Interpretation Boundary
 
-## EXP-01A — Unweighted Weather Structure
+EXP-01 measures predictor overlap and persistence.
 
-### Analysis
-
-Weather-variable relationships were evaluated:
-
-- across pooled observations;
-- separately by calendar month;
-- through temporal-persistence diagnostics.
-
-### Findings
-
-Weather relationships are strongly month dependent.
-
-Pooled correlations can obscure or reverse month-specific relationships.
-
-Temporal persistence also varies by variable and month.
-
-### Implication
-
-Subsequent weather research should preserve temporal structure rather than assume one pooled annual relationship.
-
----
-
-## EXP-01B — Harvested-Area-Weighted Weather Structure
-
-### Analysis
-
-Municipality observations were weighted by harvested area so that economically important sugarcane regions contribute more strongly.
-
-### Finding
-
-Production weighting changes estimated correlation magnitudes more than simple support exclusion in many comparisons.
-
-### Implication
-
-The weather environment experienced by major production areas can differ from the unweighted geographic average.
-
----
-
-## EXP-01C — Matched-Support Decomposition
-
-### Analysis
-
-Weighted and unweighted relationships were compared on matched municipality support.
-
-### Finding
-
-Most of the difference between weighted and unweighted weather relationships is attributable to the weighting structure itself rather than merely to exclusion of municipalities with unavailable harvested-area data.
-
-### Conclusion
-
-EXP-01 established three working principles:
-
-1. preserve month-level weather structure;
-2. treat production weighting as analytically meaningful;
-3. diagnose support effects separately from weighting effects.
-
-EXP-01 did not select a predictive weather model.
-
-Its purpose was to characterize the feature space before yield modeling.
+It does not establish which variables provide incremental yield information.
 
 ## Outputs
 
@@ -142,370 +92,110 @@ Its purpose was to characterize the feature space before yield modeling.
 
 ## Status
 
-Completed in Version 1.6.1.
+Completed.
 
 ## Research Questions
 
-> How should long-run non-weather productivity trends be removed from municipality sugarcane yield while preserving shorter-run agricultural variation?
+> How should long-run non-weather productivity growth be removed from municipality yield while preserving shorter-run variation?
 
-> How much does changing production composition within ERA5 weather grids affect the resulting adjusted-yield series?
+> How much does changing production composition within an ERA5 weather grid alter the adjusted-yield representation?
 
-## Objective
+## Source Support
 
-Construct the historical adjusted-yield representation used by subsequent weather experiments.
-
-Conceptually:
-
-\[
-\text{observed yield}
-=
-\text{long-run municipality trend}
-+
-\text{short-run yield anomaly}.
-\]
-
-The municipality anomalies are then aligned to ERA5 weather grids.
-
----
-
-# EXP-02 Phase 0 — Source and Support Audit
-
-## Data
-
-The annual São Paulo municipality panel covers:
+Annual São Paulo municipality panel:
 
 - 1974–2025;
 - 642 municipalities;
-- 33,384 municipality-year rows;
-- 21,822 valid yield observations before final eligibility filtering.
+- 511 municipalities pass the current history gate;
+- 20,931 residual-bearing municipality-years;
+- 78 ERA5 0.5° grids.
 
-Municipality histories differ in valid-year count, calendar span, internal gaps, and endpoint coverage.
-
-## Final Eligibility Rule
-
-A municipality is retained when:
+Eligibility:
 
 \[
-N_{\text{valid}} \geq 15
+N_{\text{valid}} \ge 15
 \]
 
-and:
+and calendar span ≥20 years.
 
-\[
-\text{calendar span} \geq 20\text{ years}.
-\]
+No hard internal-gap exclusion is used.
 
-No hard maximum internal-gap threshold is imposed.
-
-The final detrending sample contains:
-
-- 511 municipalities;
-- 20,931 observed municipality-year yield values.
-
-Internal-gap length remains a diagnostic rather than an exclusion rule.
-
----
-
-# EXP-02A — Municipality-Level Yield Detrending
-
-## Research Question
-
-> Which trend specification removes long-run agricultural productivity growth without excessively absorbing shorter-horizon variation that may contain weather signal?
-
-## Model
+## Municipality-Level Detrending
 
 For municipality \(i\):
 
 \[
-Y_{i,t}=m_i(t)+r_{i,t},
+Y_{i,t}=m_i(t)+r_{i,t}.
 \]
 
-where:
+The approved trend estimator is a second-difference penalized smoother.
 
-- \(Y_{i,t}\) is observed yield;
-- \(m_i(t)\) is the estimated long-run trend;
-- \(r_{i,t}\) is the adjusted yield residual.
-
-The penalized smoother solves:
-
-\[
-\hat m_i
-=
-\arg\min_m
-\left[
-\sum_{t\in O_i}(Y_{i,t}-m_{i,t})^2
-+
-\lambda\sum_t(\Delta^2m_{i,t})^2
-\right],
-\]
-
-with:
-
-\[
-\Delta^2m_t=m_{t+1}-2m_t+m_{t-1}.
-\]
-
-Its idealized frequency response is:
-
-\[
-H(P)
-=
-\frac{1}
-{1+16\lambda\sin^4(\pi/P)}.
-\]
-
-`P50` denotes the period where the trend has a 50% amplitude response.
-
-## Specifications
+Retained specifications:
 
 | Specification | Role |
 |---|---|
 | Linear | Rigid benchmark |
-| P50 = 6 | Aggressive sensitivity |
-| P50 = 10 | Primary |
-| P50 = 12 | Conservative robustness |
+| P50=6 | Aggressive sensitivity |
+| **P50=10** | **Primary** |
+| P50=12 | Conservative robustness |
 
-## Cross-Specification Results
+P50=10 and P50=12 residuals are nearly identical under the completed audit, establishing a stable conservative detrending region.
 
-| Comparison | Pearson | Spearman | Sign Agreement | MAD |
-|---|---:|---:|---:|---:|
-| Linear vs P50 = 10 | 0.7259 | 0.6493 | 71.77% | 5.616 t/ha |
-| Linear vs P50 = 12 | 0.7560 | 0.6849 | 73.56% | 5.336 t/ha |
-| Linear vs P50 = 6 | 0.6437 | 0.5508 | 67.01% | 6.290 t/ha |
-| P50 = 10 vs P50 = 12 | 0.9952 | 0.9912 | 95.46% | 0.567 t/ha |
-| P50 = 10 vs P50 = 6 | 0.9635 | 0.9309 | 86.27% | 1.521 t/ha |
-| P50 = 12 vs P50 = 6 | 0.9373 | 0.8886 | 82.47% | 2.016 t/ha |
+Residuals are calculated only where valid annual yield is observed. The latent smoother is not treated as an observed agricultural outcome during missing years.
 
-Residual standard deviations:
+## Grid Aggregation
 
-| Specification | Residual SD |
-|---|---:|
-| Linear | 11.056 t/ha |
-| P50 = 10 | 6.848 t/ha |
-| P50 = 12 | 7.255 t/ha |
-| P50 = 6 | 5.416 t/ha |
-
-## Diagnostics
-
-### Internal Gaps
-
-Cross-specification disagreement is somewhat larger for municipalities with longer internal gaps, but the relationship is not monotonic.
-
-The conservative P50 = 10 and P50 = 12 specifications remain highly stable.
-
-Gap length is therefore retained as a sensitivity diagnostic rather than a hard gate.
-
-### Endpoints
-
-Cross-specification disagreement is largest near municipality-series boundaries and declines farther inside the series.
-
-Endpoint proximity is retained for downstream sensitivity analysis.
-
-## Conclusion
-
-P50 = 10 and P50 = 12 form a stable conservative detrending region.
-
-The final primary historical detrending specification is:
-
-\[
-\boxed{P50=10}.
-\]
-
-P50 = 12 remains the principal detrending robustness check.
-
-Linear remains a rigid benchmark.
-
-P50 = 6 remains an aggressive sensitivity specification.
-
----
-
-# EXP-02B — Spatial Composition Sensitivity
-
-## Research Question
-
-> How much does changing municipality production composition within an ERA5 weather grid alter the grid-level adjusted-yield anomaly?
-
-## Spatial Mapping
-
-The 511 eligible municipalities map to:
-
-- 78 ERA5 0.5° grids;
-- 74 multi-municipality grids;
-- 4 single-municipality grids.
-
-Single-municipality grids are reported separately because actual and fixed composition are mechanically identical.
-
----
-
-## Primary Aggregation
-
-The primary grid-level anomaly uses annual harvested-area weights.
-
-For municipality \(i\), grid \(g\), and year \(t\):
-
-\[
-w^{actual}_{i,g,t}
-=
-\frac{A_{i,t}}
-{\sum_{j\in S_{g,t}}A_{j,t}}.
-\]
-
-The grid anomaly is:
+Primary historical grid anomaly:
 
 \[
 R^{actual}_{g,t}
 =
-\sum_{i\in S_{g,t}}
+\sum_{i \in S_{g,t}}
 w^{actual}_{i,g,t}r_{i,t}.
 \]
 
----
+Primary weighting:
 
-## Fixed-Composition Counterfactual
+- contemporaneous observed harvested-area composition.
 
-An initial candidate fixed-weight design averaged each municipality's historical production share over its own observation history.
+Robustness:
 
-That design was rejected after audit because different observation windows could produce an incoherent reference vector.
+- common-support fixed composition.
 
-The approved fixed-composition design uses common historical support.
+The fixed-composition counterfactual is evaluated on matched municipality-year residual support.
 
-For grid \(g\):
+## Findings
 
-\[
-\bar w_{i,g}
-=
-\frac{1}{|C_g|}
-\sum_{t\in C_g}
-\frac{A_{i,t}}
-{\sum_{j\in M_g}A_{j,t}},
-\]
+Actual and fixed composition are broadly similar overall.
 
-where \(C_g\) contains years with valid harvested-area support for the full grid municipality set.
+Composition effects become large when:
 
-When a particular grid-year contains only a subset of the reference municipalities with valid yield residuals, the approved reference vector is renormalized over that same matched support.
+1. within-grid harvested-area weights move substantially; and
+2. municipality residuals within the same grid differ strongly.
 
----
+The effect is therefore heterogeneous and concentrated in a minority of grid-years.
 
-## Composition Effect
+## Final Historical Target
 
-Define:
+```text
+municipality raw yield
+→ P50=10 municipality detrending
+→ municipality residual
+→ annual harvested-area-weighted ERA5-grid anomaly
+```
 
-\[
-\Delta_{g,t}
-=
-R^{actual}_{g,t}
--
-R^{fixed}_{g,t}.
-\]
+Primary robustness:
 
-\(\Delta\) measures the effect of changing within-grid production composition on the grid-level yield anomaly.
+- P50=12;
+- fixed composition;
+- endpoint sensitivity;
+- internal-gap proximity.
 
-Weight movement is measured by total variation distance:
+## Forecasting Boundary
 
-\[
-TV_{g,t}
-=
-\frac12
-\sum_i
-\left|
-w^{actual}_{i,g,t}
--
-w^{fixed}_{i,g,t}
-\right|.
-\]
+These full-history transformations define a historical research representation.
 
-`TV` measures how far the production composition moved.
-
-\(|\Delta|\) measures the consequence of that movement for the yield anomaly.
-
----
-
-## Primary Results
-
-Across 3,694 valid multi-municipality grid-years under P50 = 10:
-
-| Metric | Result |
-|---|---:|
-| Pearson correlation, actual vs fixed | 0.9485 |
-| Spearman correlation | 0.9410 |
-| Mean absolute difference | 0.840 t/ha |
-| RMSE | 1.668 t/ha |
-| Sign agreement | 92.15% |
-
-Relationship between composition movement and anomaly impact:
-
-- Pearson correlation between \(TV\) and \(|\Delta|\): 0.5354;
-- Spearman correlation: 0.6376.
-
-The top 10% of grid-years account for 48.17% of total absolute composition effect.
-
-## Interpretation
-
-Changing within-grid production composition usually has a modest effect.
-
-Large effects occur when two conditions coincide:
-
-1. substantial harvested-area redistribution;
-2. strongly different municipality residuals within the same grid.
-
-The effect is therefore heterogeneous and concentrated in the tail.
-
----
-
-# EXP-02B Top-Tail Diagnostic
-
-The largest composition events were decomposed into municipality-level contributions.
-
-The maximum observed event occurred in:
-
-`era5_-20.50_-50.00`
-
-in 1981, with:
-
-\[
-|\Delta|=19.272\text{ t/ha}.
-\]
-
-Contribution accounting reproduces the aggregate effect exactly.
-
-Across the top 10 composition events:
-
-- all weight vectors reconcile correctly;
-- no unavailable-area artifact was identified;
-- no normalization failure was identified;
-- P50 = 12 preserves the sign of all top 10 events;
-- the same events remain dominant under the conservative robustness specification.
-
-The observed tail therefore represents real weighting sensitivity rather than an implementation artifact.
-
----
-
-# EXP-02 Conclusion
-
-EXP-02 defines the historical adjusted-yield representation used by subsequent weather research:
-
-\[
-\boxed{
-\text{municipality raw yield}
-\rightarrow
-P50=10\text{ detrending}
-\rightarrow
-\text{municipality yield residual}
-\rightarrow
-\text{annual harvested-area-weighted ERA5 grid anomaly}
-}
-\]
-
-Primary robustness checks retain:
-
-- P50 = 12 detrending;
-- common-support fixed composition;
-- internal-gap diagnostics;
-- endpoint diagnostics.
-
-These full-history transformations are intended for historical research.
-
-Any future out-of-sample forecasting system must reconstruct estimated transformations using training information only.
+Any formal out-of-sample forecast must reconstruct estimated transformations using training information only.
 
 ## Outputs
 
@@ -517,100 +207,347 @@ Any future out-of-sample forecasting system must reconstruct estimated transform
 
 ## Status
 
-Next experiment.
+Completed.
 
 ## Research Question
 
-> How do historical weather conditions differ between unusually high-, normal-, and unusually low-yield outcomes after removing long-run municipality productivity trends?
+> Which monthly weather conditions are associated with unusually high or low adjusted annual sugarcane yield, and how stable are those relationships across alternative grouping rules, time windows, and ERA5 grids?
 
-## Objective
+## Canonical Support
 
-Use the adjusted-yield representation established in EXP-02 to identify interpretable weather patterns associated with unusually strong or weak agricultural yield outcomes.
+Complete all-variable weather support begins in January 1981.
 
-EXP-03 provides the first direct weather-to-adjusted-yield comparison before continuous response modeling.
+Complete all-variable yield years:
 
-## Design Questions Still Open
+- 1982–2025.
 
-The following must be finalized before implementation:
+Aligned support:
 
-- crop-season and weather-year alignment;
-- grouping rule for high, medium, and low yield anomalies;
-- whether grouping is global, year-relative, grid-relative, or quantile-based;
-- minimum support within groups;
-- statistical comparison procedure;
-- endpoint and internal-gap sensitivity;
-- presentation of actual-composition versus fixed-composition robustness.
+- 3,267 complete grid-years;
+- 78 grids represented;
+- 76 grids meet the ≥15 paired-year requirement for grid-specific correlation summaries.
 
-EXP-03 will be designed before code development begins.
+Primary weather window:
 
----
+- May_(t-1) → Apr_t.
 
-# Planned Experiments
+Extended robustness:
 
-The following experiments remain intentionally high-level until their research designs are formally approved.
+- Jan_(t-1) → Apr_t.
 
-| Experiment | Purpose | Status |
+## Primary Grouping
+
+The primary descriptive grouping uses within-grid historical yield-anomaly ranks.
+
+The categorical analysis is not a causal design and is not final predictive feature selection.
+
+## Robustness
+
+The broad late-window pattern survives:
+
+- 20/60/20 grouping;
+- within-grid z-score normalization followed by pooled quartiles;
+- restriction of ranking history to the complete-weather era;
+- continuous within-grid rank associations.
+
+In the main Dec–Apr window, categorical and pooled continuous directions agree throughout the analyzed cells.
+
+The extended-only early months are materially weaker than the primary window.
+
+## Temporal Structure
+
+Main coherent late window:
+
+> **Dec_(t-1) → Apr_t**
+
+Summary:
+
+| Period | Empirical characterization |
+|---|---|
+| Dec–Jan | strongest and most spatially broad |
+| Feb–Mar | weaker pooled monotonic evidence and more spatial heterogeneity |
+| Apr | partial spatial reconvergence |
+
+This pattern is descriptive. It is not yet a biological growth-stage definition.
+
+## Variable-Level Structure
+
+Most spatially stable late-window families:
+
+- relative humidity;
+- deeper soil moisture.
+
+Mixed / heterogeneous but informative:
+
+- rainfall;
+- temperature;
+- VPD;
+- upper soil moisture;
+- solar radiation.
+
+## Spatial-Heterogeneity Audit
+
+The weak-consistency late-window cells are concentrated entirely in February and March.
+
+Disagreement is spread across many grids rather than explained by one statewide outlier.
+
+This supports the overall EXP-03 classification:
+
+> **B — Partially robust**
+
+The broad humidity / deeper-moisture versus atmospheric-demand structure survives, but several variable-month cells are not spatially uniform enough to justify one statewide mechanistic interpretation.
+
+## March Soil-Moisture Depth Analysis
+
+Usable grids: 76.
+
+Surface:
+
+- March 0–7 cm grid-specific Spearman rho.
+
+Deep:
+
+- arithmetic mean of March 28–100 and 100–255 cm grid-specific Spearman rho.
+
+Reconstructed regimes:
+
+| Regime | Count |
+|---|---:|
+| surface positive / deep positive | 42 |
+| surface negative / deep positive — depth recovery | 19 |
+| surface negative / deep negative — persistent negative | 13 |
+| surface positive / deep negative — reverse | 2 |
+
+The result supports preserving upper and deep soil moisture as distinct hydrological concepts.
+
+## SoilGrids Explanatory Synthesis
+
+SoilGrids was used only as static explanatory context.
+
+Native depths were preserved through 200 cm; no 200–255 cm soil property layer was fabricated.
+
+Thickness-weighted summaries:
+
+- upper: 0–30 cm;
+- deep: 30–200 cm;
+- profile contrast: deep minus upper.
+
+The depth-recovery and persistent-negative regimes show suggestive differences in texture, bulk density, coarse fragments, and modeled water-retention profile.
+
+However, the strongest soil contrasts also co-vary strongly with latitude and production-support structure.
+
+Conclusion:
+
+> **Suggestive / partial explanatory evidence only.**
+
+Static soil is not promoted into the predictive weather feature set.
+
+## Step-5 Representation Reduction
+
+Approved canonical representations:
+
+| Family | Canonical | Archived robustness |
 |---|---|---|
-| EXP-04 | Estimate continuous weather–yield relationships | Proposed |
-| EXP-05 | Test conditional temperature–VPD relationships | Proposed |
-| EXP-06 | Evaluate growth-stage weather representation | Proposed |
-| EXP-07 | Test incremental out-of-sample predictive value | Proposed |
-| EXP-08 | Measure spatial heterogeneity in weather–yield response | Future |
-| EXP-09 | Develop dynamic or sequential yield updating | Future |
+| Solar | mean-daily solar radiation | monthly total solar |
+| VPD | mean VPD | daily-max VPD |
+| Upper soil moisture | 0–7 cm | 7–28 cm |
 
-No methodology in these experiments should be treated as finalized until its design is explicitly approved.
+These are representation decisions, not proof that archived variants contain zero information.
+
+## Step-5 Temporal Redundancy
+
+Grid-specific matched-year adjacent-month Spearman correlations were calculated for:
+
+- Dec–Jan;
+- Jan–Feb;
+- Feb–Mar;
+- Mar–Apr.
+
+Only two multi-month summaries passed the combined redundancy + existing-yield-signature + spatial-compatibility gate:
+
+- Dec–Jan relative humidity;
+- Dec–Jan 28–100 cm soil moisture.
+
+No Jan–Feb, Feb–Mar, or Mar–Apr aggregate was promoted.
+
+The 100–255 cm layer is extremely persistent but remains month-specific because its yield / spatial behavior is not sufficiently interchangeable across the relevant months.
+
+## Frozen Downstream Universe
+
+Step 5 produces **38 candidate representations**.
+
+The candidate universe preserves:
+
+- rainfall input;
+- temperature;
+- relative humidity;
+- mean VPD;
+- upper soil moisture;
+- 28–100 cm deep moisture;
+- 100–255 cm deep moisture;
+- mean-daily solar radiation.
+
+Protected conditional-information questions:
+
+- temperature ↔ VPD;
+- rainfall ↔ upper soil moisture;
+- rainfall/history ↔ deep soil moisture;
+- upper ↔ deep soil moisture.
+
+## Outputs
+
+- `outputs/research/exp_03/yield_stratified_monthly_weather/`
+- `outputs/research/exp_03/march_soil_moisture_depth/`
+- `outputs/research/exp_03/soil_regime_synthesis/`
+- `outputs/research/exp_03/redundancy/`
 
 ---
 
-# Legacy Experiments — Harvest-Progress Modeling
+# EXP-05 — Conditional Temperature–VPD Yield Response
 
-Earlier Operation Sugar versions modeled São Paulo sugarcane crushing and harvest progress rather than annual agricultural yield.
+## Status
 
-These experiments remain part of the project history but are not part of the current EXP-01–EXP-09 numbering system.
+**NEXT**
 
-## v1.5.0 — Aggregate Weather Baseline
+## Why EXP-05 Runs Before EXP-04
 
-Research question:
+Step 5 intentionally preserved temperature and VPD because their incremental information remains unresolved.
 
-> Do aggregate growing-season rainfall and temperature improve prediction of historical sugarcane crushing?
+Resolving this question before EXP-04 avoids carrying two overlapping atmospheric-demand families into the broader continuous-characterization stage without first testing whether both matter conditionally.
 
-The experiment evaluated harvest-block and complete-season crushing using aggregate rainfall and temperature with Leave-One-Season-Out validation.
+## Research Question
 
-It established the first weather-based predictive baseline.
+> Does VPD contain additional yield information after temperature is known, and does temperature contain additional information after VPD is known?
 
-## v1.5.1 — Month-Level Weather Models
+## Primary Focus
 
-Research question:
+February_t.
 
-> Does preserving monthly weather structure improve out-of-sample prediction of historical sugarcane crushing?
+EXP-03 found:
 
-The experiment evaluated month-level rainfall and temperature representations using OLS and Ridge specifications, with nested Leave-One-Season-Out validation for regularized models.
+- meaningful negative categorical atmospheric-demand contrasts;
+- weaker pooled monotonic relationships;
+- greater spatial heterogeneity.
 
-These experiments remain useful methodological and negative results but were superseded by the annual agricultural-yield research architecture introduced in v1.6.x.
+## Candidate Analysis
 
-Detailed legacy findings remain in:
+Start with transparent conditional diagnostics:
 
-- `month_level_model_findings.md`;
-- `negative_results.md`.
+- matched-support temperature–VPD overlap;
+- yield–VPD within narrow temperature conditions;
+- yield–temperature within narrow VPD conditions;
+- spatial-direction consistency before and after conditioning.
+
+Only if warranted should a parsimonious nonlinear or interaction specification be considered.
+
+## Boundary
+
+EXP-05 is not final feature selection.
+
+RH and solar remain secondary atmospheric context unless later evidence justifies expanding the conditional program.
 
 ---
 
-# Current Research State
+# EXP-04 — Continuous Adjusted-Yield Characterization
 
-As of Version 1.6.1:
+## Status
 
-\[
-\boxed{\text{EXP-01 completed}}
-\]
+Proposed — after EXP-05.
 
-\[
-\boxed{\text{EXP-02 completed}}
-\]
+## Research Question
 
-\[
-\boxed{\text{EXP-03 next}}
-\]
+> What are the magnitude and shape of the retained continuous weather–yield relationships, and which relationships survive the approved target robustness checks?
 
-The adjusted-yield target is now established.
+## Scope
 
-The immediate research objective is to determine which historical weather patterns are associated with unusually strong or weak sugarcane yield outcomes.
+EXP-03 already computed pooled within-grid continuous associations and grid-specific Spearman diagnostics.
+
+Therefore EXP-04 must add information rather than repeat that screen.
+
+Focus areas:
+
+- relationship shape;
+- effect magnitude;
+- uncertainty;
+- statewide-common versus heterogeneous behavior;
+- P50=12 robustness;
+- fixed-composition robustness;
+- comparison of the two approved Dec–Jan summaries with their constituent months.
+
+The 38 Step-5 representations are a candidate universe, not a multivariate regression specification.
+
+---
+
+# Hydrological Conditional-Information Follow-up
+
+## Status
+
+Justified in principle / unnumbered / not yet designed.
+
+Potential questions:
+
+- rainfall versus upper-soil moisture;
+- rainfall history versus deep moisture;
+- upper versus deep moisture;
+- 28–100 versus 100–255 cm deep-state representation.
+
+Prefer one coherent hydrological design rather than disconnected pairwise experiments.
+
+---
+
+# EXP-06 — Growth-Stage Weather Aggregation
+
+## Status
+
+Proposed.
+
+Question:
+
+> Can weather variables be aggregated into biologically meaningful São Paulo sugarcane growth stages without discarding useful information?
+
+Compare month-level, stage-level, and hybrid representations.
+
+Stage boundaries must not be outcome-optimized on the full sample.
+
+---
+
+# EXP-07 — Incremental Predictive Value
+
+## Status
+
+Proposed.
+
+Question:
+
+> Do advanced weather variables improve annual yield prediction beyond simpler benchmarks?
+
+Use chronological validation and transparent model ladders.
+
+Feature selection, scaling, detrending, weighting, and tuning must occur within training samples.
+
+---
+
+# EXP-08 — Spatial Weather-Response Heterogeneity
+
+## Status
+
+Later / conditional.
+
+EXP-03 already established meaningful spatial heterogeneity.
+
+Future work should test parsimonious response modifiers or regional structure rather than simply repeat grid-by-grid correlation maps.
+
+---
+
+# Legacy Harvest-Progress Experiments
+
+Earlier Operation Sugar versions modeled sugarcane crushing and harvest timing rather than annual agricultural yield.
+
+The historical harvest-profile benchmark outperformed the evaluated aggregate and month-level weather models for that target.
+
+Those negative results remain part of the research record:
+
+- `month_level_model_findings.md`
+- `negative_results.md`
+
+They do not imply that weather is irrelevant to agricultural yield.
