@@ -1,0 +1,95 @@
+{
+  "experiment": "EXP-05",
+  "source_paths": {
+    "grid_targets": "D:\\Desktop\\Operation Sugar\\data\\processed\\analysis\\exp_02b\\actual_vs_fixed_grid_residuals.csv",
+    "municipality_weights": "D:\\Desktop\\Operation Sugar\\data\\processed\\analysis\\exp_02b\\matched_support_weight_details.csv",
+    "municipality_grid_mapping": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_02\\exp_02b\\eligible_municipality_grid_mapping.csv",
+    "annual_weather": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual",
+    "weather_inventory": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\weather_variable_inventory.csv",
+    "monthly_alignment_example": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv",
+    "grid_target_code": "D:\\Desktop\\Operation Sugar\\src\\analysis\\exp02b_composition_sensitivity.py",
+    "grid_weather_code": "D:\\Desktop\\Operation Sugar\\src\\analysis\\exp03_yield_stratified_monthly_weather.py",
+    "temperature_etl_code": "D:\\Desktop\\Operation Sugar\\src\\etl\\weather\\build_combined_monthly_weather.py",
+    "vpd_etl_code": "D:\\Desktop\\Operation Sugar\\src\\etl\\open_meteo\\process_advanced_weather_data.py"
+  },
+  "weather_source_years": [
+    1981,
+    2025
+  ],
+  "weather_definitions": [
+    {
+      "column_name": "nasa_average_temperature_c",
+      "feature_family": "temperature",
+      "basic_or_advanced": "basic",
+      "unit": "degrees C",
+      "aggregation_definition": "monthly mean of daily T2M",
+      "source": "NASA POWER",
+      "included_in_exp01a": true,
+      "notes": "Near-surface air temperature"
+    },
+    {
+      "column_name": "vpd_mean_kpa",
+      "feature_family": "VPD",
+      "basic_or_advanced": "advanced",
+      "unit": "kPa",
+      "aggregation_definition": "monthly mean of daily mean hourly VPD",
+      "source": "Open-Meteo ERA5",
+      "included_in_exp01a": true,
+      "notes": "Hourly VPD averaged to day, then month"
+    }
+  ],
+  "outcome_definitions": {
+    "Y_P50_10_actual_tch": "P50=10 municipality yield residual, same-year actual harvested-area-weighted ERA5 grid sum; t/ha",
+    "Y_P50_12_actual_tch": "P50=12 municipality yield residual, same-year actual harvested-area-weighted ERA5 grid sum; t/ha",
+    "Y_P50_10_fixed_tch": "P50=10 municipality yield residual, approved fixed-composition weights on same matched support; t/ha"
+  },
+  "target_lineage_and_overlap_audit": {
+    "municipalities_mapped": 511,
+    "grids_mapped": 78,
+    "municipalities_mapped_to_multiple_grids": 0,
+    "grid_years_with_weights": 3773,
+    "year_within_grid_duplicate_target_values": 0,
+    "minimum_distinct_grid_targets_per_year": 59,
+    "target_lineage_max_abs_error_tch": {
+      "Y_P50_10_actual_tch": 8.881784197001252e-15,
+      "Y_P50_12_actual_tch": 1.2434497875801753e-14,
+      "Y_P50_10_fixed_tch": 8.881784197001252e-15
+    },
+    "weight_sum_min": 0.999999999999999,
+    "weight_sum_max": 1.0000000000000002,
+    "fixed_weight_sum_min": 0.9999999999999992,
+    "fixed_weight_sum_max": 1.0000000000000002,
+    "spatial_caveat": "Municipality outcome memberships are disjoint across grids; shared annual shocks and weather-source groups can still induce dependence."
+  },
+  "month_slot_count": 16,
+  "month_slot_indices": [
+    -15,
+    -14,
+    -13,
+    -12,
+    -11,
+    -10,
+    -9,
+    -8,
+    -7,
+    -6,
+    -5,
+    -4,
+    -3,
+    -2,
+    -1,
+    0
+  ],
+  "sample_rule": "Per grid-month-slot, finite Y_P50_10_actual_tch, T_C, and VPD_kPa only; no 16-month completeness gate",
+  "linear_models": [
+    "Y~T",
+    "Y~VPD",
+    "Y~T+VPD"
+  ],
+  "uncertainty": "HC3 coefficient intervals within grid; synchronized yield-year bootstrap for spatial summaries",
+  "standardization": "Both predictor and Y use within-grid-slot sample standard deviations",
+  "minimum_n_linear": 15,
+  "minimum_n_primary": 20,
+  "minimum_n_grid_quadratic": 30,
+  "phase_a_gate_pass": true
+}

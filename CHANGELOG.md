@@ -6,6 +6,43 @@ This project follows **Semantic Versioning** and the general structure proposed 
 
 ---
 
+## [1.7.1] - 2026-10-13
+
+### Conditional Temperature–VPD and Moisture-Response Research
+
+This maintenance research release completes EXP-05 and EXP-05B on the existing São Paulo annual agricultural sugarcane yield-anomaly framework. It adds reproducible conditional-association and moisture-response diagnostics without changing the target or claiming predictive improvement.
+
+### Added
+
+- EXP-05 conditional temperature/VPD analysis, targeted spatial and nonlinear diagnostics, synchronized resampling, dedicated tests, and curated findings.
+- EXP-05B antecedent soil-moisture and rainfall comparator analysis, fixed-grid synchronized block-bootstrap inference, interaction sensitivities, dedicated tests, and curated findings.
+- Curated manifests, analysis configuration, confidence-interval tables, robustness comparisons, and figures; large reproducible bootstrap attempts and intermediary panels remain local.
+
+### Research Findings
+
+- Temperature and mean VPD remain distinct exploratory candidates. EXP-05 found modest negative Aug–Nov_(t−1) VPD associations after controlling temperature, but with notable spatial heterogeneity.
+- EXP-05B's primary Aug–Nov VPD dry-minus-wet slope contrasts were +0.348, −0.300, +0.321, and +0.113 t/ha per within-grid VPD SD; all 3-/5-year-block pointwise intervals included zero.
+- Antecedent soil moisture does not eliminate the modest conditional VPD pattern. Rainfall's additive pooled in-sample information is a follow-up candidate, not independent predictive validation.
+- Moisture interaction results are mixed, not practically equivalent to zero; no causal claim or feature keep/drop decision is authorized.
+
+### Changed
+
+- Research sequence now identifies **EXP-04 as next**, after closing EXP-05 and EXP-05B.
+- Preserved the EXP-03 38-candidate representation universe and the two approved Dec–Jan RH/deep-moisture summaries.
+- Clarified the primary historical 12-month May_(t−1)–Apr_t weather window versus the extended 16-month Jan_(t−1)–Apr_t robustness window.
+- Versioned only curated experiment outputs; generated heavyweight attempt-level and intermediate data are ignored.
+
+### Validation
+
+- **142 analysis tests passing**.
+- **329 full-suite tests passing**, with 3 pre-existing compatibility/date-parsing warnings reported and no failures, on the release-preparation machine.
+
+### Next
+
+EXP-04: pre-register continuous relationship-shape, magnitude, uncertainty, spatial heterogeneity, P50=12/fixed-composition robustness, and the two Dec–Jan candidate comparisons. Leave predictive feature selection to subsequent time-respecting validation.
+
+---
+
 ## [1.7.0] - 2026-10-09
 
 ### Annual-Yield Target, Weather–Yield Discovery, and EXP-03 Reproducibility

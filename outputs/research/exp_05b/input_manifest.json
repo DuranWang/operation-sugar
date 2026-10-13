@@ -1,0 +1,295 @@
+{
+  "experiment": "EXP-05B",
+  "lineage": {
+    "municipalities_mapped": 511,
+    "grids_mapped": 78,
+    "municipalities_mapped_to_multiple_grids": 0,
+    "grid_years_with_weights": 3773,
+    "year_within_grid_duplicate_target_values": 0,
+    "minimum_distinct_grid_targets_per_year": 59,
+    "target_lineage_max_abs_error_tch": {
+      "Y_P50_10_actual_tch": 8.881784197001252e-15,
+      "Y_P50_12_actual_tch": 1.2434497875801753e-14,
+      "Y_P50_10_fixed_tch": 8.881784197001252e-15
+    },
+    "weight_sum_min": 0.999999999999999,
+    "weight_sum_max": 1.0000000000000002,
+    "fixed_weight_sum_min": 0.9999999999999992,
+    "fixed_weight_sum_max": 1.0000000000000002,
+    "spatial_caveat": "Municipality outcome memberships are disjoint across grids; shared annual shocks and weather-source groups can still induce dependence."
+  },
+  "frozen_input_sha256": {
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\analysis\\exp_02b\\actual_vs_fixed_grid_residuals.csv": "6f14d136a00eac3f6c14703c701ad636487d898c2c5799f8c2ae617f06a4e446",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\analysis\\exp_02b\\matched_support_weight_details.csv": "d4339b58c47871b850afd1b9c4ffc8784070a51b90da9c0c20072771f1de42b1",
+    "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_02\\exp_02b\\eligible_municipality_grid_mapping.csv": "4fecd5724eb95410603164d6f9181e0422750e9620e968ac48ef22e7148cbc2c",
+    "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_05\\sample_coverage.csv": "37442614a1117e4f8aadcafed29418112f286ad31752dc2f713f59baae477baa",
+    "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_05\\month_slots.csv": "77d2283fc4d332c37bd51b20322f076d6e7bfbfb1543f180e6cad6810639efed"
+  },
+  "weather_files": {
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1981.csv": "565ada6d979e9989ee938d21fc710564e9afc71b8369efa8eb77557d658ef5b3",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1982.csv": "6513c155df1513ef391ea65ccae88272f3ae4f8edc46fcf7853fe335cde50764",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1983.csv": "dd8957c03b34b942ecc156f6c1c6c9166fb48ee81632a05e9249e585342be384",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1984.csv": "9b5e25dbcc6758a0f85b2b6e8bb6ce45b36e6fb3081fae5766acfb24a0dfead6",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1985.csv": "070afffbc312c0f8bf99e8396abf6ece7fdd14a19d56a8abc6295973c4a5dca5",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1986.csv": "b5e91f8a3c4e4e3ce5127e37e6301ad26a3f6187473fe56dfc12e394bbdb67ef",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1987.csv": "2c5da5c53f2377ac06f9da4c1e2e4f16eae0cd867bb57e36d61588b3e788e473",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1988.csv": "aecb444e6654116c844efeb5d48e7c01cb3ba25e67b164ab644adda7ba060fa6",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1989.csv": "c112d872f9308f926890808b5a1f2c8ad861044078f4f9f05f3aec095572a32c",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1990.csv": "474e425d51301fad648254371a9872c9f6ed534b0c329d801ceeda50771fa4fb",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1991.csv": "22436b463147c3af331f80568b876588521d7863e09f31d6cd542cbe5c48adf9",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1992.csv": "5b70d9a71eaa682c72c5d9d0c7d80f4a5c6216c3ea13d3aab3cac8d70fa52fa3",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1993.csv": "0bfeb8a733cdf7c93d7e10a57d5c6f7fe74d30592da3a615b73044f75e73b918",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1994.csv": "af8a463382ddc6fc6def49daab767f058da52e603232dbdb4f67c367c6eeb1d4",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1995.csv": "38a3fbc4afc509079f62717b063bd7b6cea12dca6cc6fdaf36361d54623b993a",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1996.csv": "c931dc7cec926283673a7504b88b67924338bd30e09232f0fe13eeec3164997c",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1997.csv": "8548cac3b053a799ab3f3303f56024cc2fc5d2e284a10f283e23708d5d8d235b",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1998.csv": "094066e83f8111f11f4473fee20a9e8a31264eaa4a69462f4282942aff0200d5",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1999.csv": "3684fce708263b1976363e220dcbfe47dd11354b7221de1402993368f13d6e81",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2000.csv": "64bce46592406d1e2b3138ead4542e91f8832f958683021e267f8918c93b1206",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2001.csv": "2295bc58d15b1e15156ad246692ad7a215009e31f0bc75d782b7bb6e4dca7420",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2002.csv": "4e2c5a214670442cbf83ae64fc17ea464c6e6bdd8aa11132aef19a7d7c6b3e83",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2003.csv": "849045928e04fd8dd084c4ec3aa03777520b0b097471ce27999eda276b2d186c",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2004.csv": "10f418f6f6dc689aa9989a366c75901c1f87609bf4740ac875eeba1a187c2393",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2005.csv": "8c0530faeace547c1b41a6fb81eea9d3faa88b24d5bcc3c154fd353e0f0f9c3b",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2006.csv": "1ffd00ca31250ca3f1b531cff20efff9e6dc98bb2c2204356a5cb010cda918d2",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2007.csv": "e8e79f6984e577d6f3badfe5d93b580fc7739202e915e250befe1e69b522eb14",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2008.csv": "ad37043081184b746becda2e2cee8d9de751e921ba06ef7b35308688e704d8d7",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2009.csv": "67ebc24ed311b0ed11e6788dcaf90a4378d092992a5a3a33a6228200e4fb2ff4",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2010.csv": "a3ec428a2931ddff72bccec2739d97daaa59825c5bd8333b7dda959b77d78a99",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2011.csv": "6fd6848f6fe5a58b77fa40ff71557c2d1d7ba74c2ee5f27494e9b24c0291c3c0",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2012.csv": "96bdf1c47ca22c16dfe68935002a43b45edd4ebb00615183125d0bb2d7acd776",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2013.csv": "99901f96eb8d5a90db3371fa86e5bffb88a196460d14b55045dc8638bfa06daf",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2014.csv": "cf3eb2a52e7536b0d7152b114fd7de2d8b00f6a504792feaa27982d8b1dc7915",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2015.csv": "60954dec92055e70eabe7d977ec5e723b106be6f1cf5420b0832c87e683a1814",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2016.csv": "f9a2294d3b08d8104306f5a9026597edc87c046f98ad8cdbd8c684a93be1f2db",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2017.csv": "e1697edf8e3de9e72151def89b95f9577a66b188db2e2ea09e9b55c7c4b7bc70",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2018.csv": "faf788e7bd6a380376eabd806b8de561e17d1f98ccc49e6fb8bc99d72bb17103",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2019.csv": "02d9a50fd5ac79bc7831b8f1bed5eec7436ee9170e7e68b7613063d1ad174d98",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2020.csv": "7f2120ad7a38c9c4805865ff78c945546b42b68385179fb860e3e70f2fd0ad4b",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2021.csv": "363e348f1905eafead08a857010b9468acb209e7aa6658f8141e0c792bee5449",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2022.csv": "12c85abdd1754700367614be1ee6a143e17b5eac020ed148dd826b828f39724b",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2023.csv": "fbcd70c35ee7e5cc1c692d3ad31b6ecff4a863dc7fa2f97e7cf89f5fac79b1cd",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2024.csv": "fdfbc9c873d08daf671b3f198618edd27061272885328c739900e29953eaa395",
+    "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2025.csv": "d74ff0c89654a018f4bdb50858acd454b69d502cae55dc8776b8105b89fdac9b"
+  },
+  "weather_years": [
+    1981,
+    2025
+  ],
+  "weather_rows": 346680,
+  "weather_fields": {
+    "T_C": "NASA POWER nasa_average_temperature_c, monthly mean daily T2M, degrees C",
+    "VPD_kPa": "Open-Meteo ERA5 vpd_mean_kpa, monthly mean daily mean hourly VPD, kPa",
+    "soil_moisture_28_to_100cm_m3_m3": "Open-Meteo ERA5 volumetric soil moisture layer 3, 28-100 cm, m3/m3; hourly to daily to monthly mean",
+    "soil_moisture_100_to_255cm_m3_m3": "Open-Meteo API alias 100-255 cm, mapped to ERA5 volumetric soil water layer 4 (native 100-289 cm); no thickness conversion, m3/m3",
+    "nasa_total_rainfall_mm": "NASA POWER nasa_total_rainfall_mm, monthly sum daily PRECTOTCORR, mm"
+  },
+  "month_slots": [
+    {
+      "month_slot": -15,
+      "relative_month": "m_-15",
+      "source_year_offset": -1,
+      "source_calendar_month": 1,
+      "calendar_month_label": "Jan_(t-1)",
+      "primary_window": false,
+      "extended_only": true,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    },
+    {
+      "month_slot": -14,
+      "relative_month": "m_-14",
+      "source_year_offset": -1,
+      "source_calendar_month": 2,
+      "calendar_month_label": "Feb_(t-1)",
+      "primary_window": false,
+      "extended_only": true,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    },
+    {
+      "month_slot": -13,
+      "relative_month": "m_-13",
+      "source_year_offset": -1,
+      "source_calendar_month": 3,
+      "calendar_month_label": "Mar_(t-1)",
+      "primary_window": false,
+      "extended_only": true,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    },
+    {
+      "month_slot": -12,
+      "relative_month": "m_-12",
+      "source_year_offset": -1,
+      "source_calendar_month": 4,
+      "calendar_month_label": "Apr_(t-1)",
+      "primary_window": false,
+      "extended_only": true,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    },
+    {
+      "month_slot": -11,
+      "relative_month": "m_-11",
+      "source_year_offset": -1,
+      "source_calendar_month": 5,
+      "calendar_month_label": "May_(t-1)",
+      "primary_window": true,
+      "extended_only": false,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    },
+    {
+      "month_slot": -10,
+      "relative_month": "m_-10",
+      "source_year_offset": -1,
+      "source_calendar_month": 6,
+      "calendar_month_label": "Jun_(t-1)",
+      "primary_window": true,
+      "extended_only": false,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    },
+    {
+      "month_slot": -9,
+      "relative_month": "m_-9",
+      "source_year_offset": -1,
+      "source_calendar_month": 7,
+      "calendar_month_label": "Jul_(t-1)",
+      "primary_window": true,
+      "extended_only": false,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    },
+    {
+      "month_slot": -8,
+      "relative_month": "m_-8",
+      "source_year_offset": -1,
+      "source_calendar_month": 8,
+      "calendar_month_label": "Aug_(t-1)",
+      "primary_window": true,
+      "extended_only": false,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    },
+    {
+      "month_slot": -7,
+      "relative_month": "m_-7",
+      "source_year_offset": -1,
+      "source_calendar_month": 9,
+      "calendar_month_label": "Sep_(t-1)",
+      "primary_window": true,
+      "extended_only": false,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    },
+    {
+      "month_slot": -6,
+      "relative_month": "m_-6",
+      "source_year_offset": -1,
+      "source_calendar_month": 10,
+      "calendar_month_label": "Oct_(t-1)",
+      "primary_window": true,
+      "extended_only": false,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    },
+    {
+      "month_slot": -5,
+      "relative_month": "m_-5",
+      "source_year_offset": -1,
+      "source_calendar_month": 11,
+      "calendar_month_label": "Nov_(t-1)",
+      "primary_window": true,
+      "extended_only": false,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    },
+    {
+      "month_slot": -4,
+      "relative_month": "m_-4",
+      "source_year_offset": -1,
+      "source_calendar_month": 12,
+      "calendar_month_label": "Dec_(t-1)",
+      "primary_window": true,
+      "extended_only": false,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    },
+    {
+      "month_slot": -3,
+      "relative_month": "m_-3",
+      "source_year_offset": 0,
+      "source_calendar_month": 1,
+      "calendar_month_label": "Jan_(t)",
+      "primary_window": true,
+      "extended_only": false,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    },
+    {
+      "month_slot": -2,
+      "relative_month": "m_-2",
+      "source_year_offset": 0,
+      "source_calendar_month": 2,
+      "calendar_month_label": "Feb_(t)",
+      "primary_window": true,
+      "extended_only": false,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    },
+    {
+      "month_slot": -1,
+      "relative_month": "m_-1",
+      "source_year_offset": 0,
+      "source_calendar_month": 3,
+      "calendar_month_label": "Mar_(t)",
+      "primary_window": true,
+      "extended_only": false,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    },
+    {
+      "month_slot": 0,
+      "relative_month": "m_0",
+      "source_year_offset": 0,
+      "source_calendar_month": 4,
+      "calendar_month_label": "Apr_(t)",
+      "primary_window": true,
+      "extended_only": false,
+      "yield_year_alignment": "source_year = yield_year + source_year_offset",
+      "source_artifact": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\yield_stratified_monthly_weather\\checkpoint1\\relative_month_alignment_examples.csv"
+    }
+  ],
+  "weather_weighting": "Yield-year EXP-02B actual within-grid municipality weights, same as EXP-05 target-month weather; require full weight coverage per calendar month",
+  "modifier_definitions": {
+    "sm_28_100_prev3_mean": {
+      "field": "soil_moisture_28_to_100cm_m3_m3",
+      "preceding_months": 3,
+      "reducer": "mean"
+    },
+    "sm_28_100_prev1": {
+      "field": "soil_moisture_28_to_100cm_m3_m3",
+      "preceding_months": 1,
+      "reducer": "mean"
+    },
+    "sm_api_100_255_prev3_mean": {
+      "field": "soil_moisture_100_to_255cm_m3_m3",
+      "preceding_months": 3,
+      "reducer": "mean"
+    },
+    "rain_prev3_sum": {
+      "field": "nasa_total_rainfall_mm",
+      "preceding_months": 3,
+      "reducer": "sum"
+    }
+  },
+  "deep_provenance": {
+    "project_api_request": "models=era5; hourly soil_moisture_100_to_255cm",
+    "project_etl": "hourly -> daily mean -> monthly mean; validate [0,1]; no depth rescale",
+    "provider_code": "https://github.com/open-meteo/open-meteo/blob/main/Sources/App/Era5/Era5Variables.swift",
+    "ecmwf_documentation": "https://confluence.ecmwf.int/plugins/viewsource/viewpagesrc.action?pageId=488287070",
+    "physical_interpretation": "ERA5 native fourth soil-water layer, nominal 100-289 cm; API field retains historical 100-255 name"
+  }
+}

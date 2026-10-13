@@ -1,0 +1,17 @@
+month_slot,calendar_month_label,denominator_mapped_target_valid_weather_year_area_ha_year_sum,numerator_primary_paired_n20_area_ha_year_sum,paired_area_fraction,denominator_note
+-15,Jan_(t-1),153956882.0,152675895.0,0.9916795729858962,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities
+-14,Feb_(t-1),153956882.0,152675895.0,0.9916795729858962,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities
+-13,Mar_(t-1),153956882.0,152675895.0,0.9916795729858962,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities
+-12,Apr_(t-1),153956882.0,153956672.0,0.999998635981729,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities
+-11,May_(t-1),153956882.0,153956672.0,0.999998635981729,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities
+-10,Jun_(t-1),153956882.0,153956672.0,0.999998635981729,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities
+-9,Jul_(t-1),153956882.0,153956672.0,0.999998635981729,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities
+-8,Aug_(t-1),153956882.0,153956672.0,0.999998635981729,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities
+-7,Sep_(t-1),153956882.0,153956672.0,0.999998635981729,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities
+-6,Oct_(t-1),153956882.0,153956672.0,0.999998635981729,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities
+-5,Nov_(t-1),153956882.0,153956672.0,0.999998635981729,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities
+-4,Dec_(t-1),153956882.0,153956672.0,0.999998635981729,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities
+-3,Jan_(t),155077267.0,153956672.0,0.9927739569978364,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities
+-2,Feb_(t),155077267.0,153956672.0,0.9927739569978364,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities
+-1,Mar_(t),155077267.0,153956672.0,0.9927739569978364,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities
+0,Apr_(t),155077267.0,155077057.0,0.9999986458363366,mapped EXP-02B target-valid grid-year observed harvested area in verified weather years; not all statewide municipalities

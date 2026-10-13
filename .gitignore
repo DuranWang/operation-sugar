@@ -122,3 +122,10 @@ outputs/research/exp_03/yield_stratified_monthly_weather/checkpoint2/figures/rob
 outputs/research/exp_03/yield_stratified_monthly_weather/checkpoint2b/checkpoint2b_disagreeing_grid_municipalities.csv
 outputs/research/exp_03/yield_stratified_monthly_weather/checkpoint2b/checkpoint2b_disagreeing_grids.csv
 outputs/research/exp_03/yield_stratified_monthly_weather/checkpoint2b/checkpoint2b_municipality_influence.csv
+
+# EXP-05 / EXP-05B generated research outputs
+# Curated files will be explicitly force-added for v1.7.1.
+# All excluded data remain available locally.
+
+/outputs/research/exp_05/**
+/outputs/research/exp_05b/**

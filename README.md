@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
-![Version](https://img.shields.io/badge/Version-1.7.0-orange?style=flat-square)
+![Version](https://img.shields.io/badge/Version-1.7.1-orange?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
 
 **Independent quantitative research into Brazilian sugarcane and sugar markets, built on public data, explicit benchmarks, and reproducible experiments.**
@@ -25,11 +25,11 @@ The project is deliberately benchmark-driven: new variables and model complexity
 | Main late-weather window | Dec_(t-1) → Apr_t |
 | Weather sources | NASA POWER + Open-Meteo / ERA5 |
 | Agricultural source | IBGE municipal agricultural statistics |
-| Completed experiments | EXP-01, EXP-02, EXP-03 |
-| Immediate next experiment | **EXP-05 — conditional temperature–VPD yield response** |
-| After EXP-05 | EXP-04 — focused continuous-outcome characterization |
-| Validation checkpoint | **137 focused analysis / weather-ETL / soil-ETL tests passing** |
-| Current release checkpoint | **v1.7.0 — adjusted-yield target + EXP-03 weather–yield discovery** |
+| Completed experiments | EXP-01, EXP-02, EXP-03, EXP-05, EXP-05B |
+| Immediate next experiment | **EXP-04 — continuous weather–yield characterization** |
+| Historical windows | Primary: May_(t-1)–Apr_t (12 months); extended: Jan_(t-1)–Apr_t (16 months) |
+| Validation checkpoint | **142 analysis tests; 329 full-suite tests passing (3 warnings)** |
+| Current release checkpoint | **v1.7.1 — EXP-05/05B conditional weather–yield research** |
 
 ## Four-Layer Research Framework
 
@@ -154,6 +154,28 @@ Selected EXP-03 figure:
 
 Curated outputs: [`outputs/research/exp_03/`](outputs/research/exp_03/)
 
+### EXP-05 — Conditional Temperature–VPD Yield Response
+
+EXP-05 tested whether monthly mean VPD and temperature retain conditional yield information after accounting for the other atmospheric variable. Analyses covered 16 exploratory month-slots; the historical **primary 12-month window remains May_(t-1)–Apr_t**, with Jan–Apr_(t-1) as extended robustness.
+
+- Aug–Nov_(t-1) median within-grid partial correlations `r(Y,VPD|T)` were approximately −0.104, −0.099, −0.081, and −0.105, respectively.
+- These are modest historical associations, heterogeneous across grids; they are not evidence of causal effects or out-of-sample predictive improvement.
+- Neither temperature nor VPD meets an approved feature-deletion standard. Both remain in the frozen downstream candidate universe.
+
+Curated outputs: [`outputs/research/exp_05/`](outputs/research/exp_05/)
+
+### EXP-05B — Moisture-Conditioned Temperature–VPD Yield Response
+
+EXP-05B distinguished (1) additive conditional overlap with antecedent moisture from (2) modification of the temperature/VPD–yield slopes by antecedent moisture. The primary moisture proxy was the preceding three-month average of the nominal Open-Meteo 28–100 cm soil-moisture layer; preceding-month moisture, a deeper layer, and preceding three-month rainfall were bounded comparators.
+
+- Conditioning on antecedent soil moisture did not remove the modest Aug–Nov negative VPD partial-correlation pattern.
+- The Aug–Nov primary VPD dry-minus-wet slope contrasts were **+0.348, −0.300, +0.321, and +0.113 t/ha per within-grid VPD SD**, respectively. Every 3-year- and 5-year-block 95% pointwise interval included zero.
+- Interaction directions were mixed across months and moisture definitions; no consistent interval-supported modification was established. This is **not** a practical-equivalence or causal finding.
+- Fixed-grid synchronized bootstrap retained the original 76 eligible grids; numerical checks and paired inference completed. Rainfall showed more additive pooled in-sample information in some focal months, but no independently validated prediction advantage.
+- No soil layer, rainfall variable, temperature, or VPD feature was dropped. Complex interactions are not required as default downstream features.
+
+Curated outputs: [`outputs/research/exp_05b/`](outputs/research/exp_05b/)
+
 ---
 
 ## EXP-03 Redundancy Closure
@@ -175,7 +197,7 @@ No Jan–Feb, Feb–Mar, or Mar–Apr aggregate was promoted.
 
 The resulting downstream universe contains **38 candidate representations**.
 
-Important conditional-information questions remain protected:
+Protected feature-information distinctions (EXP-05 tested T/VPD without authorizing predictive feature deletion):
 
 - temperature ↔ VPD;
 - rainfall ↔ upper-soil moisture;
@@ -196,8 +218,9 @@ The experiment IDs are historical identifiers; execution order may differ.
 EXP-01  Weather feature structure                     COMPLETE
 EXP-02  Yield detrending / spatial composition        COMPLETE
 EXP-03  Weather–yield discovery / heterogeneity       COMPLETE
-EXP-05  Temperature–VPD conditional information      NEXT
-EXP-04  Continuous adjusted-yield characterization    AFTER EXP-05
+EXP-05  Temperature–VPD conditional information      COMPLETE
+EXP-05B Moisture-conditioned T/VPD response           COMPLETE
+EXP-04  Continuous adjusted-yield characterization    NEXT
          Hydrological conditional follow-up            UNNUMBERED / LATER
 EXP-06  Growth-stage aggregation                      PROPOSED
 EXP-07  Incremental out-of-sample predictive value    PROPOSED
@@ -222,7 +245,7 @@ python -m pip install -r requirements.txt
 
 The project targets Python 3.12. Large source archives and generated processed datasets are intentionally excluded from version control; curated research outputs are retained under `outputs/research/`.
 
-### Current EXP-03 analysis modules
+### Current research analysis modules
 
 ```text
 src/analysis/exp03_yield_stratified_monthly_weather.py
@@ -234,13 +257,22 @@ src/analysis/exp03_soil_regime_synthesis.py
 src/analysis/exp03_redundancy_synthesis.py
 ```
 
+Added conditional-research modules:
+
+```text
+src/analysis/exp05_conditional_temperature_vpd.py
+src/analysis/exp05b_fixed_grid_bootstrap.py
+src/analysis/exp05b_moisture_conditioning.py
+src/analysis/exp05b_summarize.py
+```
+
 ### Focused test suite
 
 ```bash
 python -m pytest src/tests/analysis src/tests/etl/weather src/tests/etl/soil -q
 ```
 
-At the v1.7.0 checkpoint this suite passes **137 tests**.
+At the v1.7.1 checkpoint, `python -m pytest src/tests/analysis -q` passes **142 tests**, and `python -m pytest -q` passes **329 tests with 3 warnings** on the release-preparation machine.
 
 ---
 

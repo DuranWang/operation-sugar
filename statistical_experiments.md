@@ -21,8 +21,9 @@ Detailed curated reports, tables, figures, and execution records are stored unde
 | EXP-01 | How should the weather feature space be characterized before yield modeling? | Completed |
 | EXP-02 | How should long-run yield trends and changing production geography be separated from short-run yield anomalies? | Completed |
 | EXP-03 | How do weather conditions differ across adjusted-yield outcomes, and how spatially stable are those relationships? | Completed |
-| EXP-05 | Does temperature or VPD retain yield information after conditioning on the other? | **Next** |
-| EXP-04 | What continuous relationships remain among the post-EXP-05 candidate weather representations and adjusted yield? | After EXP-05 |
+| EXP-05 | Does temperature or VPD retain yield information after conditioning on the other? | Completed |
+| EXP-05B | Does antecedent moisture systematically modify temperature/VPD–yield conditional associations? | Completed |
+| EXP-04 | What continuous relationships remain among the retained weather representations and adjusted yield? | **Next — design pending** |
 | Hydrological follow-up | How should rainfall, upper moisture, and deep moisture be separated conditionally? | Unnumbered / later |
 | EXP-06 | Can weather information be organized into biologically meaningful sugarcane growth stages? | Proposed |
 | EXP-07 | Do retained weather features provide incremental predictive value out of sample? | Proposed |
@@ -407,44 +408,71 @@ Protected conditional-information questions:
 
 ## Status
 
-**NEXT**
-
-## Why EXP-05 Runs Before EXP-04
-
-Step 5 intentionally preserved temperature and VPD because their incremental information remains unresolved.
-
-Resolving this question before EXP-04 avoids carrying two overlapping atmospheric-demand families into the broader continuous-characterization stage without first testing whether both matter conditionally.
+**Completed (2026-10-12).**
 
 ## Research Question
 
-> Does VPD contain additional yield information after temperature is known, and does temperature contain additional information after VPD is known?
+> Does VPD retain historical yield association conditional on temperature, and does temperature retain association conditional on VPD?
 
-## Primary Focus
+## Data and Design
 
-February_t.
+- Frozen annual P50=10 ERA5-grid yield anomaly with P50=12 and fixed-composition target robustness.
+- Sixteen separately analyzed yield-relative month-slots (May_(t-1)–Apr_t primary twelve; Jan–Apr_(t-1) extended-only four).
+- Within-grid month-specific conditional Pearson correlations; matched-sample regression diagnostics; bidirectional conditioning; bounded nonlinear and spatial checks.
+- Synchronized yield-year resampling and 3-/5-year-block checks, with no automatic conversion of within-sample associations into forecasting claims.
 
-EXP-03 found:
+## Findings
 
-- meaningful negative categorical atmospheric-demand contrasts;
-- weaker pooled monotonic relationships;
-- greater spatial heterogeneity.
+- Aug–Nov_(t-1) median within-grid `r(Y,VPD|T)` ≈ −0.104, −0.099, −0.081, −0.105.
+- Associations are modest, with substantial grid heterogeneity. February_t evidence is less consistent.
+- High temperature–VPD overlap is not enough to establish either variable's yield-information redundancy.
+- No feature deletion rule passed; temperature and mean VPD remain retained candidates rather than obligatory predictive inputs.
 
-## Candidate Analysis
+## Interpretation and Outputs
 
-Start with transparent conditional diagnostics:
+EXP-05 describes associations, not causal pathways, feature keep/drop decisions, or held-out predictive value.
 
-- matched-support temperature–VPD overlap;
-- yield–VPD within narrow temperature conditions;
-- yield–temperature within narrow VPD conditions;
-- spatial-direction consistency before and after conditioning.
+- `outputs/research/exp_05/EXP_05_research_synthesis.md`
+- `outputs/research/exp_05/EXP_05_execution_report.md`
+- `outputs/research/exp_05/monthly_spatial_synthesis.csv`
 
-Only if warranted should a parsimonious nonlinear or interaction specification be considered.
+---
 
-## Boundary
+# EXP-05B — Moisture-Conditioned Temperature–VPD Yield Response
 
-EXP-05 is not final feature selection.
+## Status
 
-RH and solar remain secondary atmospheric context unless later evidence justifies expanding the conditional program.
+**Completed (2026-10-12).**
+
+## Research Questions
+
+1. **Conditional overlap:** Does adding antecedent soil moisture as an additive covariate change the atmospheric partial correlations?
+2. **Response modification:** Do conditional temperature/VPD slopes differ under relatively dry versus wet antecedent moisture?
+
+## Data and Design
+
+- Primary modifier: the arithmetic mean of 28–100 cm monthly soil moisture in months m−3, m−2, m−1, excluding the exposure month; it is a modeled background proxy, not observed crop water stress.
+- Frozen comparisons: month m−1 of the same layer, preceding three-month deeper soil moisture, and preceding three-month rainfall totals.
+- Grid-specific additive M0/M1 comparisons and slot-specific pooled interaction models, with grid intercepts and heterogeneous-grid-slope/curvature sensitivities.
+- All 76 originally eligible grids retained in fixed-grid synchronized resampling; 1,000 draws per scheme with numerical diagnostics and matched model comparisons.
+
+## Findings
+
+- Across primary grid-month series, median incremental in-sample R² for adding antecedent soil moisture beyond temperature and VPD was 0.0126, and median absolute VPD partial-correlation shift was 0.0173.
+- In Aug–Nov_(t−1), median `r(Y,VPD|T,SM)` remained negative: −0.087, −0.098, −0.063, −0.080.
+- Primary VPD dry-minus-wet conditional slope contrasts, Aug–Nov_(t−1), were +0.348, −0.300, +0.321, +0.113 t/ha per within-grid VPD SD.
+- All corresponding 3-year and 5-year synchronized-block 95% pointwise confidence intervals included zero; primary temperature contrasts were likewise not interval-supported across the focal months.
+- Interaction directions varied with month and water-background representation. On the bounded pooled additive comparison, three-month rainfall showed larger descriptive incremental in-sample R² in focal months than the selected primary soil-moisture proxy, without establishing out-of-sample superiority.
+- Prespecified target, spatial-slope, and curvature checks did not produce a coherent, independently supported moisture-modification conclusion.
+
+## Interpretation and Outputs
+
+Classification: **heterogeneous / mixed conditional response; no clear interval-supported moisture modification**. This does not demonstrate equivalence, absence of crop water stress, causality, or predictive redundancy. The underlying Open-Meteo deeper-layer naming and ERA5 source-layer depth require source-aware interpretation, not silent substitution. No candidate variables were dropped.
+
+- `outputs/research/exp_05b/research_synthesis.md`
+- `outputs/research/exp_05b/execution_report.md`
+- `outputs/research/exp_05b/monthly_interaction_uncertainty.csv`
+- `outputs/research/exp_05b/robustness_comparisons.csv`
 
 ---
 
@@ -452,7 +480,7 @@ RH and solar remain secondary atmospheric context unless later evidence justifie
 
 ## Status
 
-Proposed — after EXP-05.
+**Next — design pending; not yet executed.**
 
 ## Research Question
 

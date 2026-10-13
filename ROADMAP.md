@@ -1,6 +1,6 @@
 # Operation Sugar Roadmap
 
-Updated: October 9, 2026
+Updated: October 13, 2026
 
 Operation Sugar develops transparent, reproducible commodity-research and forecast benchmarks, beginning with Brazilian sugarcane and sugar.
 
@@ -15,13 +15,14 @@ The immediate objective is not to maximize model complexity. It is to identify w
 | **Completed** | EXP-01 — weather feature structure |
 | **Completed** | EXP-02 — yield detrending and spatial composition |
 | **Completed** | EXP-03 — weather–yield discovery, robustness, spatial heterogeneity, and redundancy synthesis |
-| **Next** | **EXP-05 — conditional temperature–VPD yield response** |
-| **After EXP-05** | EXP-04 — focused continuous adjusted-yield characterization |
+| **Completed** | EXP-05 — temperature–VPD conditional information |
+| **Completed** | EXP-05B — antecedent moisture and rainfall conditional-response analysis |
+| **Next** | **EXP-04 — focused continuous adjusted-yield characterization** |
 | **Later / separately approved** | Hydrological conditional-information follow-up |
 | **Later Layer 1** | EXP-06, EXP-07, EXP-08 |
 | **Deferred** | Dynamic Bayesian weather updating → Weather 2.0 |
 
-Experiment numbers are historical identifiers. Execution order is intentionally **EXP-05 before EXP-04** because EXP-05 resolves the largest remaining atmospheric-demand redundancy question before the broader continuous-characterization stage.
+Experiment numbers are historical identifiers. The completed research sequence placed **EXP-05 and EXP-05B before EXP-04** to characterize atmospheric conditional information; neither experiment made final predictive feature keep/drop decisions.
 
 ---
 
@@ -126,32 +127,45 @@ Protected conditional questions:
 
 ### EXP-05 — Conditional Temperature–VPD Yield Response
 
-**Status: NEXT**
+**Status: COMPLETED**
 
 Question:
 
 > Does VPD contain additional yield information after temperature is known, and does temperature contain additional information after VPD is known?
 
-Primary empirical focus:
+EXP-05 tested 16 separate monthly exploratory slots, preserving May_(t-1)–Apr_t as the 12-month primary historical window and Jan_(t-1)–Apr_t as extended robustness.
 
-- February_t, where EXP-03 found relatively strong categorical atmospheric-demand contrasts but weaker pooled monotonic association and more spatial heterogeneity.
+- Aug–Nov_(t-1) median within-grid `r(Y,VPD|T)` was approximately −0.104, −0.099, −0.081, and −0.105.
+- Directional patterns are modest and spatially heterogeneous; February_t was not a uniformly robust VPD signal.
+- Conditioning does not establish independent causality or prospective predictive value.
+- **Decision:** retain both temperature and mean VPD as exploratory candidates. No approved evidence supports deleting either one.
 
-Initial design should remain transparent:
+Outputs: `outputs/research/exp_05/`.
 
-- inspect temperature–VPD overlap on matched support;
-- evaluate yield–VPD relationships conditional on temperature;
-- evaluate yield–temperature relationships conditional on VPD;
-- assess whether conditioning improves spatial consistency.
+---
 
-Only if the simple conditional analysis supports it should parsimonious nonlinear or interaction terms be considered.
+### EXP-05B — Moisture-Conditioned Temperature–VPD Yield Response
 
-EXP-05 is a conditional-information experiment, not final feature selection.
+**Status: COMPLETED**
+
+Question:
+
+> Do the temperature/VPD–yield conditional slopes differ systematically between relatively dry and wet antecedent soil-moisture conditions?
+
+- Primary modifier: mean antecedent 28–100 cm soil moisture over months m−3 to m−1. Comparators: month m−1 moisture, nominal 100–255 cm deeper moisture, and three-month rainfall total.
+- The primary Aug–Nov VPD dry-minus-wet slope contrasts were +0.348, −0.300, +0.321, +0.113 t/ha per within-grid VPD SD. The prespecified 3-/5-year synchronized-block intervals all crossed zero.
+- Adding moisture as an additive covariate did not eliminate the earlier modest negative VPD partial-correlation pattern.
+- Results were mixed across months, grids, and modifiers; there is **no clear interval-supported moisture modification**, not proof of no effect.
+- Fixed-grid bootstrap retained 76 eligible grids. Do not use the mixed interaction results to justify causal claims, practical equivalence, or feature deletion.
+- The physical depth/source mapping of the nominal Open-Meteo 100–255 cm field versus ERA5 layer 4 (100–289 cm) requires clear provenance when interpreting the deep-layer comparator.
+
+Outputs: `outputs/research/exp_05b/`.
 
 ---
 
 ### EXP-04 — Continuous Adjusted-Yield Characterization
 
-**Status: PROPOSED — AFTER EXP-05**
+**Status: NEXT — DESIGN NOT YET FROZEN**
 
 Question:
 
@@ -171,7 +185,7 @@ It should focus on:
 
 The 38 Step-5 representations are a candidate universe, not a 38-variable regression.
 
-EXP-05 may alter only the temperature/VPD portion before EXP-04.
+EXP-05/05B did not authorize removing atmospheric or hydrological representations. Retain the EXP-03 frozen 38-candidate universe for EXP-04, without treating it as a 38-variable regression. Relationship-shape methods, uncertainty, and the fair Dec–Jan summaries require an EXP-04 execution design before implementation.
 
 ---
 
@@ -188,7 +202,7 @@ Potential questions:
 
 This should be one coherent hydrological conditional design rather than several disconnected pairwise experiments.
 
-It is not automatically next after EXP-05.
+It is not automatically next after EXP-05B or EXP-04; it requires separate approval.
 
 ---
 
