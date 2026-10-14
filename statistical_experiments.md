@@ -23,9 +23,9 @@ Detailed curated reports, tables, figures, and execution records are stored unde
 | EXP-03 | How do weather conditions differ across adjusted-yield outcomes, and how spatially stable are those relationships? | Completed |
 | EXP-05 | Does temperature or VPD retain yield information after conditioning on the other? | Completed |
 | EXP-05B | Does antecedent moisture systematically modify temperature/VPD–yield conditional associations? | Completed |
-| EXP-04 | What continuous relationships remain among the retained weather representations and adjusted yield? | **Next — design pending** |
+| EXP-04 | What continuous relationships remain among the retained weather representations and adjusted yield? | **Completed as reported; results reviewed** |
 | Hydrological follow-up | How should rainfall, upper moisture, and deep moisture be separated conditionally? | Unnumbered / later |
-| EXP-06 | Can weather information be organized into biologically meaningful sugarcane growth stages? | Proposed |
+| EXP-06 | Can weather information be organized into biologically meaningful sugarcane growth stages? | Next — design |
 | EXP-07 | Do retained weather features provide incremental predictive value out of sample? | Proposed |
 | EXP-08 | How heterogeneous are weather–yield responses across space? | Later / conditional |
 
@@ -476,33 +476,13 @@ Classification: **heterogeneous / mixed conditional response; no clear interval-
 
 ---
 
-# EXP-04 — Continuous Adjusted-Yield Characterization
+# EXP-04 — Continuous Weather–Yield Response Characterization
 
-## Status
+**Completed as reported; supplied result tables reviewed on 2026-10-14.** The frozen 38 candidates were fit separately against the primary actual-composition P50=10 grid residual. There are 2,888 linear fits (76 grids per candidate) and 2,736 restricted quadratic fits (72 grids per candidate), with candidate-specific paired years rather than a complete-window exclusion.
 
-**Next — design pending; not yet executed.**
+Rainfall and soil moisture generally have positive slope point estimates; temperature and VPD generally have negative ones. Many individual-grid block intervals cross zero. February rainfall is the only pooled PQ candidate whose curvature intervals exclude zero under both block schemes; this is exploratory evidence within a prespecified quadratic family, not an independently validated discovery. Target sensitivities retain most slope signs. Linear LOYO was not present in the supplied review files.
 
-## Research Question
-
-> What are the magnitude and shape of the retained continuous weather–yield relationships, and which relationships survive the approved target robustness checks?
-
-## Scope
-
-EXP-03 already computed pooled within-grid continuous associations and grid-specific Spearman diagnostics.
-
-Therefore EXP-04 must add information rather than repeat that screen.
-
-Focus areas:
-
-- relationship shape;
-- effect magnitude;
-- uncertainty;
-- statewide-common versus heterogeneous behavior;
-- P50=12 robustness;
-- fixed-composition robustness;
-- comparison of the two approved Dec–Jan summaries with their constituent months.
-
-The 38 Step-5 representations are a candidate universe, not a multivariate regression specification.
+These marginal models do not quantify joint seasonal explanatory power or forecast gains. No feature is added or removed on a significance rule. See the [reviewed results](outputs/research/exp_04/EXP_04_reviewed_results.md) for tables, sample rules, uncertainty, and the outstanding implementation/full-output synchronization gap.
 
 ---
 
@@ -527,7 +507,7 @@ Prefer one coherent hydrological design rather than disconnected pairwise experi
 
 ## Status
 
-Proposed.
+Next for design. Limited time/stage representations and a separately agreed descriptive joint-weather specification will be considered; no joint specification is frozen. EXP-07 retains chronological prediction evaluation.
 
 Question:
 

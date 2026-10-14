@@ -283,6 +283,18 @@ It should be reconsidered only after the current weather-information problem is 
 
 ---
 
+## Decision 30 — Close EXP-04 as Exploratory Marginal Response Characterization
+
+The approved 38 candidates were analyzed one at a time using candidate-specific paired years, grid-level linear fits, restricted grid quadratic diagnostics, fixed-roster pooled shape diagnostics, and the two approved Dec–Jan aggregation checks. Completion is reported by the implementing Work and supplied outputs have been reviewed; implementation and full archives still require repository synchronization.
+
+Slope signs and block-interval support are reported separately. An unsupported quadratic fit does not establish linearity; a positive nested R² increment does not establish curvature. The February rainfall pooled quadratic signal remains exploratory after 38 outcome-informed comparisons. RH is not a soil-water-stress proxy. No significance-based feature changes are authorized.
+
+Primary Y remains actual-composition P50=10. P50=12 and fixed-composition targets are robustness substitutions under transparent common-sample rules, with primary weather and scaling fixed. No target replacement is adopted.
+
+EXP-06 is next for time/stage representation design and a separately agreed descriptive joint-weather analysis. Single-month R² cannot resolve joint seasonal explanatory power. EXP-07 retains chronological prediction testing; new representations and model choices require a design before execution.
+
+---
+
 # Summary
 
 The current historical Layer-1 architecture is:
@@ -299,4 +311,4 @@ IBGE municipality yield
 
 Current research sequence:
 
-> **EXP-01 complete → EXP-02 complete → EXP-03 complete → EXP-05 next → EXP-04 → later conditional / growth-stage / predictive work**
+> **EXP-01/02/03 complete → EXP-05/05B complete → EXP-04 reported complete / results reviewed → EXP-06 design → EXP-07 prediction evaluation**

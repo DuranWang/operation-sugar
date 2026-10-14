@@ -19,16 +19,16 @@ The project is deliberately benchmark-driven: new variables and model complexity
 | Annual agricultural history | 1974–2025 |
 | Municipality universe | 642 São Paulo municipalities |
 | Detrending-eligible municipalities | 511 |
-| Weather grid | ERA5 0.5° |
+| Weather grouping | 0.5° analysis lattice; point-series ERA5 exposures |
 | Grid support | 78 grids; 76 qualify for current grid-specific correlation summaries |
 | Complete all-variable yield years | 1982–2025 |
 | Main late-weather window | Dec_(t-1) → Apr_t |
 | Weather sources | NASA POWER + Open-Meteo / ERA5 |
 | Agricultural source | IBGE municipal agricultural statistics |
-| Completed experiments | EXP-01, EXP-02, EXP-03, EXP-05, EXP-05B |
-| Immediate next experiment | **EXP-04 — continuous weather–yield characterization** |
+| Completed experiments | EXP-01, EXP-02, EXP-03, EXP-05, EXP-05B; EXP-04 reported complete and results reviewed |
+| Immediate next step | **EXP-06 — representation and joint-description design** |
 | Historical windows | Primary: May_(t-1)–Apr_t (12 months); extended: Jan_(t-1)–Apr_t (16 months) |
-| Validation checkpoint | **142 analysis tests; 329 full-suite tests passing (3 warnings)** |
+| v1.7.1 validation checkpoint (prior release) | **142 analysis tests; 329 full-suite tests passing (3 warnings)** |
 | Current release checkpoint | **v1.7.1 — EXP-05/05B conditional weather–yield research** |
 
 ## Four-Layer Research Framework
@@ -178,6 +178,14 @@ Curated outputs: [`outputs/research/exp_05b/`](outputs/research/exp_05b/)
 
 ---
 
+### EXP-04 — Continuous Weather–Yield Response Characterization
+
+**Completed as reported; supplied result tables reviewed on 2026-10-14.** The frozen 38 candidates were fit separately against the primary actual-composition P50=10 grid residual. There are 2,888 linear fits (76 grids per candidate) and 2,736 restricted quadratic fits (72 grids per candidate), with candidate-specific paired years rather than a complete-window exclusion.
+
+Rainfall and soil moisture generally have positive slope point estimates; temperature and VPD generally have negative ones. Many individual-grid block intervals cross zero. February rainfall is the only pooled PQ candidate whose curvature intervals exclude zero under both block schemes; this is exploratory evidence within a prespecified quadratic family, not an independently validated discovery. Target sensitivities retain most slope signs. Linear LOYO was not present in the supplied review files.
+
+These marginal models do not quantify joint seasonal explanatory power or forecast gains. No feature is added or removed on a significance rule. See the [reviewed results](outputs/research/exp_04/EXP_04_reviewed_results.md) for tables, sample rules, uncertainty, and the outstanding implementation/full-output synchronization gap.
+
 ## EXP-03 Redundancy Closure
 
 Three representation duplicates were collapsed for downstream work:
@@ -220,9 +228,9 @@ EXP-02  Yield detrending / spatial composition        COMPLETE
 EXP-03  Weather–yield discovery / heterogeneity       COMPLETE
 EXP-05  Temperature–VPD conditional information      COMPLETE
 EXP-05B Moisture-conditioned T/VPD response           COMPLETE
-EXP-04  Continuous adjusted-yield characterization    NEXT
+EXP-04  Continuous weather–yield characterization      COMPLETE / RESULTS REVIEWED
          Hydrological conditional follow-up            UNNUMBERED / LATER
-EXP-06  Growth-stage aggregation                      PROPOSED
+EXP-06  Time/stage weather representations            NEXT DESIGN
 EXP-07  Incremental out-of-sample predictive value    PROPOSED
 EXP-08  Spatial response heterogeneity                 LATER / CONDITIONAL
 ```

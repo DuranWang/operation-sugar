@@ -6,6 +6,17 @@ This project follows **Semantic Versioning** and the general structure proposed 
 
 ---
 
+## [Unreleased] — 2026-10-14
+
+### Research documentation and reviewed results
+
+- Record reported EXP-04 completion and review of supplied result tables; advance EXP-06 to the next design step.
+- Add the exact supplied 38-candidate summary, a derived linear sign/interval review table, source hashes, and an interpretation report.
+- Distinguish marginal linear associations, restricted quadratic evidence, target robustness, and the unanswered seasonal joint-weather question.
+- Keep v1.7.1 and its validation checkpoint unchanged. EXP-04 implementation and complete output archives remain unsynchronized; reported focused tests were not rerun here.
+
+---
+
 ## [1.7.1] - 2026-10-13
 
 ### Conditional Temperature–VPD and Moisture-Response Research

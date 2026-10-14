@@ -1,0 +1,43 @@
+{
+  "review_date": "2026-10-14",
+  "execution_base_commit": "1a3f5a9fea60d064f2af84ba282f87fbc52be482",
+  "scope": "Result-table review; not an experiment rerun",
+  "files": [
+    {
+      "name": "candidate_response_summary.csv",
+      "sha256": "bcdc0b8eed08b7e1523301be08ed715dbb78aa9ba2c4c69e7272604043f2a7bc",
+      "bytes": 15646,
+      "included_in_this_directory": true
+    },
+    {
+      "name": "grid_response_estimates.csv",
+      "sha256": "6dd00b3831caa1a9e844073ebfa99c351e95d483972bd5e93e073c579662b07c",
+      "bytes": 5797510,
+      "included_in_this_directory": false
+    },
+    {
+      "name": "bootstrap_intervals_full.csv",
+      "sha256": "27302fc18ca820304dd2921fd86167c1ed087dcdb91b38015d92c3a3c19eff9f",
+      "bytes": 15641007,
+      "included_in_this_directory": false
+    },
+    {
+      "name": "leave_one_year_out_diagnostics.csv",
+      "sha256": "8d2f73eb850f56a754337a1056b4322ab53ed5813b8fa25e584b50d6486ecf50",
+      "bytes": 14100482,
+      "included_in_this_directory": false
+    },
+    {
+      "name": "leave_one_year_out_summary.csv",
+      "sha256": "31815ec2e2c7bd69d157364ed547f3908e4f6c85b83c1faa16de111a651153ea",
+      "bytes": 704384,
+      "included_in_this_directory": false
+    },
+    {
+      "name": "target_robustness_comparisons.csv",
+      "sha256": "3294a6c82817636ab41fc0b1b5ff29b94950161ca1018e8afa49955cf1ca10aa",
+      "bytes": 5848203,
+      "included_in_this_directory": false
+    }
+  ]
+}
