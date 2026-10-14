@@ -10,7 +10,7 @@ It answers:
 
 Major methodological choices are summarized in [`research_decisions.md`](research_decisions.md).
 
-Detailed curated reports, tables, figures, and execution records are stored under `outputs/research/`.
+Published curated reports, tables, figures, and execution records are stored under `outputs/research/`. Completed research may also have local records that have not been approved for publication.
 
 ---
 
@@ -23,9 +23,9 @@ Detailed curated reports, tables, figures, and execution records are stored unde
 | EXP-03 | How do weather conditions differ across adjusted-yield outcomes, and how spatially stable are those relationships? | Completed |
 | EXP-05 | Does temperature or VPD retain yield information after conditioning on the other? | Completed |
 | EXP-05B | Does antecedent moisture systematically modify temperature/VPD–yield conditional associations? | Completed |
-| EXP-04 | What continuous relationships remain among the retained weather representations and adjusted yield? | **Next — design pending** |
+| EXP-04 | What continuous relationships remain among the retained weather representations and adjusted yield? | Completed |
 | Hydrological follow-up | How should rainfall, upper moisture, and deep moisture be separated conditionally? | Unnumbered / later |
-| EXP-06 | Can weather information be organized into biologically meaningful sugarcane growth stages? | Proposed |
+| EXP-06 | Can weather information be organized into biologically meaningful sugarcane growth stages? | Next — design |
 | EXP-07 | Do retained weather features provide incremental predictive value out of sample? | Proposed |
 | EXP-08 | How heterogeneous are weather–yield responses across space? | Later / conditional |
 
@@ -476,33 +476,21 @@ Classification: **heterogeneous / mixed conditional response; no clear interval-
 
 ---
 
-# EXP-04 — Continuous Adjusted-Yield Characterization
+# EXP-04 — Continuous Weather–Yield Response Characterization
 
 ## Status
 
-**Next — design pending; not yet executed.**
+Research completed. Implementation and curated outputs were committed separately; this documentation update records the high-level status and interpretation boundaries.
 
 ## Research Question
 
-> What are the magnitude and shape of the retained continuous weather–yield relationships, and which relationships survive the approved target robustness checks?
+> What are the magnitude and shape of historical continuous weather–yield associations, and how sensitive are those descriptions to alternative yield-target definitions?
 
-## Scope
+## Scope and Interpretation
 
-EXP-03 already computed pooled within-grid continuous associations and grid-specific Spearman diagnostics.
+The experiment characterized individual weather representations against annual yield anomalies, examined spatial variation, and checked approved target sensitivities. The primary target remains the actual-composition P50=10 grid residual; alternative targets are robustness checks rather than replacements.
 
-Therefore EXP-04 must add information rather than repeat that screen.
-
-Focus areas:
-
-- relationship shape;
-- effect magnitude;
-- uncertainty;
-- statewide-common versus heterogeneous behavior;
-- P50=12 robustness;
-- fixed-composition robustness;
-- comparison of the two approved Dec–Jan summaries with their constituent months.
-
-The 38 Step-5 representations are a candidate universe, not a multivariate regression specification.
+Marginal response descriptions do not establish joint seasonal explanatory power, causal effects, or out-of-sample forecasting gains. This documentation update adds no detailed candidate-level findings or model configurations. No feature is added or removed on a significance rule.
 
 ---
 
@@ -527,7 +515,7 @@ Prefer one coherent hydrological design rather than disconnected pairwise experi
 
 ## Status
 
-Proposed.
+Next for design. Time/stage weather representations will be considered. Specific representations and any descriptive joint-weather model require an agreed design before execution. EXP-07 retains chronological prediction evaluation.
 
 Question:
 

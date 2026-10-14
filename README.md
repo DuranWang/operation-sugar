@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
-![Version](https://img.shields.io/badge/Version-1.7.1-orange?style=flat-square)
+![Version](https://img.shields.io/badge/Version-1.7.2-orange?style=flat-square)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
 
 **Independent quantitative research into Brazilian sugarcane and sugar markets, built on public data, explicit benchmarks, and reproducible experiments.**
@@ -19,17 +19,17 @@ The project is deliberately benchmark-driven: new variables and model complexity
 | Annual agricultural history | 1974–2025 |
 | Municipality universe | 642 São Paulo municipalities |
 | Detrending-eligible municipalities | 511 |
-| Weather grid | ERA5 0.5° |
+| Weather grouping | 0.5° analysis lattice; point-series ERA5 exposures |
 | Grid support | 78 grids; 76 qualify for current grid-specific correlation summaries |
 | Complete all-variable yield years | 1982–2025 |
 | Main late-weather window | Dec_(t-1) → Apr_t |
 | Weather sources | NASA POWER + Open-Meteo / ERA5 |
 | Agricultural source | IBGE municipal agricultural statistics |
-| Completed experiments | EXP-01, EXP-02, EXP-03, EXP-05, EXP-05B |
-| Immediate next experiment | **EXP-04 — continuous weather–yield characterization** |
+| Completed experiments | EXP-01, EXP-02, EXP-03, EXP-05, EXP-05B, EXP-04 |
+| Immediate next step | **EXP-06 — time/stage weather-representation design** |
 | Historical windows | Primary: May_(t-1)–Apr_t (12 months); extended: Jan_(t-1)–Apr_t (16 months) |
-| Validation checkpoint | **142 analysis tests; 329 full-suite tests passing (3 warnings)** |
-| Current release checkpoint | **v1.7.1 — EXP-05/05B conditional weather–yield research** |
+| v1.7.1 validation checkpoint (prior release) | **142 analysis tests; 329 full-suite tests passing (3 warnings)** |
+| Current documentation version | **v1.7.2 — EXP-04 closure and EXP-06 design status** |
 
 ## Four-Layer Research Framework
 
@@ -178,6 +178,14 @@ Curated outputs: [`outputs/research/exp_05b/`](outputs/research/exp_05b/)
 
 ---
 
+### EXP-04 — Continuous Weather–Yield Response Characterization
+
+**Status: research completed.** EXP-04 characterized the magnitude and shape of historical weather–yield associations and examined their sensitivity to alternative yield-target definitions. The primary historical target remains the actual-composition P50=10 grid yield anomaly.
+
+The analysis describes marginal associations; it does not establish causal effects, joint seasonal explanatory power, or out-of-sample prediction gains. This documentation update adds no detailed candidate-level results. EXP-04 implementation and curated outputs were committed separately; completion does not establish forecasting value.
+
+EXP-06 is next for time/stage weather-representation design. Its specific representations and any descriptive joint-weather model remain to be agreed; chronological prediction evaluation belongs to EXP-07.
+
 ## EXP-03 Redundancy Closure
 
 Three representation duplicates were collapsed for downstream work:
@@ -220,9 +228,9 @@ EXP-02  Yield detrending / spatial composition        COMPLETE
 EXP-03  Weather–yield discovery / heterogeneity       COMPLETE
 EXP-05  Temperature–VPD conditional information      COMPLETE
 EXP-05B Moisture-conditioned T/VPD response           COMPLETE
-EXP-04  Continuous adjusted-yield characterization    NEXT
+EXP-04  Continuous weather–yield characterization    COMPLETE
          Hydrological conditional follow-up            UNNUMBERED / LATER
-EXP-06  Growth-stage aggregation                      PROPOSED
+EXP-06  Time/stage weather representations            NEXT DESIGN
 EXP-07  Incremental out-of-sample predictive value    PROPOSED
 EXP-08  Spatial response heterogeneity                 LATER / CONDITIONAL
 ```

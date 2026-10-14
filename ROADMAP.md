@@ -1,6 +1,6 @@
 # Operation Sugar Roadmap
 
-Updated: October 13, 2026
+Updated: October 14, 2026
 
 Operation Sugar develops transparent, reproducible commodity-research and forecast benchmarks, beginning with Brazilian sugarcane and sugar.
 
@@ -17,9 +17,10 @@ The immediate objective is not to maximize model complexity. It is to identify w
 | **Completed** | EXP-03 — weather–yield discovery, robustness, spatial heterogeneity, and redundancy synthesis |
 | **Completed** | EXP-05 — temperature–VPD conditional information |
 | **Completed** | EXP-05B — antecedent moisture and rainfall conditional-response analysis |
-| **Next** | **EXP-04 — focused continuous adjusted-yield characterization** |
+| **Completed** | EXP-04 — continuous weather–yield characterization |
+| **Next — design** | EXP-06 — time/stage weather representations |
 | **Later / separately approved** | Hydrological conditional-information follow-up |
-| **Later Layer 1** | EXP-06, EXP-07, EXP-08 |
+| **Later Layer 1** | EXP-07, EXP-08 |
 | **Deferred** | Dynamic Bayesian weather updating → Weather 2.0 |
 
 Experiment numbers are historical identifiers. The completed research sequence placed **EXP-05 and EXP-05B before EXP-04** to characterize atmospheric conditional information; neither experiment made final predictive feature keep/drop decisions.
@@ -163,29 +164,13 @@ Outputs: `outputs/research/exp_05b/`.
 
 ---
 
-### EXP-04 — Continuous Adjusted-Yield Characterization
+### EXP-04 — Continuous Weather–Yield Response Characterization
 
-**Status: NEXT — DESIGN NOT YET FROZEN**
+**Status: COMPLETED**
 
-Question:
+Characterized historical continuous weather–yield relationships, including their magnitude, shape, spatial variation, and sensitivity to alternative yield targets. Implementation and curated outputs were committed separately; this documentation update adds no detailed results.
 
-> What are the magnitude and shape of the retained continuous weather–yield relationships, and which findings survive the approved target robustness specifications?
-
-EXP-04 must not simply rerun the pooled-rank and grid-Spearman screen already completed in EXP-03.
-
-It should focus on:
-
-- relationship shape;
-- effect magnitude;
-- uncertainty;
-- statewide-common versus heterogeneous structure;
-- P50=12 robustness;
-- fixed-composition robustness;
-- fair comparison of the two approved Dec–Jan summaries against their constituent months.
-
-The 38 Step-5 representations are a candidate universe, not a 38-variable regression.
-
-EXP-05/05B did not authorize removing atmospheric or hydrological representations. Retain the EXP-03 frozen 38-candidate universe for EXP-04, without treating it as a 38-variable regression. Relationship-shape methods, uncertainty, and the fair Dec–Jan summaries require an EXP-04 execution design before implementation.
+These descriptive associations do not establish causal effects or predictive improvement. Single-month marginal R² does not measure the explanatory power of a joint seasonal weather representation. The primary target remains unchanged, and no significance-based feature addition or deletion is adopted.
 
 ---
 
@@ -208,7 +193,9 @@ It is not automatically next after EXP-05B or EXP-04; it requires separate appro
 
 ### EXP-06 — Growth-Stage Weather Aggregation
 
-**Status: PROPOSED**
+**Status: NEXT — DESIGN**
+
+Design limited time/stage weather representations. Any descriptive joint-weather analysis requires a separately agreed specification; neither that model nor stage boundaries are frozen. Chronological evaluation of predictive value remains EXP-07.
 
 Compare:
 

@@ -283,6 +283,18 @@ It should be reconsidered only after the current weather-information problem is 
 
 ---
 
+## Decision 30 — Close EXP-04 and Preserve Its Interpretation Boundaries
+
+EXP-04 is complete as a historical response-characterization experiment. Implementation and curated outputs were committed separately; this documentation update records the high-level research decision without adding detailed results.
+
+Primary Y remains the actual-composition P50=10 grid yield anomaly. P50=12 and fixed-composition targets are robustness checks under comparable sample rules, not replacements for the primary target.
+
+Slope direction, estimation uncertainty, and stability are distinct aspects of the evidence. Lack of interval support does not establish absence of association, linearity, or practical equivalence. RH describes atmospheric humidity and is not a soil-water-stress indicator. No significance-based feature additions or deletions are adopted.
+
+Single-month marginal R² cannot resolve how much a joint seasonal weather representation explains annual yield anomalies. EXP-06 is next for time/stage representation design; any descriptive joint-weather model requires a separately agreed specification. Chronological predictive evaluation remains EXP-07.
+
+---
+
 # Summary
 
 The current historical Layer-1 architecture is:
@@ -299,4 +311,4 @@ IBGE municipality yield
 
 Current research sequence:
 
-> **EXP-01 complete → EXP-02 complete → EXP-03 complete → EXP-05 next → EXP-04 → later conditional / growth-stage / predictive work**
+> **EXP-01/02/03 complete → EXP-05/05B complete → EXP-04 complete → EXP-06 design → EXP-07 prediction evaluation**

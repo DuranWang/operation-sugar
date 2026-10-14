@@ -6,6 +6,18 @@ This project follows **Semantic Versioning** and the general structure proposed 
 
 ---
 
+## [1.7.2] - 2026-10-14
+
+### Changed
+
+- Update research status to record EXP-04 completion and identify EXP-06 representation design as the next step.
+- Clarify that the primary yield target is unchanged, alternative targets are robustness checks, and marginal historical associations do not establish joint seasonal explanatory power or predictive gains.
+- Limit this update to five research documents. EXP-04 implementation and curated outputs were committed separately; this update adds no code or output archive and reports no new test run.
+
+Version v1.7.2 records this documentation update. No GitHub Release is created by this update.
+
+---
+
 ## [1.7.1] - 2026-10-13
 
 ### Conditional Temperature–VPD and Moisture-Response Research
