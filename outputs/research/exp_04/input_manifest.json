@@ -1,0 +1,247 @@
+{
+  "candidate_universe": {
+    "path": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_03\\redundancy\\exp04_candidate_universe.csv",
+    "sha256": "5fbe5f0c2e093fa0dabcb86b54faad2464e2f11e4ea3e67d1accea0c0538529b",
+    "bytes": 12345
+  },
+  "grid_targets": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\analysis\\exp_02b\\actual_vs_fixed_grid_residuals.csv",
+    "sha256": "6f14d136a00eac3f6c14703c701ad636487d898c2c5799f8c2ae617f06a4e446",
+    "bytes": 1450189
+  },
+  "municipality_weights": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\analysis\\exp_02b\\matched_support_weight_details.csv",
+    "sha256": "d4339b58c47871b850afd1b9c4ffc8784070a51b90da9c0c20072771f1de42b1",
+    "bytes": 4313880
+  },
+  "municipality_grid_mapping": {
+    "path": "D:\\Desktop\\Operation Sugar\\outputs\\research\\exp_02\\exp_02b\\eligible_municipality_grid_mapping.csv",
+    "sha256": "4fecd5724eb95410603164d6f9181e0422750e9620e968ac48ef22e7148cbc2c",
+    "bytes": 31858
+  },
+  "weather_1981": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1981.csv",
+    "sha256": "565ada6d979e9989ee938d21fc710564e9afc71b8369efa8eb77557d658ef5b3",
+    "bytes": 1873355
+  },
+  "weather_1982": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1982.csv",
+    "sha256": "6513c155df1513ef391ea65ccae88272f3ae4f8edc46fcf7853fe335cde50764",
+    "bytes": 1873767
+  },
+  "weather_1983": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1983.csv",
+    "sha256": "dd8957c03b34b942ecc156f6c1c6c9166fb48ee81632a05e9249e585342be384",
+    "bytes": 1881771
+  },
+  "weather_1984": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1984.csv",
+    "sha256": "9b5e25dbcc6758a0f85b2b6e8bb6ce45b36e6fb3081fae5766acfb24a0dfead6",
+    "bytes": 1874725
+  },
+  "weather_1985": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1985.csv",
+    "sha256": "070afffbc312c0f8bf99e8396abf6ece7fdd14a19d56a8abc6295973c4a5dca5",
+    "bytes": 1872315
+  },
+  "weather_1986": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1986.csv",
+    "sha256": "b5e91f8a3c4e4e3ce5127e37e6301ad26a3f6187473fe56dfc12e394bbdb67ef",
+    "bytes": 1873716
+  },
+  "weather_1987": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1987.csv",
+    "sha256": "2c5da5c53f2377ac06f9da4c1e2e4f16eae0cd867bb57e36d61588b3e788e473",
+    "bytes": 1869688
+  },
+  "weather_1988": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1988.csv",
+    "sha256": "aecb444e6654116c844efeb5d48e7c01cb3ba25e67b164ab644adda7ba060fa6",
+    "bytes": 1873664
+  },
+  "weather_1989": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1989.csv",
+    "sha256": "c112d872f9308f926890808b5a1f2c8ad861044078f4f9f05f3aec095572a32c",
+    "bytes": 1872669
+  },
+  "weather_1990": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1990.csv",
+    "sha256": "474e425d51301fad648254371a9872c9f6ed534b0c329d801ceeda50771fa4fb",
+    "bytes": 1873130
+  },
+  "weather_1991": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1991.csv",
+    "sha256": "22436b463147c3af331f80568b876588521d7863e09f31d6cd542cbe5c48adf9",
+    "bytes": 1876402
+  },
+  "weather_1992": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1992.csv",
+    "sha256": "5b70d9a71eaa682c72c5d9d0c7d80f4a5c6216c3ea13d3aab3cac8d70fa52fa3",
+    "bytes": 1875338
+  },
+  "weather_1993": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1993.csv",
+    "sha256": "0bfeb8a733cdf7c93d7e10a57d5c6f7fe74d30592da3a615b73044f75e73b918",
+    "bytes": 1878978
+  },
+  "weather_1994": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1994.csv",
+    "sha256": "af8a463382ddc6fc6def49daab767f058da52e603232dbdb4f67c367c6eeb1d4",
+    "bytes": 1872407
+  },
+  "weather_1995": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1995.csv",
+    "sha256": "38a3fbc4afc509079f62717b063bd7b6cea12dca6cc6fdaf36361d54623b993a",
+    "bytes": 1874659
+  },
+  "weather_1996": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1996.csv",
+    "sha256": "c931dc7cec926283673a7504b88b67924338bd30e09232f0fe13eeec3164997c",
+    "bytes": 1876803
+  },
+  "weather_1997": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1997.csv",
+    "sha256": "8548cac3b053a799ab3f3303f56024cc2fc5d2e284a10f283e23708d5d8d235b",
+    "bytes": 1871188
+  },
+  "weather_1998": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1998.csv",
+    "sha256": "094066e83f8111f11f4473fee20a9e8a31264eaa4a69462f4282942aff0200d5",
+    "bytes": 1870296
+  },
+  "weather_1999": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_1999.csv",
+    "sha256": "3684fce708263b1976363e220dcbfe47dd11354b7221de1402993368f13d6e81",
+    "bytes": 1867211
+  },
+  "weather_2000": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2000.csv",
+    "sha256": "64bce46592406d1e2b3138ead4542e91f8832f958683021e267f8918c93b1206",
+    "bytes": 1879194
+  },
+  "weather_2001": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2001.csv",
+    "sha256": "2295bc58d15b1e15156ad246692ad7a215009e31f0bc75d782b7bb6e4dca7420",
+    "bytes": 1865909
+  },
+  "weather_2002": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2002.csv",
+    "sha256": "4e2c5a214670442cbf83ae64fc17ea464c6e6bdd8aa11132aef19a7d7c6b3e83",
+    "bytes": 1874777
+  },
+  "weather_2003": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2003.csv",
+    "sha256": "849045928e04fd8dd084c4ec3aa03777520b0b097471ce27999eda276b2d186c",
+    "bytes": 1871232
+  },
+  "weather_2004": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2004.csv",
+    "sha256": "10f418f6f6dc689aa9989a366c75901c1f87609bf4740ac875eeba1a187c2393",
+    "bytes": 1877078
+  },
+  "weather_2005": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2005.csv",
+    "sha256": "8c0530faeace547c1b41a6fb81eea9d3faa88b24d5bcc3c154fd353e0f0f9c3b",
+    "bytes": 1875585
+  },
+  "weather_2006": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2006.csv",
+    "sha256": "1ffd00ca31250ca3f1b531cff20efff9e6dc98bb2c2204356a5cb010cda918d2",
+    "bytes": 1880897
+  },
+  "weather_2007": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2007.csv",
+    "sha256": "e8e79f6984e577d6f3badfe5d93b580fc7739202e915e250befe1e69b522eb14",
+    "bytes": 1873455
+  },
+  "weather_2008": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2008.csv",
+    "sha256": "ad37043081184b746becda2e2cee8d9de751e921ba06ef7b35308688e704d8d7",
+    "bytes": 1880264
+  },
+  "weather_2009": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2009.csv",
+    "sha256": "67ebc24ed311b0ed11e6788dcaf90a4378d092992a5a3a33a6228200e4fb2ff4",
+    "bytes": 1872332
+  },
+  "weather_2010": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2010.csv",
+    "sha256": "a3ec428a2931ddff72bccec2739d97daaa59825c5bd8333b7dda959b77d78a99",
+    "bytes": 1867653
+  },
+  "weather_2011": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2011.csv",
+    "sha256": "6fd6848f6fe5a58b77fa40ff71557c2d1d7ba74c2ee5f27494e9b24c0291c3c0",
+    "bytes": 1873614
+  },
+  "weather_2012": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2012.csv",
+    "sha256": "96bdf1c47ca22c16dfe68935002a43b45edd4ebb00615183125d0bb2d7acd776",
+    "bytes": 1877115
+  },
+  "weather_2013": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2013.csv",
+    "sha256": "99901f96eb8d5a90db3371fa86e5bffb88a196460d14b55045dc8638bfa06daf",
+    "bytes": 1872110
+  },
+  "weather_2014": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2014.csv",
+    "sha256": "cf3eb2a52e7536b0d7152b114fd7de2d8b00f6a504792feaa27982d8b1dc7915",
+    "bytes": 1874590
+  },
+  "weather_2015": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2015.csv",
+    "sha256": "60954dec92055e70eabe7d977ec5e723b106be6f1cf5420b0832c87e683a1814",
+    "bytes": 1870286
+  },
+  "weather_2016": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2016.csv",
+    "sha256": "f9a2294d3b08d8104306f5a9026597edc87c046f98ad8cdbd8c684a93be1f2db",
+    "bytes": 1875583
+  },
+  "weather_2017": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2017.csv",
+    "sha256": "e1697edf8e3de9e72151def89b95f9577a66b188db2e2ea09e9b55c7c4b7bc70",
+    "bytes": 1869934
+  },
+  "weather_2018": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2018.csv",
+    "sha256": "faf788e7bd6a380376eabd806b8de561e17d1f98ccc49e6fb8bc99d72bb17103",
+    "bytes": 1869155
+  },
+  "weather_2019": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2019.csv",
+    "sha256": "02d9a50fd5ac79bc7831b8f1bed5eec7436ee9170e7e68b7613063d1ad174d98",
+    "bytes": 1869567
+  },
+  "weather_2020": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2020.csv",
+    "sha256": "7f2120ad7a38c9c4805865ff78c945546b42b68385179fb860e3e70f2fd0ad4b",
+    "bytes": 1874024
+  },
+  "weather_2021": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2021.csv",
+    "sha256": "363e348f1905eafead08a857010b9468acb209e7aa6658f8141e0c792bee5449",
+    "bytes": 1871278
+  },
+  "weather_2022": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2022.csv",
+    "sha256": "12c85abdd1754700367614be1ee6a143e17b5eac020ed148dd826b828f39724b",
+    "bytes": 1865662
+  },
+  "weather_2023": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2023.csv",
+    "sha256": "fbcd70c35ee7e5cc1c692d3ad31b6ecff4a863dc7fa2f97e7cf89f5fac79b1cd",
+    "bytes": 1870256
+  },
+  "weather_2024": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2024.csv",
+    "sha256": "fdfbc9c873d08daf671b3f198618edd27061272885328c739900e29953eaa395",
+    "bytes": 1871573
+  },
+  "weather_2025": {
+    "path": "D:\\Desktop\\Operation Sugar\\data\\processed\\combined_weather\\annual\\sp_municipality_monthly_weather_2025.csv",
+    "sha256": "d74ff0c89654a018f4bdb50858acd454b69d502cae55dc8776b8105b89fdac9b",
+    "bytes": 1866301
+  }
+}

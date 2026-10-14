@@ -1,0 +1,8 @@
+{
+  "stage": "full",
+  "attempts_per_scheme": 1000,
+  "min_pooled_validity": 0.999,
+  "all_pooled_at_least_80pct": true,
+  "diagnostics_rows": 19824,
+  "interval_rows": 90300
+}

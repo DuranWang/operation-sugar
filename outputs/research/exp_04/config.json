@@ -1,0 +1,48 @@
+{
+  "commit": "1a3f5a9fea60d064f2af84ba282f87fbc52be482",
+  "input_sha256": {
+    "universe": "5fbe5f0c2e093fa0dabcb86b54faad2464e2f11e4ea3e67d1accea0c0538529b",
+    "targets": "6f14d136a00eac3f6c14703c701ad636487d898c2c5799f8c2ae617f06a4e446",
+    "weights": "d4339b58c47871b850afd1b9c4ffc8784070a51b90da9c0c20072771f1de42b1"
+  },
+  "primary_target": "Y_P50_10_actual_tch",
+  "robustness_targets": [
+    "Y_P50_12_actual_tch",
+    "Y_P50_10_fixed_tch"
+  ],
+  "linear_min_n": 20,
+  "quadratic_min_n": 30,
+  "condition_max": 100000000.0,
+  "candidate_count": 38,
+  "candidate_grid_year_rows": 143374,
+  "weather_alignment": {
+    "-4": "Dec(t-1)",
+    "-3": "Jan(t)",
+    "-2": "Feb(t)",
+    "-1": "Mar(t)",
+    "0": "Apr(t)"
+  },
+  "weather_years": [
+    "1981",
+    "2025"
+  ],
+  "lineage": {
+    "municipalities_mapped": 511,
+    "grids_mapped": 78,
+    "municipalities_mapped_to_multiple_grids": 0,
+    "grid_years_with_weights": 3773,
+    "year_within_grid_duplicate_target_values": 0,
+    "minimum_distinct_grid_targets_per_year": 59,
+    "target_lineage_max_abs_error_tch": {
+      "Y_P50_10_actual_tch": 8.881784197001252e-15,
+      "Y_P50_12_actual_tch": 1.2434497875801753e-14,
+      "Y_P50_10_fixed_tch": 8.881784197001252e-15
+    },
+    "weight_sum_min": 0.999999999999999,
+    "weight_sum_max": 1.0000000000000002,
+    "fixed_weight_sum_min": 0.9999999999999992,
+    "fixed_weight_sum_max": 1.0000000000000002,
+    "spatial_caveat": "Municipality outcome memberships are disjoint across grids; shared annual shocks and weather-source groups can still induce dependence."
+  },
+  "partial_weather_support_rows": 0
+}
